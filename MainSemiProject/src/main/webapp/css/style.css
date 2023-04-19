@@ -1,0 +1,370 @@
+@charset "UTF-8";
+
+/*표준 글꼴 서식 스타일*/
+body {
+font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+/* font-family: Lucida Console, Courier, monospace; */
+}
+
+/* ---------------------------------------------------------------------------------- 헤더 CSS 시작 */
+header > div#main_header {
+	height: 134px;
+	background-color: #fdd007;
+}
+div#header_main_container {
+	padding-top: 15px; /* 원본 사이트 top 30px */
+	padding-bottom: 30px;
+}
+div#header_bar{
+	display: flex;
+	width: 400px;
+	height: 26px;
+}
+p#header_bar_font{
+	line-height: 40px;
+	margin-left: 5px;
+	letter-spacing: 2px; /* 글자간격 CSS */
+}
+div#header_center{
+	justify-content: center;
+}
+p#header_logo {
+	font-size: 40pt;
+	font-weight: bold;
+	line-height: 60px;
+	margin: 0;
+}
+div#header_menu{
+	width: 200px;
+	height: 26px;
+	text-align:right;
+}
+p#header_logo_subtitle {
+	font-size: 8pt;
+	color: black;
+	letter-spacing: 1px;
+	font-family: Lucida Console, Courier, monospace !important;
+	font-weight:500;
+}
+a#a_login{
+	color: black;
+}
+a#header_home{
+	color: black;
+	text-decoration-line: none;
+}
+span#cart_count{
+	display:inline-block;
+	background-color: white;	 
+	border-radius: 50%;
+	width: 20px;
+	height: 20px; 
+	line-height: 22px;
+	text-align: center;
+	color: black;
+	font-size: 12px;
+	font-weight: bold;
+	position: absolute;
+    right: -4px;
+    top: -6px;
+	font-family: 'courier', arial, sans-serif;
+}
+/* ---------------------------------------------------------------------------------- 헤더 CSS 끝 */
+
+
+
+
+/* ---------------------------------------------------------------------------------- 네비게이션 CSS 시작 */
+nav#nav_bar {
+	display: block;
+	background-color: black;
+	color: white;
+	
+	animation-duration: 3s;
+	animation-name: slidein;
+    transition:transform 0.5s; /* 스크롤시 네비바 확대되는 속도 */
+} 
+li.nav-item {
+	font-size: 12pt;
+}
+a.nav-link {
+	color: white;
+	letter-spacing: 2px;
+}
+.nav_increment{
+	height: 90px;
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+    transform:scale(1.1,1.1); /* 스크롤시 네비바 확대되는 크기 */
+}
+ 	
+@keyframes slidein { 
+	from {
+		margin-bottom: 100%;
+		width: 300%;
+	}
+
+	to {
+		margin-bottom: 0%;
+		width: 100%;
+	}
+}
+
+div#nav-group_ALL {
+	width: 100%;
+	position: absolute;
+	color: black;
+    display: block;
+     
+    top: 100%;
+    left: 0px;
+    height: 260px;
+    background-color: white;
+    opacity: 0;
+    transition: all ease 0.3s;
+}
+div#prod_view{
+	padding: 35px 0 35px 0;
+	height: 100%;
+	width: 100%;
+}
+ul#prod_view_ul{
+	display: flex;
+	-webkit-box-align: stretch;
+	width: 100%; 
+	height: 100%; 
+	padding: 0;
+} 
+li.prod_view_list{
+	list-style: none;
+	width: 35%; 
+	height: 100%;
+	padding: 15px 30px 15px 0;
+	display: flex;
+}
+
+a.prod_image{
+	display: flex;
+	width: 250px;
+	border: solid 1px black;
+	margin: 0;
+	justify-content: center;
+	align-items: center;
+}
+a.prod_text{ 
+	display: flex;
+	width: auto; 
+	margin: 0;
+	border: solid 1px black;
+	justify-content: center;
+	align-items: center;
+}
+a#main_logo{
+	display: flex;
+	position: absolute;
+	top: 20%;
+    left: 7%;
+	width: 172px;
+	height: 32px;
+	color: #fdd007;
+	font-size: 36px;
+	font-weight: bold;
+	text-decoration: none;
+	letter-spacing: 3px;
+}
+div#nav_bar_menu{ 
+	display: flex;
+	color: white; 
+	position: absolute;
+	align-items: center;
+	top: 39%;
+    left: 80%;
+}
+/* ---------------------------------------------------------------------------------- 네비게이션 CSS 끝 */
+
+
+ 
+
+div#body{
+	height: 100%;
+	background-color: #fff9e7;
+}
+div.carousel{
+	margin-bottom: 100px;
+}
+
+
+/* ---------------------------------------------------------------------------------- footer CSS 시작 */
+div#footer_top{
+	background-color: black;
+	height: 140px;
+	display: flex;
+ 	align-items: center;
+}
+div#footer_top_container{
+	display: flex;
+	align-items: center; /* 세로 가운데 기준 정렬*/
+}
+div#footer_title{
+	width: 20%;
+	color: white;
+	font-weight: bold;
+	font-size: 26px;
+	letter-spacing: 2px;
+}
+div#footer_content{
+	width: 33%;
+	color: white;
+	font-family: Lucida Console, Courier, monospace !important;
+	font-size: 13px;
+} 
+div#footer_email{
+	display: flex;
+	width: 50%;
+	flex-wrap: wrap;
+}
+input#footer_email_input{
+	height: 50px;
+	width: 65%;
+	border: solid 1px #fdd007;
+	background-color: black;
+	padding: 15px;
+	color: white;
+}
+div#email_submit_button{
+	height: 50px;
+	width: 35%; 
+	background-color: #fdd007;
+	text-align: center;
+	line-height: 50px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	cursor: pointer;
+}
+
+ 
+
+
+div#footer_center{
+	display: flex;
+	height: 330px;
+	background-color: #fdd007;
+	text-align: center;
+	justify-content: center;
+}
+div#footer_center_container{
+	display: flex;
+	padding: 60px 0px 0px 0px ;
+	height: 100%;
+	width: 90%;
+}
+div#footer_center_left{
+	border-right: solid 1px black;
+	height: 100%;
+	text-align:left;
+}
+p#foot_info{
+	width: 100%;
+	font-size: 11pt;
+	margin: 0;
+	font-family: Lucida Console, Courier, monospace !important;
+}
+
+div#footer_center_right{
+	height: 100%; 
+	padding: 40px 0px 40px 50px;
+}
+div#foot_complain{
+	width: 100%;
+	height: 100%;
+}
+div#complain_title{
+	font-weight: bold;
+	letter-spacing: 2px;
+	margin-bottom: 15px;
+}
+p#complain_content_p{
+	margin-bottom: 40px;
+	font-family: Lucida Console, Courier, monospace !important;
+	font-size: 13px;
+}
+a.complain_img{
+	display: block;
+}
+a.complain_text{
+	color: black;
+}
+
+
+
+
+div#footer_bottom {
+	background-color: #fdd007;
+	height: 102px;
+	display: flex;
+	justify-content: center;
+}
+div#foot_social{
+	display: flex;
+	justify-content: center;
+	width: 90%;
+	align-items: center;
+}
+ul#social_list{
+	padding-left: 0px;
+	justify-content: space-between;
+	display: flex; 
+	width: 20%;
+}
+li.social_items{
+	list-style: none;
+}
+
+div#footer_bottom2{
+	background-color: #fdd007;
+	height: 40px;
+	display:flex;
+	justify-content: center;
+}
+div#foot_last{
+	width: 90%;
+	display:flex;
+	justify-content: center;
+}
+ul#foot_bottom_list{
+	width: 65%; 
+	display:flex;
+	justify-content: space-between;
+}
+li.foot_bottom_list{
+	list-style: none;
+	font-size: 10pt;
+	font-family: Lucida Console, Courier, monospace !important;
+	
+}
+/* ---------------------------------------------------------------------------------- footer CSS 끝 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
