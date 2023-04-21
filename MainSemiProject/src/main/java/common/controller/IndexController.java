@@ -7,9 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.SendResult;
 
-import myshop.model.ImageVO;
-import myshop.model.InterProductDAO;
-import myshop.model.ProductDAO;
 
 public class IndexController extends AbstractController {
 
