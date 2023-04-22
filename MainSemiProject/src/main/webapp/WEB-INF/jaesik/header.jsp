@@ -38,6 +38,7 @@
 		$("a#main_logo").hide();
 		$("div#nav_bar_menu").hide();
 		navView(); 	<%-- 네비바까지 스크롤했을때 네비게이션 addClass 함수--%>
+		$('[data-toggle="popover"]').popover();
 		
 		// 네비게이션 호버 이벤트
 		$("a.header_nav_link").hover(function(e) {
@@ -48,6 +49,30 @@
 		}) // end $("a.header_nav_link").hover
 		
 		
+		// 헤더 메뉴 호버 이벤트
+		$("a.header_menu").hover(function(e) {
+						  $(e.target).css("opacity","0.5");
+						  if( $(e.target).children().hasClass("fa-cart-shopping") == true ){
+							  $("i.fa-cart-shopping").addClass("fa-bounce");
+						  }
+						  },
+						  function(e) {
+						  $(e.target).css("opacity","1");
+						  if( $(e.target).children().hasClass("fa-cart-shopping") == true ){
+							  $("i.fa-cart-shopping").removeClass("fa-bounce");
+						  }
+		}) // end $("a.header_menu").hover
+		
+		
+		// 푸터 고객센터 메뉴 호버 이벤트
+		$("a.complain_menu").hover(function(e) {
+								  $(e.target).parent().css("opacity","0.5");
+								  },
+								  function(e) {
+								  $(e.target).parent().css("opacity","1");
+		}) // end $("a.header_menu").hover
+		
+		 
 		// 구독버튼 호버이벤트
 		$("div#email_submit_button").hover(function(e) {
 										$("div#email_submit_button").html("SUBSCRIBE  <i class='fa-solid fa-arrow-right fa-fade' style='color: #000000;'></i>");
@@ -63,15 +88,10 @@
 			const index = $("#nav_bar_position > li a.header_nav_link").index($(e.target));
 			$("div.nav-group").eq(index).show().css("opacity","1");
 			
-			$("div#main_header").bind("mouseover", function(e){
-				$("div.nav-group").hide().css("opacity","0");
-			});
-			$("div#body").bind("mouseover", function(e){
+			$("nav#header_nav_bar").bind("mouseleave", function(e){
 				$("div.nav-group").hide().css("opacity","0");
 			});
 		});
-		
-		
 		
 		
 	}); // end $(document).ready
@@ -102,7 +122,27 @@
 	
 	<%-- 구독하기 클릭했을때 해당 이메일로 쿠폰이 전송되는 함수 --%>
 	function goSubscribe(){
-		// 이메일 유효성 검사필요 툴팁으로 구현예정
+		
+		const user_Email_Val = $("input#footer_email_input").val().trim();
+		if (user_Email_Val == ""){
+			alert("이메일 입력하세요.");
+			return;
+		}
+		
+		const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i; 
+		const bool = regExp.test(user_Email_Val);
+		
+		if (!bool) {
+			alert("올바른 이메일을 입력하세요");
+			return;
+		}
+		
+		$("input#email").val(user_Email_Val);
+		
+		const frm = document.submit_email;
+		frm.action = "<%= ctxPath%>/main/submitCoupon.moc";
+		frm.method = "GET";
+		frm.submit();
 		
 	} // end function goSubscribe()
 	
@@ -121,16 +161,16 @@
 				<p id="header_bar_font">FREE WORLDWIDE SHIPPING<p>
 			</div>
 			<div id="header_center" class="col-lg-4">
-				<a id="header_home" href="#">
+				<a id="header_home" href="<%= ctxPath%>/index.moc">
 					<p id=header_logo class="mb-1">MOSACOYA</p>
 					<p id=header_logo_subtitle>SSANGYONG&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;MADE BY TEAM 2&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;SINCE 2023</p>
 				</a>
 			</div>
 			<div id="header_menu" class="col-lg-4">
 				<img alt="Republic of Korea" class="mx-3" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="background-image: url(https://cdn.flow.io/util/icons/flags-v2/svg/iso_2_flags.svg); background-position: -46px -204px; width: 21px; height:15px; display: inline-block">
-				<a href="<%= ctxPath%>/login/login.moc" style="color:black;" class="header-menu__link a1 mx-1" title="Login">Login</a>
-				<a href="#"><i class="fa-solid fa-magnifying-glass mx-1" style="color: #000000;"></i></a>
-				<a href="<%= ctxPath%>/shop/cartList.moc"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
+				<a href="<%= ctxPath%>/login/login.moc" style="color:black; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">Login</a>
+				<a href="#" class="header_menu" ><i class="fa-solid fa-magnifying-glass mx-1" style="color: #000000;"></i></a>
+				<a href="<%= ctxPath%>/shop/cartList.moc" class="header_menu"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
 			</div>
 		</div>
 	</div>
@@ -145,7 +185,7 @@
 	
 	<div class="collapse navbar-collapse" id="header_collapsibleNavbar">
 		<ul id="nav_bar_position" class="navbar-nav">
-			<a id="main_logo" href="#">MOSACOYA</a>
+			<a id="main_logo" href="<%= ctxPath%>/index.moc">MOSACOYA</a>
 			
 			<li class="nav-item my-auto px-2">
 				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/allproduct.moc" >All</a>
@@ -261,7 +301,7 @@
 	</div>
 	<div id="nav_bar_menu" class="col md-3">
 		<img alt="Republic of Korea" class="mx-3" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="background-image: url(https://cdn.flow.io/util/icons/flags-v2/svg/iso_2_flags.svg); background-position: -46px -204px; width: 21px; height:15px; display: inline-block">
-		<a href="#" style="color:white; text-decoration: none;" class="header-menu__link a1 mx-1" title="Login">Login</a>
+		<a href="<%= ctxPath%>/login/login.moc" style="color:white; text-decoration: none;" class="header-menu__link a1 mx-1" title="Login">Login</a>
 		<a href="#"><i class="fa-solid fa-magnifying-glass mx-1" style="color: #ffffff;"></i></a>
 	</div>
 </nav>

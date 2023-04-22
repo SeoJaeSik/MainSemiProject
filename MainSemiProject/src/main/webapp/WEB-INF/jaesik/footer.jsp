@@ -8,7 +8,7 @@
 			<div id="footer_content">Enjoy 10% off your first online purchase and<br>stay up to date on all things MOSCOT.</div>
 			<div id="footer_email">
 				<input id="footer_email_input" type="text" placeholder="Enter email">
-				<div id="email_submit_button" onclick="goSubscribe()" class="button">SUBSCRIBE</div>
+				<div id="email_submit_button" onclick="goSubscribe()" class="button" >SUBSCRIBE</div>
 				<span style="font-size: 10pt; color: white;">See our <a style="color: white; text-decoration: underline; letter-spacing: 1px;" href="https://privacy.moscot.com/">Privacy Policy</a></span>
 			</div> 
 		</div>
@@ -29,6 +29,7 @@
 					개인정보보호책임자 : 최운식 
 				</p>
 			</div>
+			
 			<div id="footer_center_right" class="col-md-6">
 				<div id="foot_complain">
 					<div id="complain_title">ASK A MOSCOT FRAME FIT SPECIALIST</div>
@@ -37,35 +38,40 @@
 							Whether you're a MOSCOT collector or visiting for<br>
 							the very first time, we're here to assist!
 						</p>
-						<p style="display: flex; justify-content: space-around;"class="space-around">
-							<a class="complain_img" href="#">
-								<i class="fa-solid fa-phone fa-2xl" style="color: #000000;"></i>
-							</a>
-							<a class="complain_img" href="#">
-								<i class="fa-regular fa-envelope fa-2xl" style="color: #000000;"></i>
-							</a>
-							<a class="complain_img" href="#">
-								<i class="fa-regular fa-comment fa-2xl" style="color: #000000;"></i>
-							</a>
-						</p>
-						<p style="display: flex; justify-content: space-around;"class="space-around">
-							<a class="complain_text" href="#"><span style="font-size: 8pt; letter-spacing: 1px;">(+82) MOSACOYA</span></a> 
-							<a class="complain_text" href="#"><span style="font-size: 8pt; letter-spacing: 1px;">support@mosacoya.com</span></a>
-							<a class="complain_text" href="#"><span style="font-size: 8pt; letter-spacing: 1px;">Chat With Us</span></a>
-						</p>
+						<div style="display: flex; justify-content: space-around;"class="space-around">
+							<p>
+								<a href="#" class="complain_menu" style="color: black; text-decoration: none;">
+									<i class="fa-solid fa-phone fa-2xl mb-4" style="color: #000000;"></i>
+									<span style="font-size: 8pt; letter-spacing: 1px; display:block;">(+82) MOSACOYA</span>
+								</a> 
+							</p>
+							<p>
+								<a href="#" class="complain_menu" style="color: black; text-decoration: none;">
+									<i class="fa-regular fa-envelope fa-2xl mb-4" style="color: #000000;"></i>
+									<span style="font-size: 8pt; letter-spacing: 1px; display:block;">support@mosacoya.com</span>
+								</a>
+							</p>
+							<p>
+								<a href="#" class="complain_menu" style="color: black; text-decoration: none;">
+									<i class="fa-regular fa-comment fa-2xl mb-4" style="color: #000000;"></i>
+									<span style="font-size: 8pt; letter-spacing: 1px; display:block;">Chat With Us</span>
+								</a>
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
+			
 		</div>
 	</div>
 	
 	<div id="footer_bottom">
 		<div id="foot_social">
 			<ul id="social_list">
-				<li class="social_items"><a href="#"><i class="fa-brands fa-facebook-f fa-xl" style="color: #000000;"></i></a></li>
-				<li class="social_items"><a href="#"><i class="fa-brands fa-tiktok fa-xl" style="color: #000000;"></i></a></li>
-				<li class="social_items"><a href="#"><i class="fa-brands fa-instagram fa-xl" style="color: #000000;"></i></a></li>
-				<li class="social_items"><a href="#"><i class="fa-brands fa-youtube fa-xl" style="color: #000000;"></i></a></li>
+				<li class="social_items"><a href="https://www.facebook.com/MOSCOT/" target="_blank"><i class="fa-brands fa-facebook-f fa-xl" style="color: #000000;"></i></a></li>
+				<li class="social_items"><a href="https://www.tiktok.com/@moscotnyc" target="_blank"><i class="fa-brands fa-tiktok fa-xl" style="color: #000000;"></i></a></li>
+				<li class="social_items"><a href="https://www.instagram.com/moscotnyc/" target="_blank"><i class="fa-brands fa-instagram fa-xl" style="color: #000000;"></i></a></li>
+				<li class="social_items"><a href="https://www.youtube.com/user/moscotnyc" target="_blank"><i class="fa-brands fa-youtube fa-xl" style="color: #000000;"></i></a></li>
 			</ul>
 		</div>
 	</div>
@@ -84,6 +90,10 @@
 	</div>
 </footer>
 <%-- footer 끝 --%> 
+
+<form name="submit_email">
+	<input type="hidden" name="email" />
+</form>
 
 
 </body>
