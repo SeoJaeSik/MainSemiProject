@@ -18,7 +18,7 @@
 
 <!-- 직접 만든 CSS -->
 <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/style.css" />
-
+																
 <!-- Optional JavaScript -->
 <script type="text/javascript" src="<%= ctxPath%>/js/jquery-3.6.4.min.js"></script>
 <script type="text/javascript" src="<%= ctxPath%>/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js" ></script>
@@ -144,16 +144,16 @@
 				<p id="header_bar_font">FREE WORLDWIDE SHIPPING<p>
 			</div>
 			<div id="header_center" class="col-lg-4">
-				<a id="header_home" href="#">
+				<a id="header_home" href="<%= ctxPath %>/index.moc">
 					<p id=header_logo class="mb-1">MOSACOYA</p>
 					<p id=header_logo_subtitle>SSANGYONG&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;MADE BY TEAM 2&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;SINCE 2023</p>
 				</a>
 			</div>
 			<div id="header_menu" class="col-lg-4">
 				<img alt="Republic of Korea" class="mx-3" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="background-image: url(https://cdn.flow.io/util/icons/flags-v2/svg/iso_2_flags.svg); background-position: -46px -204px; width: 21px; height:15px; display: inline-block">
-				<a href="#" style="color:black;" class="header-menu__link a1 mx-1" title="Login">Login</a>
+				<a href="<%= ctxPath %>/login/login.moc" style="color:black;" class="header-menu__link a1 mx-1" title="Login">Login</a>
 				<a href="#"><i class="fa-solid fa-magnifying-glass mx-1" style="color: #000000;"></i></a>
-				<a href="#"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
+				<a href="<%= ctxPath %>/shop/cartList.moc"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
 			</div>
 		</div>
 	</div>
@@ -171,7 +171,7 @@
 			<a id="main_logo" href="#">MOSACOYA</a>
 			
 			<li class="nav-item my-auto px-2">
-				<a class="nav-link header_nav_link" href="#" >All</a>
+				<a class="nav-link header_nav_link" href="<%= ctxPath %>/shop/allproduct.moc" >All</a>
 				<div id="nav-group_ALL" class="nav-group" data-group="group-collections">
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
