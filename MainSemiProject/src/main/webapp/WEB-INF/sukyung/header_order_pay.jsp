@@ -46,45 +46,72 @@
 </style>
 
 <script type="text/javascript">
-	
 
 	$(document).ready(function(){
 		
-		$("div#nav-group_ALL").hide();
+		$("div.nav-group").hide();
 		$("a#main_logo").hide();
 		$("div#nav_bar_menu").hide();
 		navView(); 	<%-- 네비바까지 스크롤했을때 네비게이션 addClass 함수--%>
-				
+		
+		// 네비게이션 호버 이벤트
+		$("a.header_nav_link").hover(function(e) {
+							  $(e.target).css({"color":"#fdd007","font-weight":"bold"});
+							  },
+							  function(e) {
+							  $(e.target).css({"color":"white","font-weight":"normal"});
+		}) // end $("a.header_nav_link").hover
+		
+		
 		// 구독버튼 호버이벤트
 		$("div#email_submit_button").hover(function(e) {
 										$("div#email_submit_button").html("SUBSCRIBE  <i class='fa-solid fa-arrow-right fa-fade' style='color: #000000;'></i>");
 										}, function(e) {
 										$("div#email_submit_button").html("SUBSCRIBE");
 		}) // end $("div#email_submit_button").hover
+	
 		
-	}); // end $("a.nav-link").hover
-
+		// 헤더 네비에 mouseover 시 메뉴 보여주는 이벤트
+		$("#nav_bar_position > li a.header_nav_link").bind("mouseover", function(e){
+			    
+			$("div.nav-group").hide().css("opacity","0");
+			const index = $("#nav_bar_position > li a.header_nav_link").index($(e.target));
+			$("div.nav-group").eq(index).show().css("opacity","1");
+			
+			$("div#main_header").bind("mouseover", function(e){
+				$("div.nav-group").hide().css("opacity","0");
+			});
+			$("div#body").bind("mouseover", function(e){
+				$("div.nav-group").hide().css("opacity","0");
+			});
+		});
+		
+		
+		
+		
+	}); // end $(document).ready
+	
 	function navView (){
-		const nav_bar = document.getElementById("nav_bar");
-		const nav_bar_Height = nav_bar.clientHeight;
-
+		const header_nav_bar = document.getElementById("header_nav_bar");
+		const nav_bar_Height = header_nav_bar.clientHeight;
+	
 		document.addEventListener('scroll', onScroll, {passive: true});
 		
 		function onScroll () {
 			const scrollposition = pageYOffset; // 스크롤 위치
 			
 			if (nav_bar_Height <= scrollposition){ // 만약 헤더높이 <= 스크롤위치라면
-				nav_bar.classList.add('nav_increment') //  nav_increment 클래스를 네비에 추가
-				nav_bar.classList.add("animation-init");
+				header_nav_bar.classList.add('nav_increment') //  nav_increment 클래스를 네비에 추가
+				header_nav_bar.classList.add("animation-init");
 				$("a#main_logo").fadeIn();
 				$("div#nav_bar_menu").fadeIn();
-				$("ul#nav_bar_circle").hide();
+				$("nav#nav_bar_circle").hide();
 			}
 			else { // 스크롤 안했을 때
-				nav_bar.classList.remove('nav_increment'); // nav_increment 클래스를 네비에서 제거
+				header_nav_bar.classList.remove('nav_increment'); // nav_increment 클래스를 네비에서 제거
 				$("a#main_logo").fadeOut();
 				$("div#nav_bar_menu").fadeOut();
-				$("ul#nav_bar_circle").fadeIn();
+				$("nav#nav_bar_circle").fadeIn();
 			}
 		}
 	} // end function navView ()
@@ -96,12 +123,12 @@
 		
 	} // end function goSubscribe()
 	
-	
+
 </script>
 
 </head>
 
-<body>
+<body> 
 <%-- 상단배너 시작 --%>
 <header>
 	<div id="main_header" class="container-fluid px-0">
@@ -128,62 +155,57 @@
 <%-- 상단배너 끝 --%>
  
 <%-- Sticky Navbar 시작 --%>
-<%-- Sticky Navbar 끝 --%>
-
-<nav id="nav_bar" class="navbar navbar-expand-sm sticky-top container-fluid">
-	<ul id="nav_bar_position" class="navbar-nav justify-content-center">
-		<a id="main_logo" href="#">MOSACOYA</a> 
-			<div id="nav-group_ALL" class="" <%-- 마우스 오버시 class에 is-active 추가--%> data-group="group-collections">
-			</div>
-	    <li class="nav-item mx-4">
-	      <a class="nav-link" href="#" style="font-size: 12pt; color: white;">장바구니</a>
-	    </li>
-	    <li class="nav-item mx-4">
-	      <a class="nav-link" href="#" style="font-size: 12pt; color: white;">배송정보</a>
-	    </li>
-	    <li class="nav-item mx-4">
-	      <a class="nav-link" href="#" style="font-size: 12pt; color: white;">결제하기</a>
-	    </li>
-	</ul>
-	  <div id="nav_bar_menu" class="col md-3">
+<nav id="header_nav_bar" class="navbar navbar-expand-sm sticky-top container-fluid py-0" style="display: block; height: 45px; background-color: black; color: white; animation-duration: 3s; animation-name: slidein; transition:transform 0.5s; /* 스크롤시 네비바 확대되는 속도 */">
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header_collapsibleNavbar">
+		<span class="navbar-toggler-icon"><i class="fa-solid fa-list fa-xl" style="color: #ffffff;"></i></span>
+	</button>	
+	
+	<div class="collapse navbar-collapse" id="header_collapsibleNavbar">
+		<ul id="nav_bar_position" class="navbar-nav">
+			<a id="main_logo" href="#">MOSACOYA</a>
+			
+			<li class="nav-item my-auto px-2">
+				<a class="nav-link header_nav_link" href="<%= request.getContextPath()%>/shop/cartList.moc" style="font-size: 12pt; color: white;">장바구니</a>
+			</li>
+			<li class="nav-item my-auto px-2">
+				<a class="nav-link header_nav_link" href="#" style="font-size: 12pt; color: white;">배송정보</a>
+			</li>
+			<li class="nav-item my-auto px-2">
+				<a class="nav-link header_nav_link" href="#" style="font-size: 12pt; color: white;">결제하기</a>
+			</li>
+		</ul>
+	<div id="nav_bar_menu" class="col md-3">
 		<img alt="Republic of Korea" class="mx-3" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="background-image: url(https://cdn.flow.io/util/icons/flags-v2/svg/iso_2_flags.svg); background-position: -46px -204px; width: 21px; height:15px; display: inline-block">
 		<a href="#" style="color:white; text-decoration: none;" class="header-menu__link a1 mx-1" title="Login">Login</a>
 		<a href="#"><i class="fa-solid fa-magnifying-glass mx-1" style="color: #ffffff;"></i></a>
-	  </div>	  
-	  
-	<ul id="nav_bar_circle" class="navbar-nav justify-content-center">
-	    <li class="nav-item">
-		  <div class="text-center">
-	      	<a href="#"><span id="navbar_page" class="rounded-circle"></span></a>
-		  </div>
-	    </li>
-	    <li class="nav-item col-md-1">
-		  <div class="text-center mx-n3">
-			<hr style="border: solid 2px white;"> 
-		  </div>
-		</li>
-	    <li class="nav-item">
-		  <div class="text-center">
-	      	<a href="#"><span id="navbar_page" class="rounded-circle"></span></a>
-		  </div>
-	    </li>
-	    <li class="nav-item col-md-1">
-		  <div class="text-center mx-n3">
-			<hr style="border: solid 2px white;"> 
-		  </div>
-		</li>
-	    <li class="nav-item">
-		  <div class="text-center">
-	      	<a href="#"><span id="navbar_page" class="rounded-circle" style="background-color: white;"></span></a>
-		  </div>
-	    </li>
-	</ul>
+	</div>
 </nav>
-
-
-<%-- carousel 시작 --%>
-<div id="body" >
-	
-	
-</div>
-<%-- carousel 끝 --%>
+	<nav id="nav_bar_circle" class="navbar navbar-expand-sm sticky-top container-fluid py-0" style="display: block; height: 45px; background-color: black; color: white; animation-duration: 3s; animation-name: slidein; transition:transform 0.5s; /* 스크롤시 네비바 확대되는 속도 */">
+	<ul class="navbar-nav justify-content-center">
+    	<li class="nav-item">
+	      	<div class="col mx-n2">
+	      		<a href="<%= request.getContextPath()%>/shop/cartList.moc"><span id="navbar_page" class="rounded-circle"></span></a>
+	      	</div>
+		</li>
+		<li class="nav-item my-auto">
+	      	<div class="col-md-2 mx-n4">
+				<hr style="border: solid 1px white; width: 70px;"> 
+	      	</div>
+		</li>
+		<li class="nav-item my-auto">
+	      	<div class="col mx-n2">
+	      		<a href="#"><span id="navbar_page" class="rounded-circle"></span></a>
+	      	</div>
+		</li>
+		<li class="nav-item my-auto">
+	      	<div class="col-md-2 mx-n4">
+				<hr style="border: solid 1px white; width: 70px;"> 
+	      	</div>
+		</li>
+		<li class="nav-item my-auto">
+	      	<div class="col mx-n2">
+	      	<a href="#"><span id="navbar_page" class="rounded-circle" style="background-color: white;"></span></a>
+	      	</div>
+		</li>
+	</ul>
+	</nav>

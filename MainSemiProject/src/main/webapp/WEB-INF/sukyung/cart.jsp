@@ -22,67 +22,127 @@
 		background-color: #fdd007;
 		border: none;
 	}
+	
+	.change {
+		color: red;
+	}
 
 </style>
 
 <script type="text/javascript">
 
-	$(document).ready(function(){
+	let cart_product_count;
 
-		// 수량에서 "+" 를 클릭하면 발생하는 이벤트
-		$("button.count_plus").click((e)=>{
-			const cart_product_count = $(e.target).prev().val(); 
-			if(cart_product_count >= 20){ // 수량이 20개 이상이면
-				$(e.target).prev().val("20");
-				alert("최대 20개까지만 구매가능합니다.");
-			}
-			else {
-				$(e.target).prev().val(Number(cart_product_count)+1);
+	$(document).ready(function(){
+		
+		$("div#body").hide();
+		
+	// *** 1. 수량 관련 이벤트
+		// 수량에서 "+" 또는 "-" 를 클릭하면 발생하는 이벤트
+		$("button.changeCount").click(function(){
+			cart_product_count = $(this).parent().find('input').val();
+			
+			if($(this).text() == "+"){
+				cart_product_count = Number(cart_product_count)+1;
+				checkChangeCount();
+				$(this).prev().val(cart_product_count);
 				// 수량을 입력하는 input 태그의 value 값을 알아와서, 그 자리에 수량+1 한 값을 꽂아넣어준다.
 			}
-		});
-		
-		// 수량에서 "-" 를 클릭하면 발생하는 이벤트
-		$("button.count_minus").click((e)=>{
-			const cart_product_count = $(e.target).next().val(); 
-			if(cart_product_count <= 1){ // 수량에 1개 이하이면
-				$(e.target).next().val("1");
-			}
 			else {
-				$(e.target).next().val(Number(cart_product_count)-1);
+				cart_product_count = Number(cart_product_count)-1;
+				checkChangeCount();
+				$(this).next().val(cart_product_count);
 				// 수량을 입력하는 input 태그의 value 값을 알아와서, 그 자리에 수량-1 한 값을 꽂아넣어준다.
 			}
-		});
-		
-		// 수량이 변하면 발생하는 이벤트(1개~20개로 수량제한한다.)
-		$("input#cart_product_count").bind("change", (e)=>{
-			const cart_product_count = $(e.target).val(); 
-			if(isNaN(cart_product_count)){ // 수량에 숫자가 아닌 값이 들어오면
-				$(e.target).val("");
-				$(e.target).val("1");
-			}
-			else if(cart_product_count <= 0){ // 수량에 음수가 들어오면
-				$(e.target).val("");
-				$(e.target).val("1");
-			}
-			else if(cart_product_count > 20){ // 수량이 20개보다 크면
-				$(e.target).val("");
-				$(e.target).val("20");
-				alert("최대 20개까지만 구매가능합니다.");
-			}
-		});
+		}); // end of $("button.changeCount").click(function(){})
 
+		// 수량이 변하면 발생하는 이벤트
+		$("input#cart_product_count").bind("change", function(){
+			cart_product_count = $(this).val();
+			checkChangeCount();
+			$(this).val(cart_product_count);
+		}); // end of $("input#cart_product_count").bind("change", function(){})
+		
+	//////////////////////////////////////////////////////////////////////////////////////////
+		
+		$("input#CheckAll_product").prop("checked", true);
+		$("input#CheckOne_product").prop("checked", true);
+		
+	// *** 2. 제품 체크박스 관련 이벤트
+		// "전체상품선택" 체크박스를 클릭하면
+		$("input#CheckAll_product").click((e)=>{
+			if($(e.target).prop("checked")){ // 체크
+				$("input#CheckOne_product").prop("checked", true);
+			}
+			else { // 체크해제
+				$("input#CheckOne_product").prop("checked", false);
+			}
+		}); // end of $("input#CheckAll_product").click((e)=>{})
+
+		// 제품한개 체크박스를 클릭하면
+		$("input#CheckOne_product").click((e)=>{
+			
+			const bool = $(e.target).prop("checked");
+			if(!bool){ // 제품한개 체크해제
+				$("input#CheckAll_product").prop("checked", false);
+			}
+			else { // 제품한개 체크
+				let b_flag = false;
+				$("input#CheckOne_product").each(function(index, elmt){
+					
+					if( !$(elmt).prop("checked") ){ // 제품 한개라도 체크해제된 경우
+						$("input#CheckAll_product").prop("checked", false); // "전체상품선택" 해제
+						b_flag = true;
+						return false; // 종료
+					}
+					
+					if(!b_flag){ // 제품이 모두 선택된 경우
+						$("input#CheckAll_product").prop("checked", true); // "전체상품선택" 체크
+					}
+				}); // end of $("input#CheckOne_product").each(function(index, elmt){})
+			}
+		}); // end of $("input#CheckOne_product").click((e)=>{})
+
+	
+		// "주문하기" 를 클릭하면 발생하는 이벤트
+		$("button#btnOrder").click(function(){
+			const frm = document.CartListFrm;
+			frm.action = "<%= request.getContextPath()%>/shop/delivery.moc";
+			frm.method = "post";
+			frm.submit();
+		}); // end of $("button#btnOrder").click(function(){})
+		
 	}); // end of $(document).ready(function(){})
 	
+	//////////////////////////////////////////////////////////////////////////////////////////
+	
+	// 수량이 변하면 호출되는 함수(1개~20개로 수량제한한다.)
+	function checkChangeCount(){
+		if(isNaN(cart_product_count) || cart_product_count <= 0){ 
+			// 수량에 숫자가 아닌 값 또는 음수가 들어오면
+			cart_product_count = "1";
+		}
+		else if(cart_product_count > 20){ // 수량이 20개보다 크면
+			cart_product_count = "20";
+			alert("최대 20개까지만 구매가능합니다.");
+		}
+	} // end of function checkChangeCount()
+	
+	
+	// "추가하기" 버튼을 누르면 호출되는 함수
+	function func_productAdd(){
+		
+		
+	} // end of function func_productAdd()
 	
 </script>
-
+	<form name="CartListFrm">
 	<div class="container mt-5 mx-auto">
 		
 		<h2 class="text-center pb-3">장바구니</h2>
 		<div class="row pb-3 mx-1">
 			<div class="col-md-10 align-self-end">
-				<label for="CheckAll"><input type="checkbox" name="CheckAll_product" id="CheckAll_product" /> 전체 상품 선택</label>
+				<label for="CheckAll_product"><input type="checkbox" name="CheckAll_product" id="CheckAll_product" /> 전체 상품 선택</label>
 			</div>
 			<div class="col-md-2">
 				<button type="button" id="btnOrder" class="btn btn-lg">주문하기</button>
@@ -111,9 +171,9 @@
 			      	<td id="product_price" name="product_price">￦169,000</td>
 			      	<td>
 				      	<span class="border py-1" style="border: solid 1px gray;">
-				      	  	<button type="button" class="btn btn-sm count_minus">-</button>
+				      	  	<button type="button" class="btn btn-sm changeCount">-</button>
 					      	<input type="text" value="1" id="cart_product_count" name="cart_product_count" class="col-md-4 text-center" style="border: none;"/>
-					      	<button type="button" class="btn btn-sm count_plus">+</button>
+					      	<button type="button" class="btn btn-sm changeCount">+</button>
 					    </span>
 				    </td>
 			      	<td style="font-size: 14pt; font-weight: bold;">￦338,000</td>
@@ -131,9 +191,9 @@
 			      	<td id="product_price" name="product_price">￦169,000</td>
 			      	<td>
 				      	<span class="border py-1" style="border: solid 1px gray;">
-				      	  	<button type="button" class="btn btn-sm count_minus">-</button>
+				      	  	<button type="button" class="btn btn-sm changeCount">-</button>
 					      	<input type="text" value="1" id="cart_product_count" name="cart_product_count" class="col-md-4 text-center" style="border: none;"/>
-					      	<button type="button" class="btn btn-sm count_plus">+</button>
+					      	<button type="button" class="btn btn-sm changeCount">+</button>
 					    </span>
 				    </td>
 			      	<td style="font-size: 14pt; font-weight: bold;">￦338,000</td>
@@ -162,7 +222,7 @@
 	      		</div>
 			</div>
 			<div class="col-md-3 align-self-center text-center">
-				<button type="button" id="btnAdd" class="btn btn-lg px-5 py-3">추가하기</button>
+				<button type="button" id="btnAdd" class="btn btn-lg px-5 py-3" onclick="func_productAdd()">추가하기</button>
 			</div>
 		</div>
 		
@@ -193,7 +253,8 @@
 		</div>
 		
 	</div>
+	</form>
 
-	
+		
 <jsp:include page="../jaesik/footer.jsp" />
 	
