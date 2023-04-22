@@ -128,9 +128,9 @@
 			</div>
 			<div id="header_menu" class="col-lg-4">
 				<img alt="Republic of Korea" class="mx-3" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="background-image: url(https://cdn.flow.io/util/icons/flags-v2/svg/iso_2_flags.svg); background-position: -46px -204px; width: 21px; height:15px; display: inline-block">
-				<a href="#" style="color:black;" class="header-menu__link a1 mx-1" title="Login">Login</a>
+				<a href="<%= ctxPath%>/login/login.moc" style="color:black;" class="header-menu__link a1 mx-1" title="Login">Login</a>
 				<a href="#"><i class="fa-solid fa-magnifying-glass mx-1" style="color: #000000;"></i></a>
-				<a href="#"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
+				<a href="<%= ctxPath%>/shop/cartList.moc"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
 			</div>
 		</div>
 	</div>
@@ -148,7 +148,7 @@
 			<a id="main_logo" href="#">MOSACOYA</a>
 			
 			<li class="nav-item my-auto px-2">
-				<a class="nav-link header_nav_link" href="#" >All</a>
+				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/allproduct.moc" >All</a>
 				<div id="nav-group_ALL" class="nav-group" data-group="group-collections">
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
@@ -266,75 +266,3 @@
 	</div>
 </nav>
 <%-- Sticky Navbar 끝 --%>
-
-
-<%-- carousel 시작 --%>
-<div id="body" >
-	
-	<div id="carouselView1" class="carousel slide carousel-fade" data-ride="carousel">
-		<ol class="carousel-indicators">
-			<li data-target="#carouselView1" data-slide-to="0" class="active"></li>
-			<li data-target="#carouselView1" data-slide-to="1"></li>
-			<li data-target="#carouselView1" data-slide-to="2"></li>
-		</ol>
-		<div class="carousel-inner">
-			<div class="carousel-item active">
-				<img src="<%= ctxPath%>/images/img_g.png" class="d-block w-100" alt="...">
-			</div>
-			<div class="carousel-item">
-				<img src="<%= ctxPath%>/images/img_b.png" class="d-block w-100" alt="...">
-			</div>
-			<div class="carousel-item">
-				<img src="<%= ctxPath%>/images/img_r.png" class="d-block w-100" alt="...">
-			</div>
-		</div>
-		<a class="carousel-control-prev" href="#carouselView1" role="button" data-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			<span class="sr-only">Previous</span>
-		</a>
-		<a class="carousel-control-next" href="#carouselView1" role="button" data-slide="next">
-			<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			<span class="sr-only">Next</span>
-		</a>
-	</div>
-	
-	
-	<%-- 두번째 carousel --%>
-	<div id="carouselView2" class="carousel slide carousel-fade" data-ride="carousel">
-		<ol class="carousel-indicators">
-			<li data-target="#carouselView2" data-slide-to="0" class="active"></li>
-			<li data-target="#carouselView2" data-slide-to="1"></li>
-			<li data-target="#carouselView2" data-slide-to="2"></li>
-		</ol>
-		<div class="carousel-inner">
-			<div class="carousel-item active">
-				<img src="https://image.nbkorea.com/NBRB_Site/20230306/NB20230306093539119001.jpg" class="d-block w-100" alt="...">
-				<!-- 캐러셀 내부의 블럭 (참조 글씨 넣기)  
-				<div class="carousel-caption d-none d-md-block">
-					<h5>아이유</h5>
-					<p>아이유 내용</p>
-				</div> 
-				"https://image.nbkorea.com/NBRB_PC/event/imc/nbpantsfit/img_top.jpg"
-				-->
-			</div>
-			<div class="carousel-item">
-				<img src="https://image.nbkorea.com/NBRB_Site/20230406/NB20230406085126936001.jpg" class="d-block w-100" alt="...">
-			</div>
-			<div class="carousel-item">
-				<img src="https://image.nbkorea.com/NBRB_Site/20230308/NB20230308105355932001.jpg" class="d-block w-100" alt="...">
-			</div>
-		</div>
-		<a class="carousel-control-prev" href="#carouselView2" role="button" data-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			<span class="sr-only">Previous</span>
-		</a>
-		<a class="carousel-control-next" href="#carouselView2" role="button" data-slide="next">
-			<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			<span class="sr-only">Next</span>
-		</a>
-	</div>
-	
-	<img src="https://image.nbkorea.com/NBRB_Collection/20230413/NB20230413130306777001.jpg	" class="d-block w-100 test1" alt="...">
-	
-</div>
-<%-- carousel 끝 --%>
