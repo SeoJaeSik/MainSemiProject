@@ -9,10 +9,9 @@ public class LoginAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		// TODO Auto-generated method stub
 		
 		super.setRedirect(false);
-		super.setViewPage("/WEB-INF/sujin/login/m_login_hf.jsp");
+		super.setViewPage("/WEB-INF/sujin/login/login.jsp");
 		
 	}
 

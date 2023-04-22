@@ -5,7 +5,7 @@
 <jsp:include page="../../jaesik/header.jsp"/>
 
 <body>
- <div class="container mt-5 mx-auto bg-white">
+ <div class="container mt-5 mx-auto bg-white ">
 	<form id="loginFrm" name="loginFrm">
 		<table id="loginTbl">
 	    	<thead>
@@ -37,11 +37,11 @@
 	           <%-- === 아이디 찾기, 비밀번호 찾기 === --%>
 	           <tr>
 	               <td id="userid_pwd_find" class="p2" colspan="2" align="center">
-	                   <a class="p2 underline" style="cursor: pointer;" >Forget your id?</a> 
-	                   <a class="p2 underline" style="cursor: pointer;" >Forget your passward?</a> 
+	                   <a id="p2" style="cursor: pointer; text-decoration: underline; color: black;" >Forget your id?</a> 
+	                   <a id="p2" style="cursor: pointer; text-decoration: underline; color: black;" >Forget your passward?</a> 
 	                   <br>
 	               	   "Don't have an account?" 
-	               	   <a class="p2 underline" style="cursor: pointer;" href="#">Register now.</a>
+	               	   <a id="p2" style="cursor: pointer; text-decoration: underline; color: black;" href="#">Register now.</a>
 	               </td>
 	           </tr>
 	            
