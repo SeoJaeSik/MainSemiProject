@@ -51,15 +51,21 @@
 		
 		// 헤더 메뉴 호버 이벤트
 		$("a.header_menu").hover(function(e) {
-						  $(e.target).css("opacity","0.5");
 						  if( $(e.target).children().hasClass("fa-cart-shopping") == true ){
+							  $(e.target).css("opacity","1");
 							  $("i.fa-cart-shopping").addClass("fa-bounce");
+						  }
+						  else{
+							  $(e.target).css("opacity","0.5");
 						  }
 						  },
 						  function(e) {
-						  $(e.target).css("opacity","1");
 						  if( $(e.target).children().hasClass("fa-cart-shopping") == true ){
 							  $("i.fa-cart-shopping").removeClass("fa-bounce");
+							  $(e.target).css("opacity","1");
+						  }
+						  else{
+							  $(e.target).css("opacity","1");
 						  }
 		}) // end $("a.header_menu").hover
 		
@@ -137,11 +143,10 @@
 			return;
 		}
 		
-		$("input#email").val(user_Email_Val);
-		
 		const frm = document.submit_email;
 		frm.action = "<%= ctxPath%>/main/submitCoupon.moc";
-		frm.method = "GET";
+		frm.email.value = user_Email_Val;
+		frm.method = "POST";
 		frm.submit();
 		
 	} // end function goSubscribe()
@@ -170,7 +175,7 @@
 				<img alt="Republic of Korea" class="mx-3" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="background-image: url(https://cdn.flow.io/util/icons/flags-v2/svg/iso_2_flags.svg); background-position: -46px -204px; width: 21px; height:15px; display: inline-block">
 				<a href="<%= ctxPath%>/login/login.moc" style="color:black; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">Login</a>
 				<a href="#" class="header_menu" ><i class="fa-solid fa-magnifying-glass mx-1" style="color: #000000;"></i></a>
-				<a href="<%= ctxPath%>/shop/cartList.moc" class="header_menu"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
+				<a href="<%= ctxPath%>/shop/cartList.moc" style="display: inline-block; width: auto;" class="header_menu"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
 			</div>
 		</div>
 	</div>
@@ -301,8 +306,8 @@
 	</div>
 	<div id="nav_bar_menu" class="col md-3">
 		<img alt="Republic of Korea" class="mx-3" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="background-image: url(https://cdn.flow.io/util/icons/flags-v2/svg/iso_2_flags.svg); background-position: -46px -204px; width: 21px; height:15px; display: inline-block">
-		<a href="<%= ctxPath%>/login/login.moc" style="color:white; text-decoration: none;" class="header-menu__link a1 mx-1" title="Login">Login</a>
-		<a href="#"><i class="fa-solid fa-magnifying-glass mx-1" style="color: #ffffff;"></i></a>
+		<a href="<%= ctxPath%>/login/login.moc" style="color:white; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">Login</a>
+		<a href="#" class="header_menu"><i class="fa-solid fa-magnifying-glass mx-1" style="color: #ffffff;"></i></a>
 	</div>
 </nav>
 <%-- Sticky Navbar 끝 --%>
