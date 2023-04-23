@@ -37,21 +37,27 @@ public class SubmitCouponAction extends AbstractController {
 				
 				Random rnd = new Random();
 				String certificationCode = "";
-				// 인증코드는 영문소문자 5글자 + 숫자7글자
+				// 인증코드는 영문대문자, 숫자 혼합하여 20글자
 				
-				for (int i=0; i<5; i++) {
-				/*
+				for (int j=0; j<2; j++) {
+					for (int i=0; i<4; i++) {
+						/*
 	                min 부터 max 사이의 값으로 랜덤한 정수를 얻으려면 
 	                int rndnum = rnd.nextInt(max - min + 1) + min;
-	                영문 소문자 'a' 부터 'z' 까지 랜덤하게 1개를 만든다.     
-				*/   
-					char rndchar = (char) (rnd.nextInt('z' - 'a' + 1) + 'a');
-					certificationCode += rndchar;
+	                영문 소문자 'A' 부터 'Z' 까지 랜덤하게 1개를 만든다.     
+						 */   
+						char rndchar = (char) (rnd.nextInt('Z' - 'A' + 1) + 'A');
+						certificationCode += rndchar;
+					}
+					
+					for (int i=0; i<4; i++) {
+						int rndnum = rnd.nextInt(9 - 0 + 1) + 0;
+						certificationCode += rndnum;
+					}
 				}
-				
-				for (int i=0; i<7; i++) {
-					int rndnum = rnd.nextInt(9 - 0 + 1) + 0;
-					certificationCode += rndnum;
+				for (int i=0; i<4; i++) {
+					char rndchar = (char) (rnd.nextInt('Z' - 'A' + 1) + 'A');
+					certificationCode += rndchar;
 				}
 				
 				// 랜덤하게 생성한 코드를 비밀번호 찾기를 하고자하는 사용자에게 전송

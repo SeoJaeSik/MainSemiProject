@@ -12,10 +12,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import jaesik.model.AES256;
-import jaesik.model.SecretMyKey;
-import jaesik.model.Sha256;
-
 public class JS_MemberDAO implements JS_InterMemberDAO {
 	
 	private DataSource ds;
