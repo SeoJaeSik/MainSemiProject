@@ -41,14 +41,9 @@ public class ProductDAO implements InterProductDAO {
 			e.printStackTrace();
 		}
 	}
+
+
 	
-	
-	
-	@Override
-	public List<HashMap<String, String>> getCategoryList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	
 

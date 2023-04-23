@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<jsp:include page="./header.jsp"/>
+<jsp:include page="../jaesik/header.jsp"/>
 
 <style type="text/css">
 
@@ -187,7 +187,6 @@
 					</select>
 					<!-- 상품 정렬 select 태그 끝 -->	
 					</p>
-					
 			<!-- select 태그 섹션 끝 -->
 				</div>
 			</div>
@@ -200,13 +199,12 @@
 						<div class="row" id="displayAll">
 							<!-- Single Product -->
 							<div class="col-md-6 col-lg-4 col-xl-4">
-								<div id="product-1" class="single-product">
+								<div id="product-1" class="single-product" href="#">
 									<div class="part-1">
 										<img alt="제품" style="width:inherit; height:inherit;" src="https://image.nbkorea.com/NBRB_Product/20230321/NB20230321153529285001.jpg">
 										<ul>
 											<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-											<li><a href="#"><i class="fas fa-heart"></i></a></li>
-											<li><a href="#"><i class="fas fa-plus"></i></a></li>
+											<li><a href="#"><i class="fa-solid fa-credit-card"></i></a></li>
 											<li><a href="#"><i class="fas fa-expand"></i></a></li>
 										</ul>
 									</div>
@@ -216,155 +214,9 @@
 									</div>
 								</div>
 							</div>
-							<!-- Single Product -->
-							<div class="col-md-6 col-lg-4 col-xl-4">
-								<div id="product-1" class="single-product">
-									<div class="part-1">
-										<img alt="제품" style="width:inherit; height:inherit;" src="https://image.nbkorea.com/NBRB_Product/20230104/NB20230104174340673001.jpg">
-										<ul>
-											<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-											<li><a href="#"><i class="fas fa-heart"></i></a></li>
-											<li><a href="#"><i class="fas fa-plus"></i></a></li>
-											<li><a href="#"><i class="fas fa-expand"></i></a></li>
-										</ul>
-									</div>
-									<div class="part-2">
-										<h3 class="product-title">Here Product Title</h3>
-										<h4 class="product-price">$49.99</h4>
-									</div>
-								</div>
-							</div>
-							<!-- Single Product -->
-							<div class="col-md-6 col-lg-4 col-xl-4">
-								<div id="product-2" class="single-product">
-									<div class="part-1">
-										<span class="discount">15% off</span>
-										<img alt="제품" style="width:inherit; height:inherit;" src="https://image.nbkorea.com/NBRB_Product/20230407/NB20230407165339129001.jpg">
-										<ul>
-											<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-											<li><a href="#"><i class="fas fa-heart"></i></a></li>
-											<li><a href="#"><i class="fas fa-plus"></i></a></li>
-											<li><a href="#"><i class="fas fa-expand"></i></a></li>
-										</ul>
-									</div>
-									<div class="part-2">
-										<h3 class="product-title">Here Product Title</h3>
-										<h4 class="product-price">$49.99</h4>
-									</div>
-								</div>
-							</div>
-								<!-- Single Product -->
-								<div class="col-md-6 col-lg-4 col-xl-4">
-										<div id="product-3" class="single-product">
-												<div class="part-1">
-														<ul>
-																<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-																<li><a href="#"><i class="fas fa-heart"></i></a></li>
-																<li><a href="#"><i class="fas fa-plus"></i></a></li>
-																<li><a href="#"><i class="fas fa-expand"></i></a></li>
-														</ul>
-												</div>
-												<div class="part-2">
-														<h3 class="product-title">Here Product Title</h3>
-														<h4 class="product-old-price">$79.99</h4>
-														<h4 class="product-price">$49.99</h4>
-												</div>
-										</div>
-								</div>
-								<!-- Single Product -->
-								<div class="col-md-6 col-lg-4 col-xl-3">
-										<div id="product-4" class="single-product">
-												<div class="part-1">
-														<span class="new">new</span>
-														<ul>
-																<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-																<li><a href="#"><i class="fas fa-heart"></i></a></li>
-																<li><a href="#"><i class="fas fa-plus"></i></a></li>
-																<li><a href="#"><i class="fas fa-expand"></i></a></li>
-														</ul>
-												</div>
-												<div class="part-2">
-														<h3 class="product-title">Here Product Title</h3>
-														<h4 class="product-price">$49.99</h4>
-												</div>
-										</div>
-								</div>
-								<!-- Single Product -->
-								<div class="col-md-6 col-lg-4 col-xl-3">
-										<div id="product-1" class="single-product">
-												<div class="part-1">
-														<ul>
-																<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-																<li><a href="#"><i class="fas fa-heart"></i></a></li>
-																<li><a href="#"><i class="fas fa-plus"></i></a></li>
-																<li><a href="#"><i class="fas fa-expand"></i></a></li>
-														</ul>
-												</div>
-												<div class="part-2">
-														<h3 class="product-title">Here Product Title</h3>
-														<h4 class="product-old-price">$79.99</h4>
-														<h4 class="product-price">$49.99</h4>
-												</div>
-										</div>
-								</div>
-								<!-- Single Product -->
-								<div class="col-md-6 col-lg-4 col-xl-3">
-										<div id="product-2" class="single-product">
-												<div class="part-1">
-														<span class="discount">15% off</span>
-														<ul>
-																<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-																<li><a href="#"><i class="fas fa-heart"></i></a></li>
-																<li><a href="#"><i class="fas fa-plus"></i></a></li>
-																<li><a href="#"><i class="fas fa-expand"></i></a></li>
-														</ul>
-												</div>
-												<div class="part-2">
-														<h3 class="product-title">Here Product Title</h3>
-														<h4 class="product-price">$49.99</h4>
-												</div>
-										</div>
-								</div>
-								<!-- Single Product -->
-								<div class="col-md-6 col-lg-4 col-xl-3">
-										<div id="product-3" class="single-product">
-												<div class="part-1">
-														<ul>
-																<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-																<li><a href="#"><i class="fas fa-heart"></i></a></li>
-																<li><a href="#"><i class="fas fa-plus"></i></a></li>
-																<li><a href="#"><i class="fas fa-expand"></i></a></li>
-														</ul>
-												</div>
-												<div class="part-2">
-														<h3 class="product-title">Here Product Title</h3>
-														<h4 class="product-old-price">$79.99</h4>
-														<h4 class="product-price">$49.99</h4>
-												</div>
-										</div>
-								</div>
-								<!-- Single Product -->
-								<div class="col-md-6 col-lg-4 col-xl-3">
-										<div id="product-4" class="single-product">
-												<div class="part-1">
-														<span class="new">new</span>
-														<ul>
-																<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-																<li><a href="#"><i class="fas fa-heart"></i></a></li>
-																<li><a href="#"><i class="fas fa-plus"></i></a></li>
-																<li><a href="#"><i class="fas fa-expand"></i></a></li>
-														</ul>
-												</div>
-												<div class="part-2">
-														<h3 class="product-title">Here Product Title</h3>
-														<h4 class="product-price">$49.99</h4>
-												</div>
-										</div>
-								</div>
 						</div>
 					</div>
 				</section>
-				
 			<!-- 제품목록 섹션 끝 -->
 			</div>
 	<!-- 우측 제품목록 및 기타 기능 섹션  -->
@@ -382,4 +234,4 @@
 
 
     
-<jsp:include page="./Newfooter.jsp"/>
+<jsp:include page="../jaesik/footer.jsp"/>

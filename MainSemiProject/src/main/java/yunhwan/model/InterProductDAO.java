@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface InterProductDAO {
 
-	List<HashMap<String, String>> getCategoryList();
+	
 
 
 	
