@@ -12,7 +12,7 @@
 <script type="text/javascript" src="<%= ctxPath%>/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js" ></script> 
 
 
-<%-- *** === Modal Body === *** --%>--
+<%-- *** === Modal Body === *** --%>
 
 <script type="text/javascript">
 
@@ -40,7 +40,6 @@
 			} 
 			
 			const frm = document.idFindFrm;
-			console.log(frm);
 			frm.action = "<%= ctxPath%>/login/idFind.moc";
 			frm.method = "post";
 			frm.submit();
