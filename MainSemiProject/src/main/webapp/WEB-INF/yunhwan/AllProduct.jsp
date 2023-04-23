@@ -14,7 +14,29 @@
 	
 </style>
 
+<script type="text/javascript">
 
+	$(document).ready(function() {
+		
+		displayAll(start); // 문서가 로딩되자마자 함수 호출시켜서 제품을 자동으로 보여줌
+		
+		
+	}); // end of $(document).ready(function() -----------------
+
+			
+			
+			
+	// Function Declaration
+	
+	// display할 전체상품 정보 추가 요청(Ajax로 처리)
+	function displayAll(start) {
+		
+		
+	}// end of function displayAll(start)---------------------------
+	
+			
+
+</script>
 
 <body>
 <!-- 전체 틀 (사이드바 및 제품목록 포함) -->
@@ -175,12 +197,12 @@
 			<!-- 제품목록 섹션 -->
 				<section class="section-products">
 					<div class="container">
-						<div class="row">
+						<div class="row" id="displayAll">
 							<!-- Single Product -->
 							<div class="col-md-6 col-lg-4 col-xl-4">
 								<div id="product-1" class="single-product">
 									<div class="part-1">
-										<img alt="제품" src="https://cdn.shopify.com/s/files/1/2403/8187/products/lemtosh-color-tortoise-pos-2_600x.jpg?v=1679595410%22moscot.com/collections/optical">
+										<img alt="제품" style="width:inherit; height:inherit;" src="https://image.nbkorea.com/NBRB_Product/20230321/NB20230321153529285001.jpg">
 										<ul>
 											<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
 											<li><a href="#"><i class="fas fa-heart"></i></a></li>
@@ -198,7 +220,7 @@
 							<div class="col-md-6 col-lg-4 col-xl-4">
 								<div id="product-1" class="single-product">
 									<div class="part-1">
-										<img alt="제품" src="https://cdn.shopify.com/s/files/1/2403/8187/products/lemtosh-color-tortoise-pos-2_600x.jpg?v=1679595410%22moscot.com/collections/optical">
+										<img alt="제품" style="width:inherit; height:inherit;" src="https://image.nbkorea.com/NBRB_Product/20230104/NB20230104174340673001.jpg">
 										<ul>
 											<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
 											<li><a href="#"><i class="fas fa-heart"></i></a></li>
@@ -217,6 +239,7 @@
 								<div id="product-2" class="single-product">
 									<div class="part-1">
 										<span class="discount">15% off</span>
+										<img alt="제품" style="width:inherit; height:inherit;" src="https://image.nbkorea.com/NBRB_Product/20230407/NB20230407165339129001.jpg">
 										<ul>
 											<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
 											<li><a href="#"><i class="fas fa-heart"></i></a></li>
