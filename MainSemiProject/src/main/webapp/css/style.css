@@ -804,7 +804,7 @@ li.foot_bottom_list{
        position: relative;
    }
    
-   a.nav-link {
+    a.account_nav {
       height: 30px; 
       vertical-align: middle; /* table 태그 달아야 먹힐듯*/
       font-size:12pt;
