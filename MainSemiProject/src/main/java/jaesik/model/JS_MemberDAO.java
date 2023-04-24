@@ -111,6 +111,34 @@ public class JS_MemberDAO implements JS_InterMemberDAO {
 		}
 		return n;
 	}
+
+	
+	// ----------------------------------------------  신규회원 쿠폰을 이미 지급 받은사람인지 체크하는 메소드 발급된 유저이면 true
+	@Override
+	public boolean isCouponExist(String isUserExistID) throws SQLException {
+		
+		boolean isCouponExist = false;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select fk_userid "+
+						 " from TBL_USER_COUPON "+
+						 " where coupon_no like '%NEW10' and fk_userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, isUserExistID);
+			
+			rs = pstmt.executeQuery();
+			
+			isCouponExist = rs.next();
+			
+		} finally {
+			close();
+		}
+		
+		return isCouponExist;
+	}
 }
 
 

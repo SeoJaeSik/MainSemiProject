@@ -38,7 +38,6 @@
 		$("a#main_logo").hide();
 		$("div#nav_bar_menu").hide();
 		navView(); 	<%-- 네비바까지 스크롤했을때 네비게이션 addClass 함수--%>
-		$('[data-toggle="popover"]').popover();
 		
 		// 네비게이션 호버 이벤트
 		$("a.header_nav_link").hover(function(e) {
@@ -93,7 +92,7 @@
 			$("div.nav-group").hide().css("opacity","0");
 			const index = $("#nav_bar_position > li a.header_nav_link").index($(e.target));
 			$("div.nav-group").eq(index).show().css("opacity","1");
-			
+
 			$("nav#header_nav_bar").bind("mouseleave", function(e){
 				$("div.nav-group").hide().css("opacity","0");
 			});
