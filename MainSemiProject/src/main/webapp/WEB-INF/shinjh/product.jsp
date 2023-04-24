@@ -174,9 +174,9 @@
   <div class="product-breadcrumbs">
    <nav class="breadcrumbs p2">
     
-    <a class="breadcrumbs_item a1" href="#" title="HOME" >HOME</a>
+    <a class="breadcrumbs_item a1" href="<%= ctxPath%>/index.moc" title="HOME" >HOME</a>
     /
-    <a class="breadcrumbs_item a1" href="#" title="남성">남성</a>
+    <a class="breadcrumbs_item a1" href="<%= ctxPath%>/allproduct.moc" title="남성">남성</a>
     /
     <span class="breadcrumbs_item">제품명</span>
      
@@ -319,7 +319,9 @@
 <!-- // carousel -->
 
 </div>
- <!-- // container -->
+<!-- // container -->
+ 
+
  
 <div id="testimonial">
  <div id="testimonial_container" class="row">

@@ -310,11 +310,30 @@
 				</div>
 			</li>
 			
+			<c:if test="${sessionScope.loginuser != null and sessionScope.loginuser.userid == 'admin'}">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle menufont_size" style="color: white;" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+			           관리자전용 
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item text-body" href="<%= ctxPath %>/member/memberList.up">회원목록</a>
+						<a class="dropdown-item text-body" href="<%= ctxPath %>/shop/admin/productRegister.moc">제품등록</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item text-body" href="#">전체주문내역</a>
+					</div>
+				</li>
+			</c:if>
+			
 		</ul>
 	</div>
 	<div id="nav_bar_menu" class="col md-3">
 		<img alt="Republic of Korea" class="mx-3" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="background-image: url(https://cdn.flow.io/util/icons/flags-v2/svg/iso_2_flags.svg); background-position: -46px -204px; width: 21px; height:15px; display: inline-block">
-		<a href="<%= ctxPath%>/login/login.moc" style="color:white; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">Login</a>
+		<c:if test="${empty sessionScope.loginuser}">
+			<a href="<%= ctxPath%>/login/login.moc" style="color:white; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">Login</a>
+		</c:if>
+		<c:if test="${not empty sessionScope.loginuser}">
+			<a href="<%= ctxPath%>/login/loginaftermove.moc" style="color:white; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">My Account</a>
+		</c:if>
 		<a href="#" class="header_menu"><i class="fa-solid fa-magnifying-glass mx-1" style="color: #ffffff;"></i></a>
 	</div>
 </nav>
