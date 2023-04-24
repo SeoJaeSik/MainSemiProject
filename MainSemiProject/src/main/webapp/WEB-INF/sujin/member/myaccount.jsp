@@ -56,14 +56,14 @@
 		        -->
 				<ul class="nav nav-pills justify-content-around" style="margin-bottom: 80px;">
 				  	<li class="nav-item">
-				    	<a class="nav-link active" data-toggle="pill" href="#memberEdit">개인정보수정</a>
+				    	<a class="accout_nav nav-link active" data-toggle="pill" href="#memberEdit">개인정보수정</a>
 				  	</li>
 		
 				  	<li class="nav-item">
-				    	<a class="nav-link" data-toggle="pill" href="#orderList">주문내역</a>
+				    	<a class="accout_nav nav-link" data-toggle="pill" href="#orderList">주문내역</a>
 				  	</li>
 				  	<li class="nav-item">
-				    	<a class="nav-link" data-toggle="pill" href="#qna">고객센터</a>
+				    	<a class="accout_nav nav-link" data-toggle="pill" href="#qna">고객센터</a>
 				  	</li>
 				</ul>
 				
