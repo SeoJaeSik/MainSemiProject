@@ -40,7 +40,42 @@ public class ProductDAO implements InterProductDAO {
 		} catch(NamingException e) {
 			e.printStackTrace();
 		}
-	}
+	}// end of public ProductDAO()---------------------
+
+	
+	
+	// (ALL)전체제품 목록 나타내기 + Ajax(JSON)를 사용하여 전체상품목록을 스크롤 방식으로 페이징 처리하기 위해 제품의 전체 개수 알아오기 //
+	@Override
+	public int totalAllProductCount(String string) throws SQLException {
+		
+		int totalCount = 0;
+		
+		try {
+			conn = ds.getConnection(); // 본인의 오라클DB와 연동
+			
+			String sql = " select count(*) "
+						+ " from tbl_product ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, product_no);
+			
+			rs =pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalCount = rs.getInt(1);
+				
+		
+		} finally {
+			close();
+		}
+		
+		
+		return totalCount;
+		
+	}// end of public int totalAllProductCount(String string) throws SQLException---------------
+	
+	
 
 
 	

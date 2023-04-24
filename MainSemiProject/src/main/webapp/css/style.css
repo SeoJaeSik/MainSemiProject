@@ -467,7 +467,7 @@ li.foot_bottom_list{
 		
 	}
 	
-	div.exist_select > p > select {
+	div.exist_select > select {
 		float: right;
 		margin-right: 30px;
 		background: none;
@@ -729,6 +729,47 @@ li.foot_bottom_list{
 
 
 
+
+
+
+
+
+
+
+/*-----------------------수진 로그인 css------------------------  */
+
+
+
+
+table#loginTbl {
+         width: 100%;
+         margin-top: 50px;
+         margin-bottom: 50px;
+         text-align: center;
+      }
+   
+      table#loginTbl #th {
+         font-weight: bold;
+         font-size: 30pt;
+         text-align: center;
+         height: 30px;
+         letter-spacing: 10px;
+      }
+   
+      table#loginTbl td {
+         line-height: 35px;
+         width: 200px;
+         
+      }
+    
+    #p2 {
+       line-height: 10px;
+       letter-spacing: 0;
+       font-family: 'courier', arial, sans-serif;
+       font-weight: normal;
+       color: black;
+          font-size: 12px;
+    }
 
 
 
