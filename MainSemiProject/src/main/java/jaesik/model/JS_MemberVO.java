@@ -1,6 +1,6 @@
 package jaesik.model;
 
-public class JS_MemverVO {
+public class JS_MemberVO {
 
 	private String userid;			// VARCHAR2(40)    NOT NULL -- 회원아이디
 	private String pwd;				// VARCHAR2(200)   NOT NULL -- 비밀번호 (SHA-256 암호화 대상 : 회원말고는 아무도 볼 수 없음)
