@@ -141,7 +141,7 @@
 							
 							html +=  "<div class='col-md-6 col-lg-3'>"+
 				                        "<div class='card mb-3'>"+
-				                            "<img src='/MyMVC/images/"+item.pimage1+"' class='card-img-top' style='width: 100%' />"+
+				                            "<img src='/MyMVC/images/"+item.product_image+"' class='card-img-top' style='width: 100%' />"+
 				                            "<div class='card-body' style='padding: 0; font-size: 11pt;'>"+
 				                              "<ul class='list-unstyled mt-3 pl-3'>"+
 				                                 "<li><label class='prodInfo'>제품명</label>"+item.pname+"</li>"+
@@ -157,22 +157,22 @@
 				                      "</div>";
 				                      
 				                      
-		                     html += <div class="col-md-6 col-lg-4 col-xl-4">
-										<div id="product-1" class="single-product" href="#">
-										<div class="part-1">
-											<img alt="제품" style="width:inherit; height:inherit;" src="https://image.nbkorea.com/NBRB_Product/20230321/NB20230321153529285001.jpg">
-											<ul>
-												<li><a href="#"><i class="fas fa-shopping-cart"></i></a></li>
-												<li><a href="#"><i class="fa-solid fa-credit-card"></i></a></li>
-												<li><a href="#"><i class="fas fa-expand"></i></a></li>
-											</ul>
-										</div>
-										<div class="part-2">
-											<h3 class="product-title">Here Product Title</h3>
-											<h4 class="product-price">$49.99</h4>
-										</div>
-										</div>
-									</div>  
+		                     html += "<div class='col-md-6 col-lg-4 col-xl-4'>"+
+										"<div id='product-1' class='single-product' href='#'>"+
+										"<div class='part-1'>"+
+											"<img alt='제품' style='width:inherit; height:inherit;' src='+tem.product_image+'>"+
+											"<ul>+"
+												"<li><a href='#'><i class='fas fa-shopping-cart'></i></a></li>"+
+												"<li><a href='#'><i class='fa-solid fa-credit-card'></i></a></li>"+
+												"<li><a href='#'><i class='fas fa-expand'></i></a></li>"+
+											"</ul>"+
+										"</div>"+
+										"<div class='part-2'>"+
+											"<h3 class='product-title'>"+item.product_price+"</h3>"+
+											"<h4 class='product-price'>"+item.product_price+"</h4>"+
+										"</div>"+
+										"</div>"+
+									"</div>";  
 				                     
 				                      
 				                      

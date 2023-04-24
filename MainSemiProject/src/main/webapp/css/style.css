@@ -741,37 +741,114 @@ li.foot_bottom_list{
 
 
 
-table#loginTbl {
+/*-----------------------수진 로그인 css------------------------  */
+   table#loginTbl {
          width: 100%;
          margin-top: 50px;
          margin-bottom: 50px;
          text-align: center;
-      }
+    }
    
-      table#loginTbl #th {
+    table#loginTbl #th {
          font-weight: bold;
          font-size: 30pt;
          text-align: center;
          height: 30px;
          letter-spacing: 10px;
-      }
+    }
    
-      table#loginTbl td {
+    table#loginTbl td {
          line-height: 35px;
          width: 200px;
          
-      }
+    }
     
     #p2 {
-       line-height: 10px;
-       letter-spacing: 0;
-       font-family: 'courier', arial, sans-serif;
-       font-weight: normal;
-       color: black;
-          font-size: 12px;
+          line-height: 10px;
+          letter-spacing: 0;
+          font-family: 'courier', arial, sans-serif;
+          font-weight: normal;
+          color: black;
+        font-size: 12px;
     }
 
 
+   /*-----------------------수진 회원가입 css------------------------  */
+
+   /* 아이디 이메일 중복, 우편번호찾기 버튼 */
+   button#idcheck,  button#emailcheck, button#zipcodeSearch {
+   
+      height: 25px; 
+      vertical-align: middle; /* table 태그 달아야 먹힐듯*/
+      font-size:9pt;
+   }
+   
+   /* 필수사항 표시해주는 회색별 */
+   span.star { 
+      color: silver;
+      font-weight: bold;
+      font-size: 10pt;
+   }
+   
+   div.row {
+      flex-wrap: nowrap;
+   }
+
+
+   /*-----------------------수진 마이페이지 css------------------------  */
+   
+   button#btnPay {
+       cursor: pointer;
+       display: inline-block;
+       letter-spacing: 1px;
+       position: relative;
+   }
+   
+   a.nav-link {
+      height: 30px; 
+      vertical-align: middle; /* table 태그 달아야 먹힐듯*/
+      font-size:12pt;
+      color: black;
+   }
+   
+   a.nav-link.active {
+      height: 30px; 
+      vertical-align: middle; /* table 태그 달아야 먹힐듯*/
+      font-size:12pt;
+      color: black !important;
+      background-color: #ffc107 !important;
+   }
+   
+   label.text-left {
+      border: none;
+      text-align: left !important;
+      font-weight: bold;
+   }
+   
+   /* 게시판글 card 형식으로 보이는데 필요 */
+   div.card {
+      font-size: 10pt;
+      text-align: left; 
+      border: none; 
+      background-color:#fffdf5;
+   } 
+   
+   span#product_color {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+      position: relative;
+      top: 5px;
+   }
+   
+   div#div_extra {
+      background-color: #fff9e5;
+   }
+   button#btnOrder, button#btnAdd, button#btnOptionChange, div#card_warranty {
+      background-color: #fdd007;
+      border: none;
+   }
 
 
 
