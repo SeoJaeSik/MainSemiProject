@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
     
 <% 
 	String ctxPath = request.getContextPath(); 
@@ -29,6 +30,9 @@
 <!-- 구글 폰트 import (메인 로고 사용) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
+<!-- 페이지로고 -->
+<link rel="icon" href="<%= ctxPath%>/images/KakaoTalk_20230424_170300653.png">
+ 
 <script type="text/javascript">
 	
 	
@@ -172,7 +176,12 @@
 			</div>
 			<div id="header_menu" class="col-lg-4">
 				<img alt="Republic of Korea" class="mx-3" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="background-image: url(https://cdn.flow.io/util/icons/flags-v2/svg/iso_2_flags.svg); background-position: -46px -204px; width: 21px; height:15px; display: inline-block">
-				<a href="<%= ctxPath%>/login/login.moc" style="color:black; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">Login</a>
+				<c:if test="${empty sessionScope.loginuser}">
+					<a href="<%= ctxPath%>/login/login.moc" style="color:black; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">Login</a>
+				</c:if>
+				<c:if test="${not empty sessionScope.loginuser}">
+					<a href="<%= ctxPath%>/login/loginaftermove.moc" style="color:black; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">My Account</a>
+				</c:if>
 				<a href="#" class="header_menu" ><i class="fa-solid fa-magnifying-glass mx-1" style="color: #000000;"></i></a>
 				<a href="<%= ctxPath%>/shop/cartList.moc" style="display: inline-block; width: auto;" class="header_menu"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
 			</div>
