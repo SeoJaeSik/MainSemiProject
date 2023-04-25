@@ -113,24 +113,24 @@
 				<!-- Modal body -->
 				<div class="modal-body" style="padding: 2rem;"> 
 					We apologize we aren't online at the moment. Please leave us a message and we'll get back to you as soon as we can. Thanks!
-					<form>
+					<form name="customer_content">
 						<div class="mt-3">
-							<p style="font-weight: 700; margin-bottom: 0.5rem;">이름</p>
-							<input type="text" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;"/>
+							<p style="font-weight: 700; margin-bottom: 0.5rem;">아이디</p>
+							<input id="userid" name="userid" type="text" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;"/>
 						</div>
 						<div class="mt-3">
-							<p style="font-weight: 700; margin-bottom: 0.5rem;">이메일</p>
-							<input type="text" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;">
+							<p style="font-weight: 700; margin-bottom: 0.5rem;">제목</p>
+							<input id="board_title" name="board_title" type="text" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;">
 						</div>
 						<div class="mt-3">
 							<p style="font-weight: 700; margin-bottom: 0.5rem;">메시지</p>
-							<textarea style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;" rows="5" cols="30"></textarea>
+							<textarea id="board_content" name="board_content" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;" rows="5" cols="30"></textarea>
 						</div>
 					</form>
 				</div>
 				<!-- Modal footer -->
 				<div class="modal-footer">
-					<button type="button" class="btn btn-dark">메시지 보내기</button>
+					<button onclick="send_message()" type="button" class="btn btn-dark">메시지 보내기</button>
 				</div>
 				
 			</div>
