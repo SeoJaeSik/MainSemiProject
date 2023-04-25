@@ -18,7 +18,7 @@ public class ProductVO {
 
 	// select 용 field
 	private BuyerTypeVO buyervo;
-	private CategoryVO catevo;
+	private ShoesCategoryVO catevo;
 	
 	// tbl_cart select 용 field
 	private String cart_no;
@@ -150,11 +150,11 @@ public class ProductVO {
 		this.buyervo = buyervo;
 	}
 
-	public CategoryVO getCatevo() {
+	public ShoesCategoryVO getCatevo() {
 		return catevo;
 	}
 
-	public void setCatevo(CategoryVO catevo) {
+	public void setCatevo(ShoesCategoryVO catevo) {
 		this.catevo = catevo;
 	}
 

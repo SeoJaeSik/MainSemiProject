@@ -1,6 +1,6 @@
 package sukyung.model;
 
-public class CategoryVO {
+public class ShoesCategoryVO {
 
 	// insert 용 field
 	private String shoes_category_no; 	// 신발종류코드 1111, 2222, 3333, 4444, 5555
@@ -11,10 +11,10 @@ public class CategoryVO {
 	private BuyerTypeVO buyervo;
 
 	// 기본 생성자
-	public CategoryVO() {}
+	public ShoesCategoryVO() {}
 	
 	// 파라미터 생성자
-	public CategoryVO(String shoes_category_no, String shoes_category_name, String fk_buyer_type_no,
+	public ShoesCategoryVO(String shoes_category_no, String shoes_category_name, String fk_buyer_type_no,
 			BuyerTypeVO buyervo) {
 		this.shoes_category_no = shoes_category_no;
 		this.shoes_category_name = shoes_category_name;
