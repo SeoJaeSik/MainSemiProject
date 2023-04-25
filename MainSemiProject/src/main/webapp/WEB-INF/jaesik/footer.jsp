@@ -40,13 +40,13 @@
 						</p>
 						<div style="display: flex; justify-content: space-around;"class="space-around">
 							<p>
-								<a href="#" class="complain_menu" style="color: black; text-decoration: none;">
+								<a type="button" class="complain_menu" data-toggle="popover_complain" title="온라인 고객센터" data-placement="bottom" data-content="1566 - 0086" style="color: black; text-decoration: none;">
 									<i class="fa-solid fa-phone fa-2xl mb-4" style="color: #000000;"></i>
 									<span style="font-size: 8pt; letter-spacing: 1px; display:block;">(+82) MOSACOYA</span>
 								</a> 
 							</p>
 							<p>
-								<a href="#" class="complain_menu" style="color: black; text-decoration: none;">
+								<a type="button" class="complain_menu" data-toggle="popover_complain" title="메일 문의사항" data-placement="bottom" data-content="support@mosacoya.com" style="color: black; text-decoration: none;">
 									<i class="fa-regular fa-envelope fa-2xl mb-4" style="color: #000000;"></i>
 									<span style="font-size: 8pt; letter-spacing: 1px; display:block;">support@mosacoya.com</span>
 								</a>
@@ -116,15 +116,15 @@
 					<form name="customer_content">
 						<div class="mt-3">
 							<p style="font-weight: 700; margin-bottom: 0.5rem;">아이디</p>
-							<input id="userid" name="userid" type="text" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;"/>
+							<input id="userid" name="userid" type="text" size="20" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;"/>
 						</div>
 						<div class="mt-3">
 							<p style="font-weight: 700; margin-bottom: 0.5rem;">제목</p>
-							<input id="board_title" name="board_title" type="text" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;">
+							<input id="board_title" name="board_title" size="50" type="text" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;">
 						</div>
 						<div class="mt-3">
 							<p style="font-weight: 700; margin-bottom: 0.5rem;">메시지</p>
-							<textarea id="board_content" name="board_content" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;" rows="5" cols="30"></textarea>
+							<textarea id="board_content" name="board_content" size="500" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;" rows="5" cols="30"></textarea>
 						</div>
 					</form>
 				</div>

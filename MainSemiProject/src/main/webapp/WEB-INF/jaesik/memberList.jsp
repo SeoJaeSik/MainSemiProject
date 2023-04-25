@@ -54,7 +54,7 @@
 	function goSearch(){
 		
 		const frm = document.memberFrm;
-		frm.action = "memberList.up";
+		frm.action = "memberList.moc";
 		frm.method = "get";
 		frm.submit();
 		
@@ -94,8 +94,8 @@
                      		<td class="userid">${mvo.userid}</td>
 	              			<td>${mvo.name}</td>
 	              			<td>${mvo.email}</td>
-	              			<td>연락처들어와야함</td>
-	              			<td>주소들어와야함</td>
+	              			<td>${fn:substring(mvo.mobile, 0, 3)}-${fn:substring(mvo.mobile, 3, 7)}-${fn:substring(mvo.mobile, 7, 11)}</td>
+	              			<td>${mvo.address}</td>
 	            		</tr>
 		        	</c:forEach>
 	        	</c:if>

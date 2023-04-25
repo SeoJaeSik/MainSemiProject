@@ -51,7 +51,7 @@ public class SubmitComplainAction extends AbstractController {
 			}
 			else {
 				message = "존재하지않는 유저입니다. 회원가입 후 이용해주세요.";
-				System.out.println("존재하지 않는유저");
+				loc = request.getContextPath()+"/index.moc";
 			}
 			
 			request.setAttribute("message", message);

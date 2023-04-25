@@ -38,6 +38,8 @@
 	
 	$(document).ready(function(){
 		
+		$('[data-toggle="popover_complain"]').popover();
+		
 		$("div.nav-group").hide();
 		$("a#main_logo").hide();
 		$("div#nav_bar_menu").hide();
@@ -154,22 +156,29 @@
 		
 	} // end function goSubscribe()
 	
-	function send_message(){
+	function send_message() {
 		
-		/* if ( $("input#userid").val().trim() == "" ) {
+		const userid = $("input#userid").val().trim();
+		const title = $("input#board_title").val().trim();
+		const content = $("textarea#board_content").val().trim();
+	
+		if ( userid == "" ) {
 			alert("아이디를 입력하세요");
+			$("input#userid").focus();
 			return;
 		}
 		
-		if ( $("input#board_title").val().trim() == "" ) {
+		if ( title == "" ) {
 			alert("제목을 입력하세요");
+			$("input#board_title").focus();
 			return;
 		}
 		
-		if ( $("input#board_content").val().trim() == "" ) {
+		if ( content == "" ) {
 			alert("내용을 입력하세요");
+			$("textarea#board_content").focus();
 			return;
-		} input 길이 설정 모달 초기화*/
+		}
 		
 		const frm = document.customer_content;
 		frm.action = "<%= ctxPath%>/main/submitComplain.moc";
