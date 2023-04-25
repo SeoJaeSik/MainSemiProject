@@ -1,44 +1,55 @@
-package member.model;
+package sujin.model;
 
 import java.util.Calendar;
 
 public class MemberVO {
 
-	private String userid; 			  // 회원아이디
-	private String pwd;               // 비밀번호
-	private String name;              // 이름
-	private String email;  			  // 이메일 (AES-256 암호화/복호화 대상)
-	private String mobile; 			  // 연락처 (AES-256 암호화/복호화 대상) 
-	private String postcode; 		  // 우편번호
-	private String address;    	      // 주소
-	private String detailaddress;	  // 상세주소
-	private String extraaddress;      // 참고항목
-	private String gender;        	  // 성별   남자:1  / 여자:2
-	private String birthday;  		  // 생년월일   
-	private int coin; 				  // 코인액
-	private int point;				  // 포인트 
-	private String registerday;       // 가입일자 
-	private String lastpwdchangedate; // 마지막으로 암호를 변경한 날짜  
-	private int status;  			  // 회원탈퇴유무   1: 사용가능(가입중) / 0:사용불능(탈퇴) 
-	private int idle;				  // 휴면유무      0 : 활동중  /  1 : 휴면중 
-									  // 마지막으로 로그인 한 날짜시간이 현재시각으로 부터 1년이 지났으면 휴면으로 지정하겠다.
+	// == 1. (회원가입시) insert 용도로 쓰일 필드 ==
 	
-	// 여기까지 insert 용도
-	/////////////////////////////////////////////////////////////////////////////////////////////
+	private String userid;			// 회원아이디
+	private String pwd;				// 비밀번호 (SHA-256 암호화 대상 : 회원말고는 아무도 볼 수 없음)
+	private String name;			// 회원명
+	private String email;			// 이메일 (AES-256 암호화/복호화 대상 : 회사에서 볼려면 볼 수 있음)
+	private String mobile;			// 연락처 (AES-256 암호화/복호화 대상 : 회원한테 연락할 때 사용) 
+	private String postcode;		// 우편번호
+	private String address;			// 주소
+	private String detailaddress;	// 상세주소
+	private String extraaddress;	// 참고항목
+	private String gender;			// 성별   남자:1  / 여자:2
+	private String birthday;		// 생년월일
+	
+	private int point;					// 포인트 (물건 구매시 올라감) 
+	
+	private String registerday;			// 가입일자                [db상으로 date 타입이지만 string] 
+	private String lastpwdchangedate;	// 마지막으로 암호를 변경한 날짜 [db상으로 date 타입이지만 string]  
+	
+	private int status;					// 탈퇴여부   0 : 사용가능(가입중) / 1 :사용불능(탈퇴)
+	private int idle;					// 휴면여부   0 : 활동중         / 1 : 휴면중(마지막 로그인 시각에서 현재까지 1년경과)
+	private int admin;					// 관리자여부  0 : 일반회원       / 1 : 관리자
+	
+	
+	//////////////////////////////////////////////////////////////
+	
+	
+	// == 2. select 용도로 쓰일 필드 ==
 	
 	private boolean requirePwdChange = false;
-	// 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지났으면 ture
-	// 마지막으로 암호를 변경한 날짜가 현재시각으로 부터 3개월이 지나지 않았으면 false
+	// 마지막으로 암호를 변경한 날짜가 현재시각으로부터 3개월이 지났으면 true 로 변경 
+	// 마지막으로 암호를 변경한 날짜가 현재시각으로부터 3개월이 안됐으면 false 로 유지
+
 	
-	// 여기까지 select 용도
-	/////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////
 	
 	
-	public MemberVO() {} // 기본생성자 반드시 필요
+	// == 3. 생성자 ==
 	
-	public MemberVO(String userid, String pwd, String name, String email, String mobile, String postcode, String address
-			,String detailaddress, String extraaddress, String birthday) { // 회원정보 수정을 위한 생성자(성별이 없어도 되기 때문에 gender를 빼고 다시 만들어준다.)
-		
+	// --- 1) 기본생성자 필수!!! ---
+	public MemberVO() {};
+	
+	// --- 4) 매개변수가 있는 생성자 생성2(gender만빠짐) [MemberEditEndAction.java 에서 필요함] ---
+	public MemberVO(String userid, String pwd, String name, String email, String mobile, String postcode,
+			String address, String detailaddress, String extraaddress, String birthday) {
+	
 		this.userid = userid;
 		this.pwd = pwd;
 		this.name = name;
@@ -49,12 +60,12 @@ public class MemberVO {
 		this.detailaddress = detailaddress;
 		this.extraaddress = extraaddress;
 		this.birthday = birthday;
-		
 	}
 	
+	// --- 2) 필드를 사용하는 생성자 생성1 ---
 	public MemberVO(String userid, String pwd, String name, String email, String mobile, String postcode,
-			String address, String detailaddress, String extraaddress, String gender, String birthday) { // source 에서 
-		
+			String address, String detailaddress, String extraaddress, String gender, String birthday) {
+	
 		this.userid = userid;
 		this.pwd = pwd;
 		this.name = name;
@@ -67,6 +78,8 @@ public class MemberVO {
 		this.gender = gender;
 		this.birthday = birthday;
 	}
+	
+	// --- 3) getter&setter start--- //
 
 	public String getUserid() {
 		return userid;
@@ -156,14 +169,6 @@ public class MemberVO {
 		this.birthday = birthday;
 	}
 
-	public int getCoin() {
-		return coin;
-	}
-
-	public void setCoin(int coin) {
-		this.coin = coin;
-	}
-
 	public int getPoint() {
 		return point;
 	}
@@ -203,6 +208,14 @@ public class MemberVO {
 	public void setIdle(int idle) {
 		this.idle = idle;
 	}
+	
+	public int getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(int admin) {
+		this.admin = admin;
+	}
 
 	public boolean isRequirePwdChange() {
 		return requirePwdChange;
@@ -212,26 +225,22 @@ public class MemberVO {
 		this.requirePwdChange = requirePwdChange;
 	}
 	
-	// getter and setter 끝
-	///////////////////////////////////////////////////////////////
+	// --- 3) getter&setter end --- //
+	
+	
+	//////////////////////////////////////////////////////////////
+	
 	
 	public int getAge() {
+		
 		int age = 0;
 		
-		Calendar currentDate = Calendar.getInstance();
-		// 현재날짜와 시간을 알아온다.
+		Calendar currentDate = Calendar.getInstance(); // 현재날짜와 시간을 얻어온다.
 		
 		int currentYear = currentDate.get(Calendar.YEAR);
-		
-		age = currentYear - Integer.parseInt( birthday.substring(0, 4) )+1;
+		age = currentYear - Integer.parseInt(birthday.substring(0,4)) + 1;
 		
 		return age;
 	}
-	
-	
-	
-	
-	
-	
 	
 }
