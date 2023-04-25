@@ -61,6 +61,7 @@ public class JS_MemberDAO implements JS_InterMemberDAO {
 	// 입력받은 이메일로 가입된 유저로 존재하는지 알아오는 메소드 존재하면 해당 id를 리턴
 	@Override
 	public String isUserExistID (String email) throws SQLException {
+		
 		String isUserExistID = null;
 
 		try {
@@ -138,6 +139,60 @@ public class JS_MemberDAO implements JS_InterMemberDAO {
 		}
 		
 		return isCouponExist;
+	}
+
+	
+	
+	// 해당 유저가 존재하는지 알아오는 메소드
+	@Override
+	public boolean isUserExist(String userid) throws SQLException {
+
+		boolean isUserExist = false;
+
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select userid "
+						+ " from tbl_member "
+						+ " where status = 0 and idle = 0 and userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			rs = pstmt.executeQuery();
+			
+			isUserExist = rs.next();
+			
+			
+		} finally {
+			close();
+		}
+		
+		return isUserExist;
+	}
+	
+	
+	// 고객센터로 보낸 메시지를 board 테이블에 insert
+	@Override
+	public int uploadBoard(BoardVO bvo) throws SQLException {
+		
+		int n = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = " insert into tbl_board (board_no, board_title, board_content, board_registerdate, fk_userid)"+
+						 " values (seq_board_no.nextval, ? , ? , default, ? )";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, bvo.getBoard_title());
+			pstmt.setString(2, bvo.getBoard_content());
+			pstmt.setString(3, bvo.getFk_userid());
+			
+			n = pstmt.executeUpdate();
+			
+		} finally {
+			close();
+		}
+		return n;
 	}
 }
 
