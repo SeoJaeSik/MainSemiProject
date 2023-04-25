@@ -30,14 +30,14 @@
 		text-decoration: underline;
 	}
 */
-	a:link,
-	a:visited,
-	a:hover {
+	a#link:link,
+	a#link:visited,
+	a#link:hover {
 		color: black;
 		text-decoration: underline;
 	}
 	
-	a:hover {
+	a#link:hover {
 		color: gray;
 	}
 		
@@ -174,11 +174,11 @@
   <div class="product-breadcrumbs">
    <nav class="breadcrumbs p2">
     
-    <a class="breadcrumbs_item a1" href="<%= ctxPath%>/index.moc" title="HOME" >HOME</a>
+    <a id="link" href="<%= ctxPath%>/index.moc" title="HOME" >HOME</a>
     /
-    <a class="breadcrumbs_item a1" href="<%= ctxPath%>/allproduct.moc" title="남성">남성</a>
+    <a id="link" href="<%= ctxPath%>/allproduct.moc" title="남성">남성</a>
     /
-    <span class="breadcrumbs_item">제품명</span>
+    <span>제품명</span>
      
    </nav>
   </div>
@@ -225,7 +225,7 @@
        <span class="fa fa-star"></span>
        <span class="fa fa-star"></span>
       </span>
-      <a href="#" class="text-m">538 리뷰</a>
+      <a id="link" href="#" class="text-m">538 리뷰</a>
      </div>
     </div>
      
@@ -246,7 +246,7 @@
     
     <div class="mt-5"> 
      <p>사이즈
-      <a style="float:right;">가이드</a>
+      <a id="link" style="float:right;">가이드</a>
      </p>
      <hr/>
      
@@ -307,11 +307,11 @@
 	  </div>		      
     </div>
   </div>
-  <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+  <a id="link" class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Previous</span>
   </a>
-  <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+  <a id="link" class="carousel-control-next" href="#carousel" role="button" data-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
   </a>
