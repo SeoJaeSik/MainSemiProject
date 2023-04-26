@@ -20,7 +20,7 @@ public class MemberRegisterAction extends AbstractController {
 			super.setViewPage("/WEB-INF/sujin/login/memberRegister.jsp");	
 		}
 		else { // 어떤 페이지를 보여주는 것이 아니라 DB 에 받아온 데이터를 넣어주기 위한 곳
-			
+						
 			String name = request.getParameter("name");
 			String userid = request.getParameter("userid");
 			String pwd = request.getParameter("pwd");
@@ -45,37 +45,14 @@ public class MemberRegisterAction extends AbstractController {
 			MemberVO member = new MemberVO(userid, pwd, name, email, mobile, postcode, address, detailAddress, extraAddress, gender, birthday);
 			
 			
-		  	String message = ""; // alert 에 띄울 메세지 
-			String loc = "";     // 돌아갈 페이지(위치값) 
-			
-			try {
-				InterMemberDAO mdao = new MemberDAO();
-				int n = mdao.registerMember(member);
-				
-				if(n==1) {
-					message = "회원가입 성공";
-					loc = request.getContextPath() + "/index.moc"; // 일단 시작 페이지로 이동한다. -> 마이페이지로 변경예쩡
-				}
-				
-			} catch (SQLException e) {
-				message = "SQL구문 오류발생";
-				loc = "javascript:history.back()"; // 자바스크립트를 이용한 이전 페이지로 이동한다. *[암기]*
-				e.printStackTrace();
-			}
-			
-			request.setAttribute("message", message);
-			request.setAttribute("loc", loc);
-			
-			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/msg.jsp");
-				
-			
 			// #### 회원가입이 성공되어지면 자동으로 로그인 되도록 하겠다. #### //
-		/*  try {
+			try {
+				
 				InterMemberDAO mdao = new MemberDAO();
 				int n = mdao.registerMember(member);
 				
 				if(n==1) { // 회원이 정상적으로 가입되었다면,
+					
 					request.setAttribute("userid", userid);
 					request.setAttribute("pwd", pwd);
 					
@@ -94,7 +71,7 @@ public class MemberRegisterAction extends AbstractController {
 				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/msg.jsp");
-			}*/
+			}
 			
 			
 		}//end of else()-------------------------

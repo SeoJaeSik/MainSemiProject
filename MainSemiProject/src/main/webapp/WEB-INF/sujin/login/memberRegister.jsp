@@ -5,12 +5,13 @@
 
 <jsp:include page="../../jaesik/header.jsp"/>
 
-<!-- !jQuery 쓸래! (성명은 필수 입력사항임을 나타내기 위해) -->
-<script type="text/javascript" src="<%= ctxPath%>/js/jquery-3.6.4.min.js"></script>
+
+<!-- 다음소스 가져오기 !-->
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <script type="text/javascript">
 
-
-	let b_flag_idDuplicate_click 	= false;	// ▷ "아이디 중복확인" 클릭여부
+    let b_flag_idDuplicate_click 	= false;	// ▷ "아이디 중복확인" 클릭여부
 	let b_flag_emailDuplicate_click = false; 	// ▷ "이메일 중복확인" 클릭여부
 	let b_flag_zipcodeSearch_click 	= false; 	// ▷ "우편번호 찾기" 클릭여부 
 
@@ -56,12 +57,11 @@
 		
 		
 		// == 2-1 아이디 중복확인 클릭 
-        $("button#idcheck").click(function(){ // ** 왜 클릭하면 새로고침 되늕거지?? [ㅠㅠ]
+        $("button#idcheck").click(function(){ 
         	
         	b_flag_idDuplicate_click = true;
-        
+            
 			$.ajax({
-	        	
 	        	url:"<%= ctxPath%>/member/idDuplicateCheck.moc",
 	        	data:{"userid":$("input#userid").val()},// data 	: url 로 전송해야할 데이터
 	        	type:"post", 							// type 	: 생략하면 기본값은 get (method 아니고 type 임)
@@ -108,14 +108,14 @@
 			const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i; 
 			const bool = regExp.test($(e.target).val()); 
 			
-			if(bool == false) { // 3-1 이메일이 정규표현식이 맞는 경우
+			if(!bool) { // 3-1 이메일이 정규표현식이 아닌 경우
 				
 				$("form[name='frmMemberRegister']:input").prop("disabled", true);
 				$(e.target).prop("disabled", false);      
 				$(e.target).parent().find("small.error").show();
 				$(e.target).focus();
 			}
-			else {				// 3-2 이메일이 정규표현식이 아닌 경우 
+			else {		// 3-2 이메일이 정규표현식이 맞는 경우 
 				$("form[name='frmMemberRegister']:input").prop("disabled", false);
 				$(e.target).parent().find("small.error").hide();
 			}
@@ -123,7 +123,7 @@
 		
 		
 		// == 3-1 이메일 중복확인 클릭 
-        $("button#emailcheck").click(function(){ // ** 왜 클릭하면 새로고침 되늕거지?? [ㅠㅠ]
+        $("button#emailcheck").click(function(){ 
         	
         	b_flag_emailDuplicate_click = true;
         
@@ -135,18 +135,19 @@
 	        	dataType:"json", 						// dataType : url 로 부터 실행되어진 결과물을 받아오는 데이터타입
 	        	async:true,  							// async	: true 는 비동기 방식 으로 생략하면 기본값이 true
 	                         							// async	: false 는 동기 방식(url 에 결과물을 받아올 때까지 그대로 대기하고 있는 것) 지도를 할 때는 반드시 동기방식인 async:false 를 사용해야만 지도가 올바르게 나온다.
-	        	success:function(text){ 	        		 
+	        	success:function(json){ 	        		 
 	        		// dataType:"json" 을 생략하지않고 넣어주면 
 	        		// 파라미터 json 에 {"isExists":true} 또는 {"isExists":false} 인 Object 타입의 결과물이 들어오게 된다.
+	        		console.log(JSON.stringify(json));
 	        		
 	        		if(json.isExists) {
 	        			// 입력한 email 가 이미 사용중이라면
 	        			$("span#emailCheckResult").html($("input#email").val() + " 은 이미 사용중인 email 입니다.").css("color","red");
 	        			$("input#email").val(""); /* 중복됐다고 경고하면서 싹 비움 */
 	        		}
-	        		else if(!json.isExists && $("input#userid").val().trim() != ""){
+	        		else if(!json.isExists && $("input#email").val().trim() != ""){
 	        			// 입력한 email 가 존재하지 않는 경우라면
-	        			$("span#idcheckResult").html($("input#userid").val() + " 은 사용가능한 email 입니다.").css("color","blue");
+	        			$("span#emailCheckResult").html($("input#email").val() + " 은 사용가능한 email 입니다.").css("color","blue");
 	        		}
 	        	},
 	        	error:function(request, status, error){ // 어딘가 잘못된 부분이 발생하면 alert 를 띄운다
@@ -242,19 +243,22 @@
 		});//end of 7. hp3 에서 포커스 잃음 ----------------------------
 		
 		 
-		// == 8. 우편번호찾기 버튼 클릭 (DAUM 에서 코드 참고함)  ** 왜 클릭하면 새로고침 되늕거지?? [ㅠㅠ]
+		// == 8. 우편번호찾기 버튼 클릭 (DAUM 에서 코드 참고함) 
 		$("button#zipcodeSearch").click(function(){ 
 			
 			b_flag_zipcodeSearch_click = true; // 버튼 클릭함을 표시 (false -> true 로 변경)
 
 			new daum.Postcode({
 		        oncomplete: function(data) {
-		      
-		            let addr = ''; 		// 주소 변수
+		        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+					// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+		            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+		            let addr = ''; // 주소 변수
 		            let extraAddr = ''; // 참고항목 변수
 
 		            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
-		            if (data.userSelectedType === 'R') {// 사용자가 도로명 주소를 선택했을 경우(R)
+		            if (data.userSelectedType === 'R') {// 사용자가 도로명 주소를 선택했을 경우 (R)
 		                addr = data.roadAddress;
 		            } else { 							// 사용자가 지번 주소를 선택했을 경우(J)
 		                addr = data.jibunAddress;
@@ -282,6 +286,8 @@
 		                document.getElementById("extraAddress").value = '';
 		            }
 
+		            console.log("~~~~ 확인 extraAddr : " + extraAddr);
+		            
 		            // 우편번호와 주소 정보를 해당 필드에 넣는다.
 		            document.getElementById('postcode').value = data.zonecode;
 		            document.getElementById("address").value = addr;
@@ -343,14 +349,14 @@
 	// "가입하기" 버튼 클릭시 호출되는 함수
 	function goRegister() {
 		
-		// ***** 필수입력사항에 모두 입력이 되었는지 검사한다. *****//
+		// 필수입력사항에 모두 입력이 되었는지 검사
 		let b_flag_requiredInfo = false;
 		
 		$("input.requiredInfo").each(function(index, elt){
 			
 			if( $(elt).val().trim() == "" ) {
-				alert("* 표시된 필수입력사항은 모두 입력하셔야 합니다.");
-				b_flag_requiredInfo = true; /*  */
+				alert(" * 표시된 필수입력사항은 모두 입력하셔야 합니다.");
+				b_flag_requiredInfo = true; 
 				return false; // for 에서 쓰는 break 와 동일
 			}
 		});
@@ -358,13 +364,13 @@
 		if(b_flag_requiredInfo) {
 			return; // 함수종료
 		}
-		// *********************************************//
+		// ---------------------------------------------
 		
 		
 		// 1> 성별 radio 선택 x
-		const radio_checked_leangh = $("input:radio[name='gender']:checked").length;
+		const radio_checked_length = $("input:radio[name='gender']:checked").length;
 		
-		if(radio_checked_leangh == 0 ) {
+		if(radio_checked_length == 0 ) {
 			alert("성별을 선택하셔야 합니다.");
 			return; // 함수종료
 		}
@@ -380,7 +386,6 @@
 			alert("이메일 중복확인 을 클릭해야 합니다.");
 			return; // 함수종료
 		}
-		
 		
 		// 4> "우편번호 찾기" 클릭 x
 		if( b_flag_zipcodeSearch_click == false ) {
@@ -398,14 +403,13 @@
 				return; // 함수종료
 			}
 			
-			/* -- 주소 및 상세주소 입력에 대한 유효성 검사하기 [아직ㅠㅠ] */
 		}
 		
 		// ==========================================================
 		// ==> 위 경우처럼 뭔가 선택되지 않은 경우에는 아래로 넘어가지 않고 return 된다
 		
-		const frm = document.registerFrm;
-		frm.action = "/member/myaccount.moc";
+		const frm = document.frmMemberRegister;
+		frm.action = "<%= request.getContextPath()%>/login/memberRegister.moc";
 		frm.method = "post";
 		frm.submit();
 		
@@ -421,65 +425,65 @@
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">성명&nbsp;<span class="star">*</span></label>
-		    <input class="col-6 form-control" type="text" id="name" class="requiredInfo" placeholder = "Name"></input>
+		    <input class="col-6 form-control" type="text" id="name" name="name" class="requiredInfo" placeholder = "Name" ></input> <%-- autocomplete="off" : 자동완성막아줌 --%>
 		    <span><small class="error" style="color:red">Name is required</small></span>
 	  	</div>
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">아이디&nbsp;<span class="star">*</span></label>
-		    <input class="col-5 form-control" type="text" id="userid" class="requiredInfo" placeholder = "ID" />&nbsp;&nbsp;
-		    <button class="btn btn-secondary btn-sm col-3" id="idcheck" style="border-radius: 20px; width:50px;">ID중복확인</button>
+		    <input class="col-5 form-control" type="text" id="userid" name="userid" class="requiredInfo" placeholder = "ID" />&nbsp;&nbsp;
+		    <button type="button" class="btn btn-secondary btn-sm col-3" id="idcheck" style="border-radius: 20px; width:50px;">ID중복확인</button>
             <span id="idcheckResult"></span>
 		    <span><small class="error" style="color:red">ID is required</small></span>
 	  	</div>
 	  
 	  	<div class="form-group row col-md-10 mx-auto" >
 		    <label class="col-3 col-form-label">이메일&nbsp;<span class="star">*</span></label>
-		    <input class="col-5 form-control" type="text" id="email"  class="requiredInfo" placeholder = "Email" />&nbsp;&nbsp;
-		    <button class="btn btn-secondary btn-sm col-3" id="emailcheck" style="border-radius: 20px;">email 중복확인</button>
+		    <input class="col-5 form-control" type="text" id="email" name="email" class="requiredInfo" placeholder = "Email" />&nbsp;&nbsp;
+		    <button type="button" class="btn btn-secondary btn-sm col-3" id="emailcheck" style="border-radius: 20px;">email 중복확인</button>
 		    <span id="emailCheckResult"></span>
 		    <span><small class="error" style="color:red">The email format is not correct.</small></span>
 	  	</div>
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">비밀번호&nbsp;<span class="star">*</span></label>
-		    <input class="col-6 form-control" type="password" id="pwd" class="requiredInfo" placeholder = "Password"></input>
+		    <input class="col-6 form-control" type="password" id="pwd" name="pwd" class="requiredInfo" placeholder = "Password"></input>
 		    <span><small class="error" style="color:red">Password is required</small></span>
 	  	</div>
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">비밀번호확인&nbsp;<span class="star">*</span></label>
-		    <input class="col-6 form-control" type="password" id="pwdcheck" class="requiredInfo" placeholder = "Confirm Password"></input>
+		    <input class="col-6 form-control" type="password" id="pwdcheck" name="pwdcheck" class="requiredInfo" placeholder = "Confirm Password"></input>
 		    <span><small class="error" style="color:red">Please enter valid, matching passwords.</small></span>
 	  	</div>
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">연락처</label>	 
-		    <input class="col-2 form-control" type="text" id="hp1" name="hp1" value="010" readonly />&nbsp; <!-- readonly : 읽기전용으로 010 만 보여주고 변경할 수 없도록 해준다 -->
-           	<input class="col-2 form-control" type="text" id="hp2" name="hp2" />&nbsp;
-           	<input class="col-2 form-control" type="text" id="hp3" name="hp3" />
+		    <input class="col-2 form-control" type="text" id="hp1" name="hp1" maxlength="3" value="010" readonly />&nbsp; <!-- readonly : 읽기전용으로 010 만 보여주고 변경할 수 없도록 해준다 -->
+           	<input class="col-2 form-control" type="text" id="hp2" name="hp2" maxlength="4" />&nbsp;
+           	<input class="col-2 form-control" type="text" id="hp3" name="hp3" maxlength="4" />
            	<span><small class="error" style="color:red">It's not phone number type.</small></span>
 	  	</div>
 	  	
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">우편번호</label>
-		    <input type="text" class="col-3 form-control" id="postcode" placeholder="postcode" />&nbsp;
-		    <button class="btn btn-secondary btn-sm col-3" id="zipcodeSearch" style="border-radius: 20px;">우편번호찾기</button>
+		    <input type="text" class="col-3 form-control" id="postcode" name="postcode" placeholder="postcode" />&nbsp;
+		    <button type="button" class="btn btn-secondary btn-sm col-3" id="zipcodeSearch" style="border-radius: 20px;">우편번호찾기</button>
 			<span><small class="error" style="color:red">It's not postcode type.</small></span>
 	  	</div>
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">주소</label>
-		    <input class="col-8 form-control" type="text" id="address" placeholder="Address" />
+		    <input class="col-8 form-control" type="text" id="address" name="address" placeholder="Address" />
 	  	</div>
 	  	<div class="form-group row col-md-10 mx-auto">	 
 		    <label class="col-3 col-form-label"> </label>
-           	<input class="col-8 form-control" type="text" id="detailaddress" placeholder="Detail Address" />
+           	<input class="col-8 form-control" type="text" id="detailAddress" name="detailAddress" placeholder="Detail Address" />
          	</div>
          	<div class="form-group row col-md-10 mx-auto"> 	
            	<label class="col-3 col-form-label"> </label>
-           	<input class="col-8 form-control" type="text" id="extraaddress" placeholder="Extra Address" />
-          		<span><small class="error" style="color:red">Address is required.</small></span>
+           	<input class="col-8 form-control" type="text" id="extraAddress"  name="extraAddress" placeholder="Extra Address" />
+          	<span><small class="error" style="color:red">Address is required.</small></span>
 	  	</div>
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
@@ -490,9 +494,9 @@
 
 		<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">생년월일</label>	 
-		    <input class="col-3 form-control" type="number" id="birthyyyy" min="1950" max="2050" step="1" value="1995" required />&nbsp;
-           	<select class="col-2 form-control" type="number" id="birthmm" ></select>&nbsp;
-           	<select class="col-2 form-control" type="number" id="birthdd" ></select>
+		    <input class="col-3 form-control" type="number" id="birthyyyy" name="birthyyyy" min="1950" max="2050" step="1" value="1995" required />&nbsp;
+           	<select class="col-2 form-control" type="number" id="birthmm" name="birthmm" ></select>&nbsp;
+           	<select class="col-2 form-control" type="number" id="birthdd" name="birthdd" ></select>
            	<span><small class="error" style="color:red">It's not phone number type.</small></span>
 	  	</div>
 	  	
@@ -502,7 +506,7 @@
         	</div>
 
 	  	<div class="form-group row col-md-10 mx-auto">
-			<button class="btn btn-warning btn-lg col-8 mx-auto" style="border-radius: 5px; font-weight:bold;" id="btnRegister" onclick="goRegister()">CREATE ACCOUNT</button>
+			<button type="button" class="btn btn-warning btn-lg col-8 mx-auto" style="border-radius: 5px; font-weight:bold;" id="btnRegister" onclick="goRegister()">CREATE ACCOUNT</button>
 	  	</div>
 
 	</form>
