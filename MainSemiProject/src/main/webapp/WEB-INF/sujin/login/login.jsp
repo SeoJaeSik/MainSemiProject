@@ -35,13 +35,13 @@
 		
 		
 		// 3. 'x' 표시를 누르거나 '닫기'를 눌러서 아이디찾기를 끝낼 때
-		$("button.idFindClose").click(function(){ // 
+		$("button.idFindClose").click(function(){ 
 			
 			// 대상 iframe 을 선택한다.
 			const iframe_idFind = document.getElementById("iframe_idFind");
 			
 			const iframe_window = iframe_idFind.contentWindow;
-			iframe_window.func_form_empty(); /* func_form_empty 함수는 idFind.jsp 에 있음 */	
+			iframe_window.func_form_empty(); // func_form_empty 함수는 idFind.jsp 에 있음 	
 		});		
 		
 	});//end of ready()-------------
@@ -76,9 +76,9 @@
 			// 체크안했으면 저장된 값을 삭제하기
 			localStorage.removeItem("saveid"); 
 		}
-		
+				
 		const frm = document.loginFrm;
-		frm.action = "<%= request.getContextPath()%>/member/myaccount.moc";
+		frm.action = "<%= request.getContextPath()%>/login/login.moc";
 		frm.method = "post";
 		frm.submit();
 		
@@ -86,7 +86,6 @@
 
 </script>
 
-<body>
 <div class="container my-5 mx-auto bg-white">
 	<c:if test="${empty sessionScope.loginuser}">
 	 	<form name="loginFrm">
@@ -121,7 +120,7 @@
 		                   <a id="p2" style="cursor: pointer; text-decoration: underline; color: black;"  data-toggle="modal" data-target="#userIdfind" data-dismiss="modal" data-backdrop="static">Forget your id?</a> 
 		                   <a id="p2" style="cursor: pointer; text-decoration: underline; color: black;" href="<%= request.getContextPath()%>/login/pwdFind.moc">Forget your passward?</a> 
 		                   <br>
-		               	   "Don't have an account?" 
+		               	   <a id="p2">"Don't have an account?"</a> 
 		               	   <a id="p2" style="cursor: pointer; text-decoration: underline; color: black;" href="<%= request.getContextPath()%>/login/memberRegister.moc">Register now.</a>
 		               </td>
 		           </tr>
@@ -156,12 +155,6 @@
 	    	</div>
 	  	</div>
     </c:if>
-    
-    <c:if test="${not empty sessionScope.loginuser}">
-    	일단은 로그인 된건지 확인하려고 둔거 !이게 나올게 아니라 마이페이지로 가야댕~!!!
-    </c:if>
 </div>	 
-</body>  
-</html>
 
 <jsp:include page="../../jaesik/footer.jsp"/>

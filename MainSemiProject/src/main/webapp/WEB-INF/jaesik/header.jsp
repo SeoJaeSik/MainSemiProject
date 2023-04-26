@@ -38,6 +38,8 @@
 	
 	$(document).ready(function(){
 		
+		$('[data-toggle="popover_complain"]').popover();
+		
 		$("div.nav-group").hide();
 		$("a#main_logo").hide();
 		$("div#nav_bar_menu").hide();
@@ -154,6 +156,36 @@
 		
 	} // end function goSubscribe()
 	
+	function send_message() {
+		
+		const userid = $("input#userid").val().trim();
+		const title = $("input#board_title").val().trim();
+		const content = $("textarea#board_content").val().trim();
+	
+		if ( userid == "" ) {
+			alert("아이디를 입력하세요");
+			$("input#userid").focus();
+			return;
+		}
+		
+		if ( title == "" ) {
+			alert("제목을 입력하세요");
+			$("input#board_title").focus();
+			return;
+		}
+		
+		if ( content == "" ) {
+			alert("내용을 입력하세요");
+			$("textarea#board_content").focus();
+			return;
+		}
+		
+		const frm = document.customer_content;
+		frm.action = "<%= ctxPath%>/main/submitComplain.moc";
+		frm.method = "POST"; 
+		frm.submit();
+		
+	} // end function send_message
 	
 </script>
 
@@ -180,7 +212,7 @@
 					<a href="<%= ctxPath%>/login/login.moc" style="color:black; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">Login</a>
 				</c:if>
 				<c:if test="${not empty sessionScope.loginuser}">
-					<a href="<%= ctxPath%>/login/loginaftermove.moc" style="color:black; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">My Account</a>
+					<a href="<%= ctxPath%>/member/myaccount.moc" style="color:black; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">My Account</a>
 				</c:if>
 				<a href="#" class="header_menu" ><i class="fa-solid fa-magnifying-glass mx-1" style="color: #000000;"></i></a>
 				<a href="<%= ctxPath%>/shop/cartList.moc" style="display: inline-block; width: auto;" class="header_menu"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
@@ -316,7 +348,7 @@
 			           관리자전용 
 					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item text-body" href="<%= ctxPath %>/member/memberList.up">회원목록</a>
+						<a class="dropdown-item text-body" href="<%= ctxPath %>/member/admin/memberList.moc">회원목록</a>
 						<a class="dropdown-item text-body" href="<%= ctxPath %>/shop/admin/productRegister.moc">제품등록</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item text-body" href="#">전체주문내역</a>
