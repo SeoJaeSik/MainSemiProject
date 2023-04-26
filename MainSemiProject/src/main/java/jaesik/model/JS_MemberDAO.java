@@ -378,6 +378,8 @@ public class JS_MemberDAO implements JS_InterMemberDAO {
 		return member;
 	
 	}
+
+	
 }
 
 

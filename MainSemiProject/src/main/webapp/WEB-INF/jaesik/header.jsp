@@ -364,7 +364,7 @@
 			<a href="<%= ctxPath%>/login/login.moc" style="color:white; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">Login</a>
 		</c:if>
 		<c:if test="${not empty sessionScope.loginuser}">
-			<a href="<%= ctxPath%>/login/loginaftermove.moc" style="color:white; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">My Account</a>
+			<a href="<%= ctxPath%>/member/myaccount.moc" style="color:white; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">My Account</a>
 		</c:if>
 		<a href="#" class="header_menu"><i class="fa-solid fa-magnifying-glass mx-1" style="color: #ffffff;"></i></a>
 	</div>
