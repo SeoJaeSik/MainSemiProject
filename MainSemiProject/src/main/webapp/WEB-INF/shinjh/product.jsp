@@ -177,6 +177,15 @@
 	}); // end of $(document).ready();------------------------------
 
 	// Function Declaration
+	
+	// *** 제품이미지 클릭 ***//
+	function imgSelect(imgs) {
+	  var expandImg = document.getElementById("expandedImg");
+	  expandImg.src = imgs.src;
+	  expandImg.parentElement.style.display = "block";
+	}
+	
+	
    // *** 장바구니 담기 ***//
    function goCart() {
    
@@ -222,7 +231,7 @@
     
     <a id="link" href="<%= ctxPath%>/index.moc" title="HOME" >HOME</a>
     /
-    <a id="link" href="<%= ctxPath%>/allproduct.moc" title="${requestScope.pvo.btvo.buyer_type_name}">${requestScope.pvo.btvo.buyer_type_name}</a>
+    <a id="link" href="<%= ctxPath%>/allproduct.moc/${requestScope.pvo.btvo.buyer_type_name}" title="${requestScope.pvo.btvo.buyer_type_name}">${requestScope.pvo.btvo.buyer_type_name}</a>
     /
     <span>${requestScope.pvo.product_name}</span>
      
@@ -234,25 +243,24 @@
   <div class="detail_top row">
   
    <div class="col-md-7">
-    <div class="img">
-     <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135427272001.jpg" width="100%">
-    </div>
+	<div class="container">
+	  <img id="expandedImg" src="${requestScope.pvo.product_image}">
+	</div>
 	
-	<div class="mt-3"> 
+	<!-- columns -->
+	<div class="row">
+	  <div class="column">
+	    <img src="${requestScope.pvo.product_image}" style="width:100%" onclick="imgSelect(this);">
+	  </div>
 	
-	 <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135427272001.jpg" style="width:18%;">
-    
-     <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135431504001.jpg" style="width:18%;">
-     
-     <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135435350001.jpg" style="width:18%;">
-    
-     <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135439519001.jpg" style="width:18%;">
-      
-     <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135443160001.jpg" style="width:18%;">
- 
-     <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135446884001.jpg" style="width:18%;">
-    
-    </div> 
+	  <c:if test="${not empty requestScope.imgList}">
+	    <c:forEach var="imgfilename" items="${requestScope.imgList}">
+	      <div class="column">
+	        <img src="${imgfilename}" style="width:100%" onclick="imgSelect(this);">
+	      </div>
+		</c:forEach>
+	  </c:if>
+	</div>
    </div>
     
    <div class="col-md-5 product-main_block">
