@@ -329,6 +329,55 @@ public class JS_MemberDAO implements JS_InterMemberDAO {
 		
 		return memberList;
 	}
+
+	
+	
+	// ------------------------------------------------------------------------------- 회원 하나의 상세정보를 담아오는 메소드 
+	@Override
+	public MemberVO memberOneDetailAction(String userid) throws SQLException {
+
+		MemberVO member = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select userid, name, email, mobile, postcode, address, detailaddress, extraaddress, gender"
+						+ " 	 , birthday, point, to_char( registerday, 'yyyy-mm-dd') as registerday"
+						+ " from tbl_member "
+						+ " where userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid);
+			
+			rs = pstmt.executeQuery();
+			
+			if ( rs.next() ) {
+				member = new MemberVO();
+				
+				member.setUserid(rs.getString(1));
+				member.setName(rs.getString(2));;
+				member.setEmail( aes.decrypt(rs.getString(3)) );
+				member.setMobile( aes.decrypt(rs.getString(4)) );
+				member.setPostcode(rs.getString(5));
+				member.setAddress(rs.getString(6));
+				member.setDetailaddress(rs.getString(7));
+				member.setExtraaddress(rs.getString(8));
+				member.setGender(rs.getString(9));
+				member.setBirthday(rs.getString(10));
+				member.setPoint( rs.getInt(11) );
+				member.setRegisterday(rs.getString(12));
+			}
+			
+		} catch ( GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		
+		return member;
+	
+	}
 }
 
 

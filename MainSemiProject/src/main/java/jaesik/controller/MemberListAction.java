@@ -89,19 +89,19 @@ public class MemberListAction extends AbstractController {
 			
 			// [맨처음][이전] 만들기
 			if ( Integer.parseInt(currentShowPageNo) != 1 ){
-				pageBar += "<li class='page-item'><a class='page-link' href='memberList.up?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo=1'>처음</a></li>"; 
+				pageBar += "<li class='page-item'><a class='page-link bg-dark text-white' href='memberList.moc?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo=1'>처음</a></li>"; 
 			}
 			if ( pageNo != 1) {
-				pageBar += "<li class='page-item'><a class='page-link' href='memberList.up?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+(pageNo-1)+"'>이전</a></li>"; 
+				pageBar += "<li class='page-item'><a class='page-link bg-dark text-white' href='memberList.moc?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+(pageNo-1)+"'>이전</a></li>"; 
 			}
 			
 			
 			while( !(loop > blockSize || pageNo > totalPage) ) {
 				if (pageNo == Integer.parseInt(currentShowPageNo) ) {
-					pageBar += "<li class='page-item active'><a class='page-link' href='#'>"+pageNo+"</a></li>"; 
+					pageBar += "<li class='page-item active'><a class='page-link bg-dark text-white' href='#'>"+pageNo+"</a></li>"; 
 				}
 				else {
-					pageBar += "<li class='page-item'><a class='page-link' href='memberList.up?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>"; 
+					pageBar += "<li class='page-item'><a class='page-link bg-dark text-white' href='memberList.moc?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>"; 
 				}
 
 				loop++; // 1 2 3 4 5 6 7 8 9 10
@@ -113,10 +113,10 @@ public class MemberListAction extends AbstractController {
 			
 			// [다음][마지막] 만들기
 			if ( pageNo <= totalPage ) {
-				pageBar += "<li class='page-item'><a class='page-link' href='memberList.up?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>다음</a></li>"; 
+				pageBar += "<li class='page-item'><a class='page-link bg-dark text-white' href='memberList.moc?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>다음</a></li>"; 
 			}
 			if ( !(Integer.parseInt(currentShowPageNo) == totalPage) ){
-				pageBar += "<li class='page-item'><a class='page-link' href='memberList.up?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+totalPage+"'>끝</a></li>"; 
+				pageBar += "<li class='page-item'><a class='page-link bg-dark text-white' href='memberList.moc?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+totalPage+"'>끝</a></li>"; 
 			}
 			
 			request.setAttribute("pageBar", pageBar);

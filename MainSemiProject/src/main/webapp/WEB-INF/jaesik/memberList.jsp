@@ -45,7 +45,7 @@
 	    // alert($(e.target).parent().html());
 	    // parent() 을 함으로 아이디/회원명/이메일/성별 어디를 눌러도 한명을 선택한것이 된다
 			const userid = $(e.target).parent().find(".userid").html();
-	    	location.href="<%= ctxPath%>/member/memberOneDetail.up?userid="+userid;
+	    	location.href="<%= ctxPath%>/member/admin/memberOneDetail.moc?userid="+userid;
 	    });
 	      
 		
@@ -72,7 +72,7 @@
 			<option value="email">이메일</option>
 		</select>
 		<input type="text" id="searchWord" name="searchWord"/>
-		<button type="button" class="btn btn-secondary" style="margin-right: 30px;" onclick="goSearch();">검색</button>
+		<button type="button" class="btn bg-dark text-white" style="margin-right: 30px;" onclick="goSearch();">검색</button>
 	</form>
 	
 	<form name="memberTBL">

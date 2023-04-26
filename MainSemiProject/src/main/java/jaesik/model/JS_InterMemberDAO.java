@@ -28,5 +28,8 @@ public interface JS_InterMemberDAO {
 
 	// 타입과 단어, 페이징 갯수를 받아 페이징한 모든회원 또는 검색한 회원 목록 보여주기
 	List<MemberVO> selectPagingMember(Map<String, String> paraMap) throws SQLException;
+	
+	// 회원 하나의 상세정보를 담아오는 메소드 
+	MemberVO memberOneDetailAction(String userid) throws SQLException;
 
 }
