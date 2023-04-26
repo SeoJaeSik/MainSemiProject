@@ -71,13 +71,6 @@
 		<div class="carousel-inner">
 			<div class="carousel-item active">
 				<img src="https://image.nbkorea.com/NBRB_Site/20230306/NB20230306093539119001.jpg" class="d-block w-100" alt="...">
-				<!-- 캐러셀 내부의 블럭 (참조 글씨 넣기)  
-				<div class="carousel-caption d-none d-md-block">
-					<h5>아이유</h5>
-					<p>아이유 내용</p>
-				</div> 
-				"https://image.nbkorea.com/NBRB_PC/event/imc/nbpantsfit/img_top.jpg"
-				-->
 			</div>
 			<div class="carousel-item">
 				<img src="https://image.nbkorea.com/NBRB_Site/20230406/NB20230406085126936001.jpg" class="d-block w-100" alt="...">
