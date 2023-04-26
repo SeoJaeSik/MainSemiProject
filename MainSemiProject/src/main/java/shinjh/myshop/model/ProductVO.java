@@ -10,7 +10,6 @@ public class ProductVO {
 	private String  prdmanual_orginFileName;   // 웹클라이언트의 웹브라우저에서 파일을 업로드 할때 올리는 제품설명서 파일명 
 	private int 	stock_count;       // 제품 재고량
 	private int 	product_price;      // 제품 정가
-	private int 	fk_snum;    // 'HIT', 'NEW', 'BEST' 에 대한 스펙번호인 시퀀스번호를 참조
 	private String 	product_content;   // 제품설명
 	private String 	product_date; // 제품제조일자 
 	private String 	upload_date; // 제품입고일자
@@ -39,7 +38,6 @@ public class ProductVO {
 		this.prdmanual_orginFileName = prdmanual_orginFileName;
 		this.stock_count = stock_count;
 		this.product_price = product_price;
-		this.fk_snum = fk_snum;
 		this.product_content = product_content;
 		this.product_date = product_date;
 		this.upload_date = upload_date;
@@ -111,15 +109,7 @@ public class ProductVO {
 	public void setProduct_price(int product_price) {
 		this.product_price = product_price;
 	}
-
-	public int getFk_snum() {
-		return fk_snum;
-	}
-
-	public void setFk_snum(int fk_snum) {
-		this.fk_snum = fk_snum;
-	}
-
+	
 	public String getProduct_content() {
 		return product_content;
 	}
