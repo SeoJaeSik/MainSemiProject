@@ -38,26 +38,36 @@ public class ProductDAO implements InterProductDAO {
 		try {
 			Context initContext = new InitialContext();
 		    Context envContext  = (Context)initContext.lookup("java:/comp/env");
-		    ds = (DataSource)envContext.lookup("jdbc/myoracle"); // lookup("jdbc/myoracle") 은 배치서술자인 web.xml 의 <res-ref-name> 이고, servers 의 톰캣 안에 context.xml 에도 있는데 그것을 의미한다.
+		    ds = (DataSource)envContext.lookup("jdbc/semi_oracle"); // lookup("jdbc/myoracle") 은 배치서술자인 web.xml 의 <res-ref-name> 이고, servers 의 톰캣 안에 context.xml 에도 있는데 그것을 의미한다.
 		} catch(NamingException e) {
 			e.printStackTrace();
 		}
 	}// end of public ProductDAO()---------------------
 
+	
 	// === Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 3개씩 잘라서(start ~ end) 조회해오기 === //
 	@Override
 	public List<ProductVO> selectProduct(Map<String, String> param) throws SQLException {
 
 		List<ProductVO> prodList = new ArrayList<>();
+		
 		try {
 			conn = ds.getConnection(); // 본인의 오라클DB와 연동
 			
-			String sql = " select * "
-						+ " from tbl_product ";
-			
+			String sql = " select product_name, fk_shoes_category_no, product_color, product_size, product_image, product_content "
+					   + "      , stock_count, sale_count, product_price "
+				       + " from "
+					   + " ( "
+					   + "  select row_number() over(order by product_no desc) AS RNO "
+					   + "       , product_name, fk_shoes_category_no, product_color, product_size, product_image, product_content " 
+					   + "       , stock_count, sale_count, product_price "
+					   + "  from tbl_product "
+					   + " ) V "
+					   + " where RNO between ? and ? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			
+			pstmt.setString(1, param.get("start"));
+			pstmt.setString(2, param.get("end"));
 			
 			rs =pstmt.executeQuery();
 			
@@ -65,16 +75,21 @@ public class ProductDAO implements InterProductDAO {
 				
 				ProductVO pvo = new ProductVO();
 
-				
-				
-				BuyerTypeVO btvo = new BuyerTypeVO();
+			    pvo.setProduct_name(rs.getString("product_name"));  
+				pvo.setFk_shoes_category_no(rs.getInt("fk_shoes_category_no"));
+			    pvo.setProduct_color(rs.getString("product_color"));
+				pvo.setProduct_size(rs.getInt("product_size"));
+				pvo.setProduct_color(rs.getString("product_color"));
+				pvo.setProduct_image(rs.getString("product_image"));
+				pvo.setProduct_content(rs.getString("product_content"));
+				pvo.setStock_count(rs.getInt("stock_count"));
+				pvo.setSale_count(rs.getInt("sale_count"));
+				pvo.setProduct_price(rs.getInt("product_price"));
 				
 				prodList.add(pvo);
+				
 			}// end of while (rs.next())
 			
-			
-			
-				
 		
 		} finally {
 			close();

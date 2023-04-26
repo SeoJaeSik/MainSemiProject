@@ -19,7 +19,7 @@
 	let start = 1;
 	
 	// HIT 상품 "스크롤" 할 때 보여줄 상품의 개수(단위) 크기
-	let lenAll = 3; 
+	let lenAll = 6; 
 
 	$(document).ready(function() {
 	 	
@@ -60,7 +60,7 @@
 	            $("span#countAll").text();
 	            
 	            if( $("span#totalAllCount").text() != $("span#countAll").text() ) {
-		            start += lenALL;
+		            start += lenAll;
 		            
 		            displayAll(start); 
 	            }
@@ -88,25 +88,29 @@
 	}); // end of $(document).ready(function() -----------------
 
 	function displayAll(start) {
-        // start가 9  이라면  9~16  까지 상품 8개를 보여준다.
-        // start가 17 이라면  17~24 까지 상품 8개를 보여준다.
-        // start가 25 이라면  25~32 까지 상품 8개를 보여준다.
-        // start가 33 이라면  33~36 까지 상품 4개를 보여준다.(마지막 상품)  
+       
 		$.ajax({
 			url:"<%= request.getContextPath()%>/shop/mallDisplayJSON.moc",
 			//	type:"GET", // defualt 가 get
-			data:{"shoes_category_no":"product_no",
-				  "start":start, // "1" "9" "17" "25" "33"
-				  "len":lenAll}, //  8   8    8    8    8
+			data:{"start":start, // "1" "7" "13" "19" "25"
+				  "len":lenAll}, //  6   6    6    6    6
 			dataType:"json",
 		//	async:true, // 비동기방식, default도 비동기임
 			success:function(json){
+				
+			//	console.log("확인용 json => " + json);
+			//	console.log("json 의 타입 => " + typeof json);
+				console.log("확인용 json => " + JSON.stringify(json));
+			//	console.log("JSON.stringify(json) 의 타입 => " + typeof JSON.stringify(json));
+			<%--
+			     확인용 json => [{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":200,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":190,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":180,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":170,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":210,"product_color":"black","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":200,"product_color":"black","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"}]
+			--%>	
 			
 			let html = "";
 			
 			if(start == "1" && json.length == 0) {
 			
-			html += "현재 상품 준비중...";
+			    html += "현재 상품 준비중...";
 			
 				$("div#displayAll").html(html); // id가 displayAll인 div에 값을 뿌려준다.
 		
@@ -115,26 +119,30 @@
 			else if(json.length > 0) {
 			
 				$.each(json, function(index, item) {
-	/*		
+			
 					html += "<div class='col-md-6 col-lg-4 col-xl-4'>"+
-								"<div id='product-1' class='single-product' href='#'>"+
-									"<div class='part-1'>"+
-										"<img alt='이미지 준비중' style='width:inherit; height:inherit;' src="+item.product_image+">"+
+									"<div id='product-1' class='single-product'>"+
+									"<div class='part-1'>"
+										"<img alt='제품 준비 중입니다.' src='style='width:inherit; height:inherit;' src="+item.product_image+">"+
+										"<span class='discount'>"+item.sale_count+"</span>"+
 										"<ul>"+
 											"<li><a href='#'><i class='fas fa-shopping-cart'></i></a></li>"+
-											<li><a href="#"><i class="fas fa-expand"></i></a></li>
-										</ul>
-									</div>
-									<div class="part-2">
-										<h3 class="product-title">Here Product Title</h3>
-										<h4 class="product-price">$49.99</h4>
-									</div>
-								</div>   
-							</div>
-	*/		         
+											"<li><a href='#'><i class='fas fa-heart'></i></a></li>"+
+											"<li><a href='#'><i class='fas fa-expand'></i></a></li>"+
+										"</ul>"
+									"</div>"+
+									"<div class='part-2'>"+
+										"<h3 class='product-title'>"+item.product_name+"</h3>"+
+										"<h4 class='product-price'>"+(item.product_price).toLocaleString('en')+" 원</h4>"+
+									"</div>"+
+								"</div>"+
+							"</div>"
+							
+							
 				});// end of $.each(json, function(index, item)-------------------
+			        
 			
-			// HIT 상품 결과물 출력하기
+			// 전체상품 상품 결과물 출력하기
 			$("div#displayAll").append(html);		
 			
 			// $("span#countHIT") 에 지금까지 출력된 상품의 개수를 누적해서 기록한다.
@@ -323,17 +331,19 @@
 					<div class="container">
 						<div class="row" id="displayAll"> <%-- 이 안에 Ajax가 들어갈 것이다. --%>
 							<!-- Single Product -->
+						<%-- 	
 			 		 		<div class="col-md-6 col-lg-4 col-xl-4">
-								<div id="product-1" class="single-product" href="#">
+								<div id="product-1" class="single-product">
 									<div class="part-1">
-										<img alt="제품" style="width:inherit; height:inherit;" src="https://image.nbkorea.com/NBRB_Product/20230321/NB20230321153529285001.jpg">
+										<img alt="제품 준비중" style="width:inherit; height:inherit;" src="https://image.nbkorea.com/NBRB_Product/20230321/NB20230321153529285001.jpg">
 									</div>
 									<div class="part-2">
 										<h3 class="product-title">Here Product Title</h3>
 										<h4 class="product-price">$49.99</h4>
 									</div>
 								</div>   
-							</div>     
+							</div>  
+						--%>   
 							<!-- ajax로 제품 들어올 자리 -->
 						</div>
 					</div>
