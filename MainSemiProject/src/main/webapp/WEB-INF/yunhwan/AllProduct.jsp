@@ -100,7 +100,7 @@
 				
 			//	console.log("확인용 json => " + json);
 			//	console.log("json 의 타입 => " + typeof json);
-				console.log("확인용 json => " + JSON.stringify(json));
+			//	console.log("확인용 json => " + JSON.stringify(json));
 			//	console.log("JSON.stringify(json) 의 타입 => " + typeof JSON.stringify(json));
 			<%--
 			     확인용 json => [{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":200,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":190,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":180,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":170,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":210,"product_color":"black","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":200,"product_color":"black","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"}]
@@ -119,25 +119,34 @@
 			else if(json.length > 0) {
 			
 				$.each(json, function(index, item) {
-			
-					html += "<div class='col-md-6 col-lg-4 col-xl-4'>"+
+					
+				//	0 3 6
+				    if(index%3 == 0) {
+						html += "<div style='display:flex'>";		
+					}
+					
+					html += "<div class='col-md-6 col-lg-4 col-xl-4' style='margin= 0 auto; padding=0px'>"+
 									"<div id='product-1' class='single-product'>"+
-									"<div class='part-1'>"
-										"<img alt='제품 준비 중입니다.' src='style='width:inherit; height:inherit;' src="+item.product_image+">"+
+									"<div class='part-1'>"+
+										"<img alt='제품 준비 중입니다.' style='width:inherit; height:inherit;' src="+item.product_image+">"+
 										"<span class='discount'>"+item.sale_count+"</span>"+
 										"<ul>"+
 											"<li><a href='#'><i class='fas fa-shopping-cart'></i></a></li>"+
 											"<li><a href='#'><i class='fas fa-heart'></i></a></li>"+
 											"<li><a href='#'><i class='fas fa-expand'></i></a></li>"+
-										"</ul>"
+										"</ul>"+
 									"</div>"+
 									"<div class='part-2'>"+
 										"<h3 class='product-title'>"+item.product_name+"</h3>"+
-										"<h4 class='product-price'>"+(item.product_price).toLocaleString('en')+" 원</h4>"+
+										"<h4 class='product-price'><i class='fa fa-krw' style='font-size:14px'>&nbsp;"+(item.product_price).toLocaleString('en')+"</i></h4>"+
 									"</div>"+
 								"</div>"+
-							"</div>"
-							
+							"</div>";
+					
+				//	2 5	8	
+					if((index+1)%3 == 0) {
+						html += "</div>";		
+					}
 							
 				});// end of $.each(json, function(index, item)-------------------
 			        
@@ -151,7 +160,7 @@
 																
 			// 스크롤을 계속해서 countHIT 값과 totalHITCount 값이 일치하는 경우 
 			if( $("span#totalAllCount").text() == $("span#countAll").text() ) {
-			$("span#end").html("더이상 조회할 제품이 없습니다.");
+			    $("span#end").html("더이상 조회할 제품이 없습니다.");
 			
 			}
 			
@@ -222,7 +231,7 @@
 				      <a class="nav-link middle_cat" href="#">golf</a>
 				    </li>  
 					<li class="nav-item sidebar_name">	
-				      <a class="nav-link middle_cat" href="#">sandal</a>
+				      <a class="nav-link middle_cat" style="color: black;" href="#">sandal</a>
 				    </li>  
 				  </ul>  
 				</div>  
@@ -281,10 +290,13 @@
 		                <a href="#"><span></span></a>
 		                <a href="#"><span></span></a>
 		                <a href="#"><span></span></a>
-		                <a href="#"><span></span></a>
 		            </li>
 		            <li class="colors">
 		                <a href="#"><span></span></a>
+		                <a href="#"><span></span></a>
+		                <a href="#"><span></span></a>
+		            </li>
+		            <li class="colors">
 		                <a href="#"><span></span></a>
 		                <a href="#"><span></span></a>
 		                <a href="#"><span></span></a>
@@ -311,14 +323,16 @@
 			<div>
 			<!-- select 태그 섹션 -->
 				<div class="exist_select">
-					<p>Product List</p>
+					<p>Product List
 						<!-- 상품 정렬 select 태그 -->
-					<select class="select" name="sortbar">
-						<option value="recommend" style="text-align: center;">추천순</option>
-						<option value="title-ascending" style="text-align: center;">이름 오름차순</option>
-						<option value="title-descending" style="text-align: center;">이름 내림차순</option>
-					</select>
-					<!-- 상품 정렬 select 태그 끝 -->	
+						<select class="select" name="sortbar">
+							<option value="recommend" style="text-align: center;">추천순</option>
+							<option value="title-ascending" style="text-align: center;">이름 오름차순</option>
+							<option value="title-descending" style="text-align: center;">이름 내림차순</option>
+						</select>
+					<!-- 상품 정렬 select 태그 끝 -->
+					</p>
+						
 					
 			<!-- select 태그 섹션 끝 -->
 				</div>
@@ -327,9 +341,9 @@
 			
 			
 			<!-- 제품목록 섹션 -->
-				<section class="section-products">
+				<div class="section-products">
 					<div class="container">
-						<div class="row" id="displayAll"> <%-- 이 안에 Ajax가 들어갈 것이다. --%>
+						<div id="displayAll"> <%-- 이 안에 Ajax가 들어갈 것이다. --%>
 							<!-- Single Product -->
 						<%-- 	
 			 		 		<div class="col-md-6 col-lg-4 col-xl-4">
@@ -347,7 +361,7 @@
 							<!-- ajax로 제품 들어올 자리 -->
 						</div>
 					</div>
-				</section>
+				</div>
 			<!-- 제품목록 섹션 끝 -->
 			
 				<div>
