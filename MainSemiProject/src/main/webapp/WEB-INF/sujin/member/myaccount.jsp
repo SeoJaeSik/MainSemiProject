@@ -5,17 +5,7 @@
 
 <jsp:include page="../../jaesik/header.jsp"/>
 
-<!-- 다음소스 가져오기 !-->
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-
 <script type="text/javascript">
-
-	$(document).ready(function(){
-		
-		$("small.error").hide();  	// 처음에 경고문구 다 안 뜨게 숨겨놓고,
-		$("input#name").focus(); 	// 성명 입력창에 포커스를 놓는다
-		
-	});//end of ready()-------------------------------------
 	
 	// == 로그아웃 ==
 	function goLogOut() {
@@ -24,16 +14,6 @@
 		location.href = "<%= request.getContextPath()%>/login/logout.moc";
 		
 	}//end of goLogOut()-------------------------------------
-	
-	
-	// == 개인정보수정 == 
-   	function goEditPersonal(userid) {
-   		
-   		// div#memberEdit 안에 나타내기
-   		const url = "<%= request.getContextPath()%>/member/memberEdit.moc?userid=" + userid;
-  		console.log("로그인 하고 myaccount 오면 url => " + url);
-   		
-   	}//end of goEditPersonal()---------------------------------
 
 </script>
 
@@ -53,16 +33,16 @@
 		        -->
 				<ul class="nav nav-pills justify-content-around" style="margin-bottom: 80px;">
 					<li class="nav-item">
-				    	<a class="accout_nav nav-link" data-toggle="pill" href="#viewmyInfo" style="font-size:15pt; height: 40px;">MY INFORMATION</a>
+				    	<a class="accout_nav nav-link active" data-toggle="pill" href="#viewmyInfo" style="font-size:15pt; height: 40px; color:black;">MY INFORMATION</a>
 				  	</li>
 					<li class="nav-item">
-				    	<a class="accout_nav nav-link" data-toggle="pill" href="#memberEdit" style="font-size:15pt; height: 40px;">MY REVIEW</a>
+				    	<a class="accout_nav nav-link" data-toggle="pill" href="#memberEdit" style="font-size:15pt; height: 40px; color:black;">MY REVIEW</a>
 				  	</li>
 				  	<li class="nav-item">
-				    	<a class="accout_nav nav-link" data-toggle="pill" href="#orderList" style="font-size:15pt; height: 40px;">MY ORDERLIST</a>
+				    	<a class="accout_nav nav-link" data-toggle="pill" href="#orderList" style="font-size:15pt; height: 40px; color:black;">MY ORDERLIST</a>
 				  	</li>
 				  	<li class="nav-item">
-				    	<a class="accout_nav nav-link" data-toggle="pill" href="#qna" style="font-size:15pt; height: 40px;">FAQs / QNA</a>
+				    	<a class="accout_nav nav-link" data-toggle="pill" href="#qna" style="font-size:15pt; height: 40px; color:black;">FAQs / QNA</a>
 				  	</li>
 				</ul>
 				
