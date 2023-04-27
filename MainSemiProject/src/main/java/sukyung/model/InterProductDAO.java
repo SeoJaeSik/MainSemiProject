@@ -14,6 +14,9 @@ public interface InterProductDAO {
 	// 특정 제품의 사이즈 조회(select)
 	List<ProductVO> selectSizeList(ProductVO rndpvo) throws Exception;
 
+	// 특정 제품의 색상 조회(select)
+	List<ProductVO> selectColorList(ProductVO pvo) throws Exception;
+
 	// tbl_cart 테이블에서 제품의 수량 변경(update)
 	int cartCountUpdate(Map<String, String> paraMap) throws Exception;
 
@@ -25,6 +28,7 @@ public interface InterProductDAO {
 
 	// 로그인한 회원이 장바구니에 담은 상품의 개수 조회(select)
 	int cartCount(String userid) throws Exception;
+
 
 
 	

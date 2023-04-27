@@ -45,12 +45,18 @@ public class CartListOptionEditAction extends AbstractController {
 				}
 			} // end of for
 			
-			// 특정 제품의 사이즈, 색상(이미지) 조회
-			
-			
 			if(isExist_cartno) { // 로그인한 회원의 cart_no 가 맞는경우
+
 				request.setAttribute("pvo", pvo);
 
+				// 특정 제품의 사이즈 조회
+				List<ProductVO> sizeList = pdao.selectSizeList(pvo);
+				request.setAttribute("sizeList", sizeList);
+
+				// 특정 제품의 색상(이미지) 조회
+				List<ProductVO> colorList = pdao.selectColorList(pvo);
+				request.setAttribute("colorList", colorList);
+				
 				super.setRedirect(false);
 				super.setViewPage("/WEB-INF/sukyung/cartListOptionEdit.jsp");
 			}

@@ -24,7 +24,7 @@ public class CartListAction extends AbstractController {
 
 			InterProductDAO pdao = new ProductDAO();
 			int cartCount = pdao.cartCount(userid); // 로그인한 회원이 장바구니에 담은 상품수량
-		//	loginuser.setCartCount(cartCount); // 세션에 저장된 로그인회원의 상품수량 업데이트
+			loginuser.setCartCount(cartCount); // 세션에 저장된 로그인회원의 상품수량 업데이트
 			
 			List<CartVO> cartList = pdao.showCartList(userid);
 			request.setAttribute("cartList", cartList);

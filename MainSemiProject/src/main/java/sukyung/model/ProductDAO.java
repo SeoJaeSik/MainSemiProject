@@ -125,11 +125,12 @@ public class ProductDAO implements InterProductDAO {
 		return rndpvo;
 	} // end of public ProductVO showRandomItem(String buyer_type_no) throws Exception
 
+	
 	// 특정 제품의 사이즈 조회(select)
 	@Override
-	public List<ProductVO> selectSizeList(ProductVO rndpvo) throws Exception {
+	public List<ProductVO> selectSizeList(ProductVO pvo) throws Exception {
 		
-		List<ProductVO> selectList = new ArrayList<>();
+		List<ProductVO> selectSizeList = new ArrayList<>();
 		
 		try {
 			conn = ds.getConnection();
@@ -139,25 +140,60 @@ public class ProductDAO implements InterProductDAO {
 			   		   + " order by product_size ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, rndpvo.getProduct_name());  // 제품명
-			pstmt.setString(2, rndpvo.getProduct_color()); // 제품색상
+			pstmt.setString(1, pvo.getProduct_name());  // 제품명
+			pstmt.setString(2, pvo.getProduct_color()); // 제품색상
 
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				ProductVO pvo = new ProductVO();
-				pvo.setProduct_no(rs.getString(1));
-				pvo.setProduct_size(rs.getInt(2));
-				selectList.add(pvo);
+				ProductVO sizepvo = new ProductVO();
+				sizepvo.setProduct_no(rs.getString(1));
+				sizepvo.setProduct_size(rs.getInt(2));
+				selectSizeList.add(sizepvo);
 			}
 
 		} finally {
 			close();
 		}
 		
-		return selectList;
+		return selectSizeList;
 	} // end of public List<ProductVO> selectSizeList(String product_name) throws Exception
 
+	
+	// 특정 제품의 색상 조회(select)
+	@Override
+	public List<ProductVO> selectColorList(ProductVO pvo) throws Exception {
+		
+		List<ProductVO> selectColorList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			String sql = " select product_no, product_color, product_image "
+					   + " from tbl_product "
+					   + " where product_name = ? and product_size = ? "
+			   		   + " order by product_size ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pvo.getProduct_name()); // 제품명
+			pstmt.setInt(2, pvo.getProduct_size()); // 제품사이즈
+
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductVO colorpvo = new ProductVO();
+				colorpvo.setProduct_no(rs.getString(1));
+				colorpvo.setProduct_color(rs.getString(2));
+				colorpvo.setProduct_image(rs.getString(3));
+				selectColorList.add(colorpvo);
+			}
+
+		} finally {
+			close();
+		}
+		
+		return selectColorList;
+	} // end of public List<ProductVO> selectColorList(ProductVO pvo) throws Exception
+	
 	
 	// tbl_cart 테이블에서 제품의 수량 변경(update)
 	@Override
