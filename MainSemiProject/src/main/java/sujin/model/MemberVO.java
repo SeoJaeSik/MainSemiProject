@@ -243,4 +243,16 @@ public class MemberVO {
 		return age;
 	}
 	
+	/////////////////////////////////////////////////
+	
+	private int cartCount; // 회원이 장바구니에 담은 상품수량
+
+	public int getCartCount() {
+		return cartCount;
+	}
+	
+	public void setCartCount(int cartCount) {
+	    this.cartCount = cartCount;
+	}
+	
 }

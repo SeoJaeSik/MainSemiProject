@@ -286,8 +286,6 @@
 		                document.getElementById("extraAddress").value = '';
 		            }
 
-		            console.log("~~~~ 확인 extraAddr : " + extraAddr);
-		            
 		            // 우편번호와 주소 정보를 해당 필드에 넣는다.
 		            document.getElementById('postcode').value = data.zonecode;
 		            document.getElementById("address").value = addr;
