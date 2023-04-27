@@ -363,7 +363,7 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of 7. 암호변경하기--------------------------------------------------
 
 	
-	// 9. 회원의 개인정보 변경하기 메소드 구현하기
+	// 9. (사용) 회원의 개인정보 변경하기 메소드 구현하기
 	@Override
 	public int updateMember(MemberVO member) throws SQLException {
 		
@@ -372,23 +372,24 @@ public class MemberDAO implements InterMemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " update tbl_member set name = ? , pwd = ? , email = ? , mobile = ? , postcode = ? ,"
+			String sql = " update tbl_member set name = ? , userid = ?, pwd = ? , email = ? , mobile = ? , postcode = ? ,"
 					   + "                       address = ? , detailaddress = ? , extraaddress = ? , birthday = ? , "
 					   + "                       lastpwdchangedate = sysdate "
 					   + " where userid = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, member.getName());                /* 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다. */
-			pstmt.setString(2, Sha256.encrypt(member.getPwd())); /* Sha256.encrypt(평문) : qwer1234! 가 비번이라면 aksjhdluhsmeafoiwlhe1243242@#$%@ 이렇게 들어가도록 암호화 해줌 */			
-			pstmt.setString(3, aes.encrypt(member.getEmail()));  /* 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 익셉션처리 필수 */
-			pstmt.setString(4, aes.encrypt(member.getMobile())); /* 연락처를 AES256 알고리즘으로 양방향 암호화 시킨다. 익셉션처리 필수 */
-			pstmt.setString(5, member.getPostcode());
-			pstmt.setString(6, member.getAddress());
-			pstmt.setString(7, member.getDetailaddress());
-			pstmt.setString(8, member.getExtraaddress());
-			pstmt.setString(9, member.getBirthday());
-			pstmt.setString(10, member.getUserid());
+			pstmt.setString(1, member.getName());                
+			pstmt.setString(2, member.getUserid());				 /* 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다. */
+			pstmt.setString(3, Sha256.encrypt(member.getPwd())); /* Sha256.encrypt(평문) : qwer1234! 가 비번이라면 aksjhdluhsmeafoiwlhe1243242@#$%@ 이렇게 들어가도록 암호화 해줌 */			
+			pstmt.setString(4, aes.encrypt(member.getEmail()));  /* 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 익셉션처리 필수 */
+			pstmt.setString(5, aes.encrypt(member.getMobile())); /* 연락처를 AES256 알고리즘으로 양방향 암호화 시킨다. 익셉션처리 필수 */
+			pstmt.setString(6, member.getPostcode());
+			pstmt.setString(7, member.getAddress());
+			pstmt.setString(8, member.getDetailaddress());
+			pstmt.setString(9, member.getExtraaddress());
+			pstmt.setString(10, member.getBirthday());
+			pstmt.setString(11, member.getUserid());
 			
 			result = pstmt.executeUpdate();
 			// 정상적으로 insert 됐다면 1 이 나올 것이다.
@@ -404,7 +405,7 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of 9. 회원의 개인정보 변경하기 메소드--------------------------------
 
 
-	// 10. 암호 변경시 현재 사용중인 암호인지 아닌지 알아오는 메소드 구현하기
+	// 10. (사용) 암호 변경시 현재 사용중인 암호인지 아닌지 알아오는 메소드 구현하기
 	@Override
 	public int duplicatePwdCheck(Map<String, String> paraMap) throws SQLException {
 		

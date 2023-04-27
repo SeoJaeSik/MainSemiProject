@@ -495,7 +495,6 @@
 		    <input class="col-3 form-control" type="number" id="birthyyyy" name="birthyyyy" min="1950" max="2050" step="1" value="1995" required />&nbsp;
            	<select class="col-2 form-control" type="number" id="birthmm" name="birthmm" ></select>&nbsp;
            	<select class="col-2 form-control" type="number" id="birthdd" name="birthdd" ></select>
-           	<span><small class="error" style="color:red">It's not phone number type.</small></span>
 	  	</div>
 	  	
 	  	<div class="form-group row col-md-10 mx-auto">

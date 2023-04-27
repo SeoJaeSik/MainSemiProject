@@ -64,7 +64,7 @@ public class LoginAction extends AbstractController {
 				}
 				
 				// 2) 찐 로그인 성공
-			//	System.out.println(">>> 확인용 로그인한 사용자명 loginuser.getName() : " + loginuser.getName());
+				System.out.println(">>> 확인용 로그인한 사용자명 loginuser.getName() : " + loginuser.getName());
 			//  >>> 확인용 로그인한 사용자명 loginuser.getName() : 용수진
 				
 				// > WAS 메모리 ram 에 생성되어져 있는 session 을 불러오는 것이다. 
