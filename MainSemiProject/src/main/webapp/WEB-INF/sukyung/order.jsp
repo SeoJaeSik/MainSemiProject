@@ -3,13 +3,15 @@
 
 <% String ctxPath = request.getContextPath(); %>
 
-<jsp:include page="header_order_pay.jsp" />
+<jsp:include page="../jaesik/header.jsp" />
+<jsp:include page="navbar_order_pay.jsp" />
 
 <style type="text/css">
 
 	button#btnPay, button#btnPostcode {
 		background-color: #fdd007;
 		border: none;
+		box-shadow: 1px 1px 1px 1px #e6e6e6;
 	}
 
 </style>
@@ -29,7 +31,7 @@
 
 </script>
 
-	<div class="container mt-5 mx-auto">
+<div class="container py-4 mx-auto my-3" style="background-color: #fff9e5; border-radius: 1%;">
 		<h2 class="text-center pb-3">배송정보</h2>
 		
 		<div class="col-md-10 py-5 mx-auto">
@@ -124,6 +126,7 @@
 		  </div>
 		</form>
 	</div>
+<div style="height: 100px;"></div>
 
 <jsp:include page="../jaesik/footer.jsp" />
 	

@@ -19,12 +19,10 @@ public class ProductVO {
 	// select 용 field
 	private BuyerTypeVO buyervo;
 	private ShoesCategoryVO catevo;
-	
-	// tbl_cart select 용 field
-	private String cart_no;
-	private int cart_product_count;
-	private int cart_product_price;
-	
+		
+	// CartVO 주문금액 계산
+	private int totalPrice; // 판매당시의 제품판매가 * 주문량
+
 	// 기본 생성자
 	public ProductVO() {}
 	
@@ -158,30 +156,12 @@ public class ProductVO {
 		this.catevo = catevo;
 	}
 
-	public String getCart_no() {
-		return cart_no;
+	public void setTotalPrice(int cart_product_count) { // cart_product_count 는 주문수량임
+		totalPrice = product_price * cart_product_count; 
 	}
 
-	public void setCart_no(String cart_no) {
-		this.cart_no = cart_no;
-	}
-
-	public int getCart_product_count() {
-		return cart_product_count;
-	}
-
-	public void setCart_product_count(int cart_product_count) {
-		this.cart_product_count = cart_product_count;
-	}
-
-	public int getCart_product_price() {
-		return cart_product_price;
-	}
-
-	public void setCart_product_price(int cart_product_price) {
-		this.cart_product_price = cart_product_price;
-		// 장바구니에서의 제품별 주문금액 = 제품가격 * 수량 ==> select sql 문에서 계산된 컬럼값 받아온다.
-	}
-
+	public int getTotalPrice() {
+		return totalPrice;
+	}		
 
 }

@@ -3,13 +3,14 @@
 
 <% String ctxPath = request.getContextPath(); %>
 
-<jsp:include page="header_order_pay.jsp" />
+<jsp:include page="../jaesik/header.jsp" />
 
 <style type="text/css">
 
 	button#btnCoupon, button#btnPay, span#badge_count {
 		background-color: #fdd007;
 		border: none;
+		box-shadow: 1px 1px 1px 1px #e6e6e6;
 	}
 
 </style>
@@ -25,7 +26,7 @@
 
 </script>
 
-	<div class="container mt-5 mx-auto">
+<div class="container py-4 mx-auto my-3" style="background-color: #fff9e5; border-radius: 1%;">
 		<h2 class="text-center pb-3">결제하기</h2>
 		<div class="row pb-3 mx-1">
 			<div class="col-md-9"></div>
