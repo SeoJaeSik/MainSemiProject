@@ -128,12 +128,10 @@
 					html += "<div class='col-md-6 col-lg-4 col-xl-4' style='margin= 0 auto; padding=0px'>"+
 									"<div id='product-1' class='single-product'>"+
 									"<div class='part-1'>"+
-										"<img alt='제품 준비 중입니다.' style='width:inherit; height:inherit;' src="+item.product_image+">"+
+										"<img alt='제품 준비 중입니다.' style='width:inherit; height:inherit;' src="+item.product_image+" href='/MainSemiProject/shop/product.moc'>"+
 										"<span class='discount'>"+item.sale_count+"</span>"+
 										"<ul>"+
-											"<li><a href='#'><i class='fas fa-shopping-cart'></i></a></li>"+
-											"<li><a href='#'><i class='fas fa-heart'></i></a></li>"+
-											"<li><a href='#'><i class='fas fa-expand'></i></a></li>"+
+											"<li><a href='/MainSemiProject/shop/cartList.moc'><i class='fas fa-shopping-cart'></i></a></li>"+
 										"</ul>"+
 									"</div>"+
 									"<div class='part-2'>"+
