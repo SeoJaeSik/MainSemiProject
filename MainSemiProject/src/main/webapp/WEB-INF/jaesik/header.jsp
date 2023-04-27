@@ -215,7 +215,12 @@
 					<a href="<%= ctxPath%>/member/myaccount.moc" style="color:black; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">My Account</a>
 				</c:if>
 				<a href="#" class="header_menu" ><i class="fa-solid fa-magnifying-glass mx-1" style="color: #000000;"></i></a>
-				<a href="<%= ctxPath%>/shop/cartList.moc" style="display: inline-block; width: auto;" class="header_menu"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
+				<c:if test="${empty sessionScope.loginuser}">
+					<a href="<%= ctxPath%>/shop/cartList.moc" style="display: inline-block; width: auto;" class="header_menu"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
+				</c:if>
+				<c:if test="${not empty sessionScope.loginuser}">
+					<a href="<%= ctxPath%>/shop/cartList.moc" style="display: inline-block; width: auto;" class="header_menu"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">${sessionScope.loginuser.cartCount}</span></a>
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -238,16 +243,19 @@
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
 							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">All 상품 이미지</p> <%-- p태그 넓이 이미지 250px --%></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
+								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/all1.jpg" style="width: 100%; "/></a>
+								<h2 style="display: inline-block;"><span class="badge badge-danger">BEST</span></h2>
+								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">상품 이미지</p></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
+								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/all2.jpg" style="width: 100%; "/></a>
+								<h2 style="display: inline-block;"><span class="badge badge-danger">BEST</span></h2>
+								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">상품 이미지</p></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
+								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/all3.jpg" style="width: 100%; "/></a>
+								<h2 style="display: inline-block;"><span class="badge badge-danger">BEST</span></h2>
+								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 						</ul> 
 					</div>
@@ -260,16 +268,17 @@
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
 							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">Men 상품 이미지</p> <%-- p태그 넓이 이미지 250px --%></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
+								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/men1.jpg" style="width: 100%; "/></a>
+								<h2 style="display: inline-block;"><span class="badge badge-danger">BEST</span></h2>
+								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">상품 이미지</p></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
+								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/men2.jpg" style="width: 100%; "/></a>
+								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">상품 이미지</p></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
+								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/men3.jpg" style="width: 100%; "/></a>
+								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 						</ul> 
 					</div>
@@ -282,16 +291,17 @@
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
 							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">Woman 상품 이미지</p> <%-- p태그 넓이 이미지 250px --%></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
+								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/women1.jpg" style="width: 100%; "/></a>
+								<h2 style="display: inline-block;"><span class="badge badge-danger">BEST</span></h2>
+								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">상품 이미지</p></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
+								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/women2.jpg" style="width: 100%; "/></a>
+								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">상품 이미지</p></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
+								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/women3.jpg" style="width: 100%; "/></a>
+								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 						</ul> 
 					</div>
@@ -304,16 +314,17 @@
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
 							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">Kids 상품 이미지</p> <%-- p태그 넓이 이미지 250px --%></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
+								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/kids1.jpg" style="width: 100%; "/></a>
+								<h2 style="display: inline-block;"><span class="badge badge-danger">BEST</span></h2>
+								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">상품 이미지</p></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
+								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/kids2.jpg" style="width: 100%; "/></a>
+								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">상품 이미지</p></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
+								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/kids3.jpg" style="width: 100%; "/></a>
+								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 						</ul> 
 					</div>
@@ -322,29 +333,11 @@
 			
 			<li class="nav-item my-auto px-2">
 				<a class="nav-link header_nav_link" href="#">INFO</a>
-				<div id="nav-group_Info" class="nav-group" data-group="group-collections">
-					<div id="prod_view" class="container">
-						<ul id="prod_view_ul">
-							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">INFO 상품 이미지</p> <%-- p태그 넓이 이미지 250px --%></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
-							</li>
-							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">상품 이미지</p></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
-							</li>
-							<li class="prod_view_list">
-								<a href="#" class="prod_image"><p class="prod_image">상품 이미지</p></a>
-								<a href="#" class="prod_text"><p class="prod_text">상품 설명</p></a>
-							</li>
-						</ul> 
-					</div>
-				</div>
 			</li>
 			
 			<c:if test="${sessionScope.loginuser != null and sessionScope.loginuser.userid == 'admin'}">
 				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle menufont_size" style="color: white;" href="#" id="navbarDropdown" data-toggle="dropdown"> 
+					<a class="nav-link dropdown-toggle menufont_size header_nav_link" style="color: white;" href="#" id="navbarDropdown" data-toggle="dropdown"> 
 			           관리자전용 
 					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
