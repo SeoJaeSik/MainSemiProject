@@ -13,7 +13,7 @@ public class MemberEditAction extends AbstractController {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		// ** 내정보(회원정보)를 수정하기 위한 전제조건은 먼저 로그인을 해야 하는 것이다.
-		// 부무클래스에있는.로그인유무확인함수() 를 가져와 쓰겠다
+		// 부모클래스에있는.로그인유무확인함수() 를 가져와 쓰겠다
 		if(super.checkLogin(request)) { 
 			// 1) 로그인을 했으면
 			
