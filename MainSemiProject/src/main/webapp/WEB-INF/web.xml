@@ -10,12 +10,14 @@
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
   
-  <!-- semi_project  -->
+  <!-- ========= Semi_DBCP Setting Start  ===========  -->
   <resource-ref>
-   <description>Oracle Datasource example</description>
-   <res-ref-name>jdbc/semi_oracle</res-ref-name>
-   <res-type>javax.sql.DataSource</res-type>
-   <res-auth>Container</res-auth>
+ 	<description>Oracle Datasource example</description>
+ 	<res-ref-name>jdbc/semi_oracle</res-ref-name>
+ 	<res-type>javax.sql.DataSource</res-type>
+ 	<res-auth>Container</res-auth>
   </resource-ref>
+  <!-- ========= Semi_DBCP Setting End  ===========  -->
+  
 
 </web-app>

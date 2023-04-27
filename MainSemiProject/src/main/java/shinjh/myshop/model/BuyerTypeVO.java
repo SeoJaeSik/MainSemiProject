@@ -2,7 +2,6 @@ package shinjh.myshop.model;
 
 public class BuyerTypeVO {
 
-
 	private String buyer_type_no;	// 고객유형코드     
 	private String buyer_type_name;	// 고객유형명
 	

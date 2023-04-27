@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+
 <%
     String ctxPath = request.getContextPath();
 %>
@@ -30,14 +33,14 @@
 		text-decoration: underline;
 	}
 */
-	a:link,
-	a:visited,
-	a:hover {
+	a#link:link,
+	a#link:visited,
+	a#link:hover {
 		color: black;
 		text-decoration: underline;
 	}
 	
-	a:hover {
+	a#link:hover {
 		color: gray;
 	}
 		
@@ -164,9 +167,61 @@
   		transform: translate(-50%, -50%);
 	}
 
-
 </style>
 
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		
+		
+	}); // end of $(document).ready();------------------------------
+
+	// Function Declaration
+	
+	// *** 제품이미지 클릭 ***//
+	function imgSelect(imgs) {
+	  var expandImg = document.getElementById("expandedImg");
+	  expandImg.src = imgs.src;
+	  expandImg.parentElement.style.display = "block";
+	}
+	
+	
+   // *** 장바구니 담기 ***//
+   function goCart() {
+   
+      // === 주문량에 대한 유효성 검사하기 === //
+      var frm = document.cartOrderFrm;
+      
+      var regExp = /^[0-9]+$/;  // 숫자만 체크하는 정규표현식
+      var oqty = frm.oqty.value;
+      var bool = regExp.test(oqty);
+      
+      if(!bool) {
+         // 숫자 이외의 값이 들어온 경우 
+         alert("주문갯수는 1개 이상이어야 합니다.");
+         frm.oqty.value = "1";
+         frm.oqty.focus();
+         return; // 종료 
+      }
+      
+      // 문자형태로 숫자로만 들어온 경우
+      oqty = parseInt(oqty);
+      if(oqty < 1) {
+         alert("주문갯수는 1개 이상이어야 합니다.");
+         frm.oqty.value = "1";
+         frm.oqty.focus();
+         return; // 종료 
+      }
+      
+      // 주문개수가 1개 이상인 경우
+      frm.method = "POST";
+      frm.action = "<%= request.getContextPath()%>/shop/cartAdd.up";
+      frm.submit();
+   
+   }// end of function goCart()-------------------------
+   
+</script>  
+   
  <!-- container -->
  <div class="container">
  
@@ -174,11 +229,11 @@
   <div class="product-breadcrumbs">
    <nav class="breadcrumbs p2">
     
-    <a class="breadcrumbs_item a1" href="<%= ctxPath%>/index.moc" title="HOME" >HOME</a>
+    <a id="link" href="<%= ctxPath%>/index.moc" title="HOME" >HOME</a>
     /
-    <a class="breadcrumbs_item a1" href="<%= ctxPath%>/allproduct.moc" title="남성">남성</a>
+    <a id="link" href="<%= ctxPath%>/allproduct.moc/${requestScope.pvo.btvo.buyer_type_name}" title="${requestScope.pvo.btvo.buyer_type_name}">${requestScope.pvo.btvo.buyer_type_name}</a>
     /
-    <span class="breadcrumbs_item">제품명</span>
+    <span>${requestScope.pvo.product_name}</span>
      
    </nav>
   </div>
@@ -188,34 +243,32 @@
   <div class="detail_top row">
   
    <div class="col-md-7">
-    <div class="img">
-     <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135427272001.jpg" width="100%">
-    </div>
+	<div class="container">
+	  <img id="expandedImg" src="${requestScope.pvo.product_image}">
+	</div>
 	
-	<div class="mt-3"> 
+	<!-- columns -->
+	<div class="row">
+	  <div class="column">
+	    <img src="${requestScope.pvo.product_image}" style="width:100%" onclick="imgSelect(this);">
+	  </div>
 	
-	 <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135427272001.jpg" style="width:18%;">
-    
-     <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135431504001.jpg" style="width:18%;">
-     
-     <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135435350001.jpg" style="width:18%;">
-    
-     <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135439519001.jpg" style="width:18%;">
-      
-     <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135443160001.jpg" style="width:18%;">
- 
-     <img src="https://image.nbkorea.com/NBRB_Product/20230201/NB20230201135446884001.jpg" style="width:18%;">
-    
-    </div> 
+	  <c:if test="${not empty requestScope.imgList}">
+	    <c:forEach var="imgfilename" items="${requestScope.imgList}">
+	      <div class="column">
+	        <img src="${imgfilename}" style="width:100%" onclick="imgSelect(this);">
+	      </div>
+		</c:forEach>
+	  </c:if>
+	</div>
    </div>
     
    <div class="col-md-5 product-main_block">
-    <h1 class="product-main_title h1">프레쉬폼x 1080 V12 (남성, 4E)</h1>
+    <h1 class="product-main_title h1">${requestScope.pvo.product_name}</h1>
     
     <div class="d-flex product-main_meta">
      <span class="col product-main_price p1">
-      <span class="price">169,000원
-      </span>
+      <span style="text-decoration: line-through;"><fmt:formatNumber value="${requestScope.pvo.product_price}" pattern="###,###" /></span>
      </span>
      <div class="pt-2 review">
       <span class="fa-stars">
@@ -225,14 +278,14 @@
        <span class="fa fa-star"></span>
        <span class="fa fa-star"></span>
       </span>
-      <a href="#" class="text-m">538 리뷰</a>
+      <a id="link" href="#" class="text-m">538 리뷰</a>
      </div>
     </div>
      
      
     <br>
     
-    <span class="color_select">색상</span>  
+    <span class="color_select">${requestScope.pvo.product_color}</span>  
     <hr/>
 	<ul class="pl-0 color-select">
 	 <li class="colors">
@@ -246,36 +299,19 @@
     
     <div class="mt-5"> 
      <p>사이즈
-      <a style="float:right;">가이드</a>
+      <a id="link" style="float:right;">가이드</a>
      </p>
      <hr/>
      
-     <button type="button" class="mt-1 btn btn-warning">250</button>
-     <button type="button" class="mt-1 btn btn-warning">255</button>
-     <button type="button" class="mt-1 btn btn-warning">260</button>
-     <button type="button" class="mt-1 btn btn-warning">265</button>
-     <button type="button" class="mt-1 btn btn-warning">270</button>
-     <button type="button" class="mt-1 btn btn-warning">275</button>
-     <button type="button" class="mt-1 btn btn-warning">280</button>
-    
+     <button type="button" class="mt-1 btn btn-warning">${requestScope.pvo.product_size}</button>
      
-     <button type="button" class="mt-1 btn btn-warning">285</button>
-     <button type="button" class="mt-1 btn btn-warning">290</button>
-     <button type="button" class="mt-1 btn btn-warning">295</button>
-     <button type="button" class="mt-1 btn btn-warning">300</button>
-     <button type="button" class="mt-1 btn btn-warning">305</button>
-     <button type="button" class="mt-1 btn btn-warning">310</button>
-    
     </div>
     
-    <div class="mt-5"> 
-     <p>발볼 넓이</p>
-     <button type="button" class="btn btn-secondary">4E(넓음)</button>
-    </div>
+
     <br><br>
     
     <div class="d-flex mt-5"> 
-     <button type="button" class="col-4 btn btn-warning">장바구니</button>
+     <button type="button" class="col-4 btn btn-warning" onClick="goCart()">장바구니</button>
      <button type="button" class="col-8 ml-1 btn btn-warning">구매하기</button>
     </div> 
      
@@ -307,11 +343,11 @@
 	  </div>		      
     </div>
   </div>
-  <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+  <a id="link" class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="sr-only">Previous</span>
   </a>
-  <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+  <a id="link" class="carousel-control-next" href="#carousel" role="button" data-slide="next">
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
   </a>
@@ -330,7 +366,8 @@
     <p id="testimonial_text">
     "유명한 변덕스러운 패션 비즈니스의<br>
      썰물과 흐름을 극복하면서 100 년 <br>
-     이상의 사업을 자랑하는 브랜드는 거의 없습니다. 가족 관계를 유지하면<br>
+     이상의 사업을 자랑하는 브랜드는 거 <br>
+     의 없습니다. 가족 관계를 유지하면<br>
      서 글로벌 인지도를 가진 비즈니스를 <br>
      성장시키는 것은 확실히 축하할만한 <br>
      일입니다."
