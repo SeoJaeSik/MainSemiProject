@@ -4,6 +4,7 @@
 <% String ctxPath = request.getContextPath(); %>
 
 <jsp:include page="../jaesik/header.jsp" />
+<jsp:include page="navbar_order_pay.jsp" />
 
 <style type="text/css">
 
@@ -19,14 +20,15 @@
 	
 	$(document).ready(function(){
 		
-		$("ul#nav_bar_circle > li:last-child > div > a").html("<span id='navbar_page' class='rounded-circle'></span>");
+		$("div#div_container").hide();
+		$("div#div_container").fadeIn(800);
 		
 		
 	}); // end of $(document).ready(function(){})
 
 </script>
 
-<div class="container py-4 mx-auto my-3" style="background-color: #fff9e5; border-radius: 1%;">
+<div id="div_container" class="container py-4 mx-auto my-3" style="background-color: #fefce7; border-radius: 1%;">
 		<h2 class="text-center pb-3">결제하기</h2>
 		<div class="row pb-3 mx-1">
 			<div class="col-md-9"></div>
@@ -125,6 +127,7 @@
 			</div>
 		</div>
 	</div>
+<div style="height: 100px;"></div>
 
 <jsp:include page="../jaesik/footer.jsp" />
 	

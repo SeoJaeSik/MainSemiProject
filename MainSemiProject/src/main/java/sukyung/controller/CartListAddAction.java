@@ -25,11 +25,15 @@ public class CartListAddAction extends AbstractController {
 			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 			
 			String userid = loginuser.getUserid();
-			String product_no = request.getParameter("product_no");
+			String product_name = request.getParameter("product_name");
+			String product_color = request.getParameter("product_color");
+			String product_size = request.getParameter("product_size");
 
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("userid", userid);
-			paraMap.put("product_no", product_no);
+			paraMap.put("product_name", product_name);
+			paraMap.put("product_color", product_color);
+			paraMap.put("product_size", product_size);
 			
 			// tbl_cart 테이블에서 cart_no 의 데이터행을 추가
 			InterProductDAO pdao = new ProductDAO();

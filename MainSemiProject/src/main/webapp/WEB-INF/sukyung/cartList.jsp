@@ -40,22 +40,36 @@
 		margin: 30px 0 0 0;
 		height: 100px;
 	}
-	input#cart_product_count {
-		background-color: #fff9e5;
+	label#add_product_color {
+		width: 100px;
+		text-align: left;
+	}
+	input.btn{opacity: 0;}
+	label#add_product_color:hover{
+		cursor: pointer;
+	}
+	.selected {
+		font-weight: bold;
+		font-size: 11pt;
+		text-decoration: underline;
 	}
 	
 </style>
 
 <script type="text/javascript">
 
-	let cart_product_count;
-	let b_flag = false;
-	let b_flag_click_btnUpdate = false;
-	
 	$(document).ready(function(){
+
+		$("div#div_container").hide();
+		$("div#div_container").fadeIn(800);
+		
+		let cart_product_count;
+		let b_flag = false;
+		let b_flag_click_btnUpdate = false;
 
 		$("div#body").hide();
 		$("div#error").hide();
+		$("img#add_product_image").hide();
 		
 	// *** 1. 수량 관련 이벤트
 		// 수량에서 "+" 또는 "-" 를 클릭하면 발생하는 이벤트
@@ -137,21 +151,6 @@
 		}); // end of $("input#CheckOne_product").click((e)=>{})
 
 	
-		// "주문하기" 를 클릭하면 발생하는 이벤트
-		$("button#btnOrder").click(function(){
-			
-			if(b_flag){ // 체크된 제품이 하나도 없을경우
-				alert("선택한 상품이 없습니다.");
-			}
-			else { // 한개이상의 제품이 체크된 경우
-				const frm = document.CartListFrm;
-				frm.action = "<%= request.getContextPath()%>/shop/delivery.moc";
-				frm.method = "post";
-				frm.submit();
-			}
-		}); // end of $("button#btnOrder").click(function(){})
-		
-		
 	// *** 3. 장바구니 변경사항을 DB에 반영하기 - AJAX
 		// 1) 수량변경 후 "변경" 버튼 클릭 - tbl_cart 테이블의 cart_product_count 를 update
 		$("button#btnCartUpdate").click(function(e){
@@ -200,18 +199,58 @@
 		}); // end of $("button#btnDelete").click(function(){})
 
 		
-		// 3) "추가하기" 버튼 클릭 - tbl_cart 테이블에 insert
+	// *** 4. 제품추천 - 로그인한 회원의 성별과 일치하는 고객유형코드의 상품을 추천함
+		let selectedColor = "${rndpvo.product_color}";
+		
+		// 1) 회원의 원래옵션(색상) checked 로 표시하기
+		$("input:radio[name='add_product_color']").each(function(index, elmt){
+			if($(elmt).val() == "${rndpvo.product_color}"){
+				$(elmt).prop("checked", true);
+				$("label#add_product_color").removeClass('selected');
+				$(elmt).parent().addClass('selected');
+			}
+		}); // end of $("input:radio[name='add_product_color']").each(function(index, elmt){})
+
+		
+		// 2) 회원의 원래옵션(이미지) 보여주기
+		$("img#add_product_image").each(function(index, elmt){
+			if($(elmt).attr('src') == "${rndpvo.product_image}"){
+				$(elmt).show();
+			}
+		}); // end of $("img#add_product_image").each(function(index, elmt){})
+		
+		
+		// 3) 선택한 색상의 css 변경
+		$("input:radio[name='add_product_color']").click(function(){
+			if($(this).prop("checked")){
+				$("label#add_product_color").removeClass('selected', {duration:1000});
+				$(this).parent().addClass('selected', {duration:1000});
+				selectedColor = $(this).val();
+
+				// 선택한 색상에 따른 이미지 보여주기
+				$("img#add_product_image").each(function(index, elmt){
+					if($(elmt).parent().attr('id') == selectedColor){
+						$("img#add_product_image").hide();
+						$(elmt).show();
+					}
+				}); // end of $("img#add_product_image").each(function(index, elmt){})
+			}
+		}); // end of $("input:radio[name='add_product_color']").click(function(){})
+
+		// 4) "추가하기" 버튼 클릭 - tbl_cart 테이블에 insert
 		$("button#btnAdd").click(function(){
 			
 			// 사이즈 선택했는지 확인하기
-			if($("select#add_product_no").val() == "사이즈"){ // 사이즈 미선택
+			if($("select#add_product_size").val() == "사이즈"){ // 사이즈 미선택
 				alert("사이즈를 선택해주세요");
 			}
 			else {
 				if(confirm("${requestScope.rndpvo.product_name}"+" 을 장바구니에 추가하시겠습니까?")){
 					$.ajax({
 						url:"<%= ctxPath%>/shop/cartListAdd.moc",
-			     		data:{"product_no":$("select#add_product_no").val()}, // 제품번호
+			     		data:{"product_name":$("span#add_product_name").text(),   // 제품명
+			     			  "product_color":$("input[name='add_product_color']:checked").val(), // 제품색상
+			     			  "product_size":$("select#add_product_size").val()}, // 제품사이즈
 			     		type:"post",
 			     		dataType:"json",
 			     		async:false,
@@ -257,9 +296,24 @@
 			$("div#delivery_fee").text("3,000원");
 		}
 		
-	}); // end of $(document).ready(function(){})
+	// *** 6. "주문하기" 를 클릭하면 발생하는 이벤트
+		$("button#btnOrder").click(function(){
+			
+			if(b_flag){ // 체크된 제품이 하나도 없을경우
+				alert("선택한 상품이 없습니다.");
+			}
+			else { // 한개이상의 제품이 체크된 경우
+				const frm = document.CartListFrm;
+				frm.action = "<%= request.getContextPath()%>/shop/delivery.moc";
+				frm.method = "post";
+				frm.submit();
+			}
+		}); // end of $("button#btnOrder").click(function(){})
+
 	
-	//////////////////////////////////////////////////////////////////////////////////////////
+	}); // end of $(document).ready(function(){})
+
+//////////////////////////////////////////////////////////////////////////////////////////
 	
 	// 수량이 변하면 호출되는 함수(1개~10개로 수량제한한다.)
 	function checkChangeCount(){
@@ -272,10 +326,24 @@
 			alert("최대 10개까지만 구매가능합니다.");
 		}
 	} // end of function checkChangeCount()
-			
+	
+	
+	// "주문하기" 를 클릭하면 호출되는 함수
+	function goOrder(){
+		if(b_flag){ // 체크된 제품이 하나도 없을경우
+			alert("선택한 상품이 없습니다.");
+		}
+		else { // 한개이상의 제품이 체크된 경우
+			const frm = document.CartListFrm;
+			frm.action = "<%= request.getContextPath()%>/shop/delivery.moc";
+			frm.method = "post";
+			frm.submit();
+		}
+	} // end of function goOrder()
+	
 </script>
 
-<div class="container py-4 mx-auto my-3" style="background-color: #fff9e5; border-radius: 1%;">
+<div id="div_container" class="container py-4 mx-auto my-3" style="background-color: #fefce7; border-radius: 1%;">
 		
 		<h2 class="text-center pb-3">장바구니</h2>
 		
@@ -285,7 +353,7 @@
 				<label for="CheckAll_product"><input type="checkbox" name="CheckAll_product" id="CheckAll_product" /> 전체 상품 선택/해제</label>
 			</div>
 			<div class="col-md-2">
-				<button type="button" id="btnOrder" class="btn btn-lg px-4">주문하기</button>
+				<button type="button" id="btnOrder" class="btn btn-lg px-4" onclick="goOrder()">주문하기</button>
 			</div>
 		</div>
 		
@@ -318,7 +386,7 @@
 			      	<td>
 				      	<span class="border py-1" style="border: solid 1px gray;">
 				      	  	<button type="button" class="btn btn-sm changeCount">-</button>
-					      	<input type="number" value="${cvo.cart_product_count}" id="cart_product_count" name="cart_product_count" class="col-md-4 text-center px-0" style="border: none;"/>
+					      	<input type="number" value="${cvo.cart_product_count}" id="cart_product_count" name="cart_product_count" class="col-md-4 text-center px-0" style="border: none; background-color: #fff9e5;"/>
 					      	<button type="button" class="btn btn-sm changeCount">+</button>
 					    </span>
 					    <div id="error" style="font-size: 10pt; margin: 5px auto;">
@@ -336,23 +404,38 @@
 		
 		<div id="div_extra" class="row my-5 py-3 mx-1">
 			<div class="col-md-3 text-right align-self-center">함께 구매하면 좋은 상품</div>
-			<div class="col-md-2 text-center"><img src="${requestScope.rndpvo.product_image}" id="add_product_image" name="add_product_image" width="120" class="img-thumbnail"/></div>
-			<div class="col-md-4 align-self-center">
-				<div class="my-1">
+			<div class="col-md-2 text-center">
+				<c:forEach var="colorpvo" items="${requestScope.colorList}">
+   				  <span id="${colorpvo.product_color}">
+   					<img src="${colorpvo.product_image}" id="add_product_image" name="add_product_image" width="120" class="img-thumbnail"/>
+   				  </span>
+	      		</c:forEach>
+			
+			</div>
+			<div class="col-md-3 align-self-center">
+				<div class="my-1 ml-2">
 					<span id="add_product_name" name="add_product_name" style="font-weight: bold;">${requestScope.rndpvo.product_name}</span>&nbsp;&nbsp;
 					<span id="add_product_price" name="add_product_price"><fmt:formatNumber value="${requestScope.rndpvo.product_price}" pattern="###,###" />원</span>
 	      		</div>
 	      		<div class="my-1">
-	      			<span class="text-center">${requestScope.rndpvo.product_color}</span><span id="add_product_color" name="add_product_color" class="rounded-circle" style="background-color: ${requestScope.rndpvo.product_color};"></span>&nbsp;&nbsp;
-		      		<select id="add_product_no" name="add_product_no" class="my-1">
+	      			<c:forEach var="colorpvo" items="${requestScope.colorList}" varStatus="status">
+		      			<label for="add_product_color${status.index}" id="add_product_color">
+		      				<span id="add_product_color" name="add_product_color" class="rounded-circle" style="background-color: ${colorpvo.product_color};"></span>
+		      				${colorpvo.product_color}
+		      				<input type="radio" class="btn" id="add_product_color${status.index}" name="add_product_color" value="${colorpvo.product_color}" />
+		      			</label>
+	      			</c:forEach>
+	      		</div>
+	      		<div class="my-1 ml-2">
+		      		<select id="add_product_size" name="add_product_size" class="my-1 px-2">
 		      			<option>사이즈</option>
 		      			<c:forEach var="pvo" items="${requestScope.sizeList}" >
-		      				<option value="${pvo.product_no}">${pvo.product_size}</option>
+		      				<option>${pvo.product_size}</option>
 		      			</c:forEach>
 		      		</select>
 				</div>
 	      	</div>
-			<div class="col-md-3 align-self-center text-center">
+			<div class="col-md-4 align-self-center text-center">
 				<button type="button" id="btnAdd" class="btn btn-lg px-5 py-3">추가하기</button>
 			</div>
 		</div>
@@ -374,7 +457,7 @@
 		<div class="row my-5 px-1">
 			<div class="col-md-8"></div>
 			<div class="col align-self-center text-right"><button type="button" id="btnContinue" class="btn btn-sm">쇼핑 계속하기</button></div>
-			<div class="col align-self-center text-left"><button type="button" id="btnOrder" class="btn btn-lg px-4">주문하기</button></div>
+			<div class="col align-self-center text-left"><button type="button" id="btnOrder" class="btn btn-lg px-4" onclick="goOrder()">주문하기</button></div>
 		</div>
 </c:if>
 		
@@ -409,27 +492,42 @@
 	</div>
 		<div id="div_extra" class="row mb-5 py-3 mx-1">
 			<div class="col-md-3 text-right align-self-center">고객님께 추천하는 상품</div>
-			<div class="col-md-2 text-center"><img src="${requestScope.rndpvo.product_image}" id="add_product_image" name="add_product_image" width="120" class="img-thumbnail"/></div>
-			<div class="col-md-4 align-self-center">
-				<div class="my-1">
+			<div class="col-md-2 text-center">
+				<c:forEach var="colorpvo" items="${requestScope.colorList}">
+   				  <span id="${colorpvo.product_color}">
+   					<img src="${colorpvo.product_image}" id="add_product_image" name="add_product_image" width="120" class="img-thumbnail"/>
+   				  </span>
+	      		</c:forEach>
+			
+			</div>
+			<div class="col-md-3 align-self-center">
+				<div class="my-1 ml-2">
 					<span id="add_product_name" name="add_product_name" style="font-weight: bold;">${requestScope.rndpvo.product_name}</span>&nbsp;&nbsp;
 					<span id="add_product_price" name="add_product_price"><fmt:formatNumber value="${requestScope.rndpvo.product_price}" pattern="###,###" />원</span>
 	      		</div>
 	      		<div class="my-1">
-	      			<span class="text-center">${requestScope.rndpvo.product_color}</span><span id="add_product_color" name="add_product_color" class="rounded-circle" style="background-color: ${requestScope.rndpvo.product_color};"></span>&nbsp;&nbsp;
-		      		<select id="add_product_no" name="add_product_no" class="my-1">
+	      			<c:forEach var="colorpvo" items="${requestScope.colorList}" varStatus="status">
+		      			<label for="add_product_color${status.index}" id="add_product_color">
+		      				<span id="add_product_color" name="add_product_color" class="rounded-circle" style="background-color: ${colorpvo.product_color};"></span>
+		      				${colorpvo.product_color}
+		      				<input type="radio" class="btn" id="add_product_color${status.index}" name="add_product_color" value="${colorpvo.product_color}" />
+		      			</label>
+	      			</c:forEach>
+	      		</div>
+	      		<div class="my-1 ml-2">
+		      		<select id="add_product_size" name="add_product_size" class="my-1 px-2">
 		      			<option>사이즈</option>
 		      			<c:forEach var="pvo" items="${requestScope.sizeList}" >
-		      				<option value="${pvo.product_no}">${pvo.product_size}</option>
+		      				<option>${pvo.product_size}</option>
 		      			</c:forEach>
 		      		</select>
 				</div>
 	      	</div>
-			<div class="col-md-3 align-self-center text-center">
+			<div class="col-md-4 align-self-center text-center">
 				<button type="button" id="btnAdd" class="btn btn-lg px-5 py-3">추가하기</button>
 			</div>
-		  </div>
-		  <div style="height: 100px;"></div>
+		</div>
+	<div style="height: 100px;"></div>
 	
 </c:if>
 </div>

@@ -5,14 +5,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import common.controller.AbstractController;
 
-public class DeliveryAction extends AbstractController {
+public class PaymentAction extends AbstractController {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		
+
 		super.setRedirect(false);
-		super.setViewPage("/WEB-INF/sukyung/delivery.jsp");
+		super.setViewPage("/WEB-INF/sukyung/payment.jsp");
 		
 	} // end of public void execute(HttpServletRequest request, HttpServletResponse response)
 

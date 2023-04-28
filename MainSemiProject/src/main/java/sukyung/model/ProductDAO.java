@@ -40,6 +40,34 @@ public class ProductDAO implements InterProductDAO {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
+	// 로그인한 회원이 장바구니에 담은 상품의 개수 조회(select)
+	@Override
+	public int cartCount(String userid) throws Exception {
+		
+		int cartCount = 0;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = " select count(cart_no) "
+					   + " from tbl_cart "
+					   + " where fk_userid = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid); // 로그인한 회원아이디
+
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			cartCount = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return cartCount;
+	} // end of public int cartCount(String userid) throws Exception
+
+	
 	// tbl_cart 테이블에서 로그인한 사용자(fk_userid)가 담은 제품의 정보 조회(select)
 	@Override
 	public List<CartVO> showCartList(String userid) throws Exception {
@@ -168,22 +196,19 @@ public class ProductDAO implements InterProductDAO {
 		
 		try {
 			conn = ds.getConnection();
-			String sql = " select product_no, product_color, product_image "
+			String sql = " select distinct(product_color), product_image "
 					   + " from tbl_product "
-					   + " where product_name = ? and product_size = ? "
-			   		   + " order by product_size ";
+					   + " where product_name = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, pvo.getProduct_name()); // 제품명
-			pstmt.setInt(2, pvo.getProduct_size()); // 제품사이즈
 
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
 				ProductVO colorpvo = new ProductVO();
-				colorpvo.setProduct_no(rs.getString(1));
-				colorpvo.setProduct_color(rs.getString(2));
-				colorpvo.setProduct_image(rs.getString(3));
+				colorpvo.setProduct_color(rs.getString(1));
+				colorpvo.setProduct_image(rs.getString(2));
 				selectColorList.add(colorpvo);
 			}
 
@@ -252,14 +277,28 @@ public class ProductDAO implements InterProductDAO {
 		
 		try {
 			conn = ds.getConnection();
-			String sql = " insert into tbl_cart(cart_no, fk_userid, fk_product_no, cart_product_count) "
-					   + " values(seq_tbl_cart_cartno.nextval, ? , ? , 1) ";
-			
+			String sql = " select product_no "
+					   + " from tbl_product "
+					   + " where product_name = ? and product_color = ? and product_size = ? "; 
+
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, paraMap.get("userid"));
-			pstmt.setString(2, paraMap.get("product_no"));
+			pstmt.setString(1, paraMap.get("product_name"));
+			pstmt.setString(2, paraMap.get("product_color"));
+			pstmt.setInt(3, Integer.parseInt(paraMap.get("product_size")));
 			
-			result = pstmt.executeUpdate();
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String product_no = rs.getString(1);
+				sql = " insert into tbl_cart(cart_no, fk_userid, fk_product_no, cart_product_count) "
+					+ " values(seq_tbl_cart_cartno.nextval, ? , ? , 1) ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, paraMap.get("userid"));
+				pstmt.setString(2, product_no);
+				
+				result = pstmt.executeUpdate();
+			}
 			
 		} finally {
 			close();
@@ -268,32 +307,44 @@ public class ProductDAO implements InterProductDAO {
 		return result;
 	} // end of public int cartAdd(String product_no) throws Exception
 
-
-	// 로그인한 회원이 장바구니에 담은 상품의 개수 조회(select)
+	
+	// tbl_cart 테이블에서 제품의 옵션 변경(update)
 	@Override
-	public int cartCount(String userid) throws Exception {
+	public int cartOptionUpdate(Map<String, String> paraMap) throws Exception {
 		
-		int cartCount = 0;
+		int result = 0;
 		
 		try {
 			conn = ds.getConnection();
-			String sql = " select count(cart_no) "
-					   + " from tbl_cart "
-					   + " where fk_userid = ? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userid); // 로그인한 회원아이디
+			String sql = " select product_no "
+					   + " from tbl_product "
+					   + " where product_name = ? and product_color = ? and product_size = ? "; 
 
-			rs = pstmt.executeQuery();
-			rs.next();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("product_name"));
+			pstmt.setString(2, paraMap.get("product_color"));
+			pstmt.setInt(3, Integer.parseInt(paraMap.get("product_size")));
 			
-			cartCount = rs.getInt(1);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				String product_no = rs.getString(1);
+				sql = " update tbl_cart set fk_product_no = ? "
+					+ " where cart_no = ? ";
+				
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, product_no);
+				pstmt.setInt(2, Integer.parseInt(paraMap.get("cart_no")));
+				
+				result = pstmt.executeUpdate();
+			}
 			
 		} finally {
 			close();
 		}
-		
-		return cartCount;
-	} // end of public int cartCount(String userid) throws Exception
+
+		return result;
+	} // end of public int cartOptionUpdate(Map<String, String> paraMap) throws Exception
+
 
 }

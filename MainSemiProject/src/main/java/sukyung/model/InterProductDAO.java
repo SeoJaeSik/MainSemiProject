@@ -5,6 +5,9 @@ import java.util.Map;
 
 public interface InterProductDAO {
 
+	// 로그인한 회원이 장바구니에 담은 상품의 개수 조회(select)
+	int cartCount(String userid) throws Exception;
+
 	// tbl_cart 테이블에서 로그인한 사용자(fk_userid)가 담은 제품의 정보 조회(select)
 	List<CartVO> showCartList(String userid) throws Exception;
 
@@ -26,8 +29,8 @@ public interface InterProductDAO {
 	// tbl_cart 테이블에 제품의 데이터 행 추가(insert)
 	int cartAdd(Map<String, String> paraMap) throws Exception;
 
-	// 로그인한 회원이 장바구니에 담은 상품의 개수 조회(select)
-	int cartCount(String userid) throws Exception;
+	// tbl_cart 테이블에서 제품의 옵션 변경(update)
+	int cartOptionUpdate(Map<String, String> paraMap) throws Exception;
 
 
 

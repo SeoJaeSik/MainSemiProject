@@ -20,6 +20,9 @@
 
 	$(document).ready(function(){
 		
+		$("div#div_container").hide();
+		$("div#div_container").fadeIn(800);
+		
 		// "고객정보동일" 체크박스를 클릭하면 발생하는 이벤트
 		$("input:checkbox[id='checkbox_same']").click((e)=>{
 			if($(e.target).prop("checked")){ // "고객정보동일" 체크박스가 체크되어있으면
@@ -27,11 +30,18 @@
 			}
 		});
 		
+		$("button#btnPay").click(function(){
+			const frm = document.deliveryFrm;
+			frm.action = "<%= request.getContextPath()%>/shop/payment.moc";
+			frm.method = "post";
+			frm.submit();
+		}); // end of $("button#btnPay").click(function(){})
+		
 	}); // end of $(document).ready(function(){})
 
 </script>
 
-<div class="container py-4 mx-auto my-3" style="background-color: #fff9e5; border-radius: 1%;">
+<div id="div_container" class="container py-4 mx-auto my-3" style="background-color: #fefce7; border-radius: 1%;">
 		<h2 class="text-center pb-3">배송정보</h2>
 		
 		<div class="col-md-10 py-5 mx-auto">
