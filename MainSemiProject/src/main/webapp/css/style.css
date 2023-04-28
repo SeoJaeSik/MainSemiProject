@@ -118,7 +118,7 @@ div#nav-group_ALL {
     top: 100%;
     left: 0px;
     height: 260px;
-    background-color: white;
+    background-color: #F5F5F5;
     opacity: 0;
     transition: all ease 0.5s;
 }
@@ -131,7 +131,7 @@ div#nav-group_Men {
     top: 100%;
     left: 0px;
     height: 260px;
-    background-color: white;
+    background-color: #F5F5F5;
     opacity: 0; 
     transition: all ease 0.5s;
 }
@@ -144,7 +144,7 @@ div#nav-group_Women {
     top: 100%;
     left: 0px;
     height: 260px;
-    background-color: white;
+    background-color: #F5F5F5;
     opacity: 0; 
     transition: all ease 0.5s;
 }
@@ -157,27 +157,26 @@ div#nav-group_Kids {
     top: 100%;
     left: 0px;
     height: 260px;
-    background-color: white;
+    background-color: #F5F5F5;
     opacity: 0; 
     transition: all ease 0.5s;
 }
-div#nav-group_Info {
+/* div#nav-group_Info {
 	width: 100%;
 	position: absolute;
 	color: black;
     display: block;
-      
     top: 100%;
     left: 0px;
     height: 260px;
     background-color: white;
     opacity: 0; 
     transition: all ease 0.5s;
-}
+} */
 
 
 div#prod_view{
-	padding: 35px 0 35px 0;
+	padding: 0;
 	height: 100%;
 	width: 100%;
 }
@@ -192,26 +191,9 @@ li.prod_view_list{
 	list-style: none;
 	width: 35%; 
 	height: 100%;
-	padding: 15px 30px 15px 0;
-	display: flex;
+	margin-right: 70px;
 }
 
-a.prod_image{
-	display: flex;
-	width: 250px;
-	border: solid 1px black;
-	margin: 0;
-	justify-content: center;
-	align-items: center;
-}
-a.prod_text{ 
-	display: flex;
-	width: auto; 
-	margin: 0;
-	border: solid 1px black;
-	justify-content: center;
-	align-items: center;
-}
 a#main_logo{
 	display: flex;
 	position: absolute;
@@ -467,7 +449,7 @@ li.foot_bottom_list{
 		
 	}
 	
-	div.exist_select > select {
+	div.exist_select > p > select {
 		float: right;
 		margin-right: 30px;
 		background: none;

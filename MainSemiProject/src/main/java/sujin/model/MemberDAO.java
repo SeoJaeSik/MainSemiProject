@@ -56,7 +56,7 @@ public class MemberDAO implements InterMemberDAO {
 	
 	
 	
-	// 1. 회원가입을 해주는 메소드 (tbl_member 테이블에 insert) 구현하기
+	// 1. (사용) 회원가입을 해주는 메소드 (tbl_member 테이블에 insert) 구현하기
 	@Override
 	public int registerMember(MemberVO member) throws SQLException {
 		
@@ -97,7 +97,7 @@ public class MemberDAO implements InterMemberDAO {
 
 	
 
-	// 2. ID 중복검사 해주는 메소드 구현하기 
+	// 2. (사용) ID 중복검사 해주는 메소드 구현하기 
 	// (tbl_member 테이블에서 userid 가 존재하면 true 를 리턴해주고, userid 가 존재하지 않으면 false 를 리턴한다.)
 	@Override
 	public boolean idDuplicateCheck(String userid) throws SQLException {
@@ -128,7 +128,7 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of 2. ID 중복검사 해주는 메소드---------------------------------
 
 
-	// 3. email 중복검사 해주는 메소드 구현하기
+	// 3. (사용) email 중복검사 해주는 메소드 구현하기
 	// (tbl_member 테이블에서 email 가 존재하면 true 를 리턴해주고, email 가 존재하지 않으면 false 를 리턴한다.)
 	@Override
 	public boolean emailDuplicateCheck(String email) throws SQLException {
@@ -161,7 +161,7 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of 3. email 중복검사 해주는 메소드---------------------------------
 
 
-	// 4. 입력받은 paraMap 을 갖고 한명의 회원정보를 리턴시켜주는 메소드(로그인처리) 구현하기
+	// 4. (사용) 입력받은 paraMap 을 갖고 한명의 회원정보를 리턴시켜주는 메소드(로그인처리) 구현하기
 	@Override
 	public MemberVO selectOneMember(Map<String, String> paraMap) throws SQLException {
 		
@@ -171,7 +171,7 @@ public class MemberDAO implements InterMemberDAO {
 			conn = ds.getConnection();
 			
 			String sql = " SELECT userid, name, email, mobile, postcode, address, detailaddress, extraaddress, gender, "
-					   + "        birthyyyy, birthmm, birthdd, point, registerday, "
+					   + "        birthyyyy, birthmm, birthdd, point, registerday, pwdchange_daygap, "
 					   + "		  pwdchangegap, "
 					   + "        NVL( latelogingap, trunc(months_between(sysdate,registerday)) ) AS latelogingap "
 					   + " FROM "
@@ -181,6 +181,7 @@ public class MemberDAO implements InterMemberDAO {
 					   + "            , substr(birthday,5,2) AS birthmm "
 					   + "            , substr(birthday,7,2) AS birthdd "
 					   + "            , point, to_char(registerday, 'yyyy-mm-dd') AS registerday "
+					   + "            , trunc(sysdate-lastpwdchangedate) AS pwdchange_daygap "
 					   + "            , trunc(months_between(sysdate,lastpwdchangedate)) AS pwdchangegap "
 					   + "     from tbl_member "
 					   + "     where status = 0 and userid = ? and pwd = ? "
@@ -216,6 +217,7 @@ public class MemberDAO implements InterMemberDAO {
 				member.setBirthday(rs.getString(10) + rs.getString(11) + rs.getString(12));
 				member.setPoint(rs.getInt(13));
 				member.setRegisterday(rs.getString(14));
+				member.setPwdchange_daygap(rs.getString("PWDCHANGE_DAYGAP"));
 				
 				if(rs.getInt("PWDCHANGEGAP") >= 3) { // -> rs.getInt(15) : 순서가 헷갈릴 때는 그냥 변수명으로 넣어줘도 된다
 					// 마지막으로 암호를 변경한 날짜가 현재시각으로부터 3개월이 넘었으면 true, 아니면 false
@@ -266,7 +268,7 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of 4. 입력받은 paraMap 을 갖고 한명의 회원정보를 리턴시켜주는 메소드-----------
 
 
-	// 5. 아이디 찾기 : 입력받은 paraMap 으로 성명&이메일을 입력받아 해당 사용자의 아이디를 알려주는 메소드 구현하기
+	// 5. (사용) 아이디 찾기 : 입력받은 paraMap 으로 성명&이메일을 입력받아 해당 사용자의 아이디를 알려주는 메소드 구현하기
 	@Override
 	public String findUserid(Map<String, String> paraMap) throws SQLException {
 		
@@ -309,7 +311,7 @@ public class MemberDAO implements InterMemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			/* status = 1 : 탈퇴하지 않은 회원중에서만! */
+			// status = 0 : 탈퇴하지 않은 회원중에서만! 
 			String sql = " select userid "
 					   + " from tbl_member "
 					   + " where status = 0 and and email = ? ";
@@ -323,7 +325,7 @@ public class MemberDAO implements InterMemberDAO {
 		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} finally {
-			close(); /* 무조건 자원반납 */
+			close(); // 무조건 자원반납 
 		}
 		
 		return isUserExist; // 단지 회원이 존재하는지만 넘겨주는것이다!
@@ -361,7 +363,7 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of 7. 암호변경하기--------------------------------------------------
 
 	
-	// 9. 회원의 개인정보 변경하기 메소드 구현하기
+	// 9. (사용) 회원의 개인정보 변경하기 메소드 구현하기
 	@Override
 	public int updateMember(MemberVO member) throws SQLException {
 		
@@ -370,23 +372,24 @@ public class MemberDAO implements InterMemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " update tbl_member set name = ? , pwd = ? , email = ? , mobile = ? , postcode = ? ,"
+			String sql = " update tbl_member set name = ? , userid = ?, pwd = ? , email = ? , mobile = ? , postcode = ? ,"
 					   + "                       address = ? , detailaddress = ? , extraaddress = ? , birthday = ? , "
 					   + "                       lastpwdchangedate = sysdate "
 					   + " where userid = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, member.getName());                /* 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다. */
-			pstmt.setString(2, Sha256.encrypt(member.getPwd())); /* Sha256.encrypt(평문) : qwer1234! 가 비번이라면 aksjhdluhsmeafoiwlhe1243242@#$%@ 이렇게 들어가도록 암호화 해줌 */			
-			pstmt.setString(3, aes.encrypt(member.getEmail()));  /* 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 익셉션처리 필수 */
-			pstmt.setString(4, aes.encrypt(member.getMobile())); /* 연락처를 AES256 알고리즘으로 양방향 암호화 시킨다. 익셉션처리 필수 */
-			pstmt.setString(5, member.getPostcode());
-			pstmt.setString(6, member.getAddress());
-			pstmt.setString(7, member.getDetailaddress());
-			pstmt.setString(8, member.getExtraaddress());
-			pstmt.setString(9, member.getBirthday());
-			pstmt.setString(10, member.getUserid());
+			pstmt.setString(1, member.getName());                
+			pstmt.setString(2, member.getUserid());				 /* 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다. */
+			pstmt.setString(3, Sha256.encrypt(member.getPwd())); /* Sha256.encrypt(평문) : qwer1234! 가 비번이라면 aksjhdluhsmeafoiwlhe1243242@#$%@ 이렇게 들어가도록 암호화 해줌 */			
+			pstmt.setString(4, aes.encrypt(member.getEmail()));  /* 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 익셉션처리 필수 */
+			pstmt.setString(5, aes.encrypt(member.getMobile())); /* 연락처를 AES256 알고리즘으로 양방향 암호화 시킨다. 익셉션처리 필수 */
+			pstmt.setString(6, member.getPostcode());
+			pstmt.setString(7, member.getAddress());
+			pstmt.setString(8, member.getDetailaddress());
+			pstmt.setString(9, member.getExtraaddress());
+			pstmt.setString(10, member.getBirthday());
+			pstmt.setString(11, member.getUserid());
 			
 			result = pstmt.executeUpdate();
 			// 정상적으로 insert 됐다면 1 이 나올 것이다.
@@ -402,7 +405,7 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of 9. 회원의 개인정보 변경하기 메소드--------------------------------
 
 
-	// 10. 암호 변경시 현재 사용중인 암호인지 아닌지 알아오는 메소드 구현하기
+	// 10. (사용) 암호 변경시 현재 사용중인 암호인지 아닌지 알아오는 메소드 구현하기
 	@Override
 	public int duplicatePwdCheck(Map<String, String> paraMap) throws SQLException {
 		

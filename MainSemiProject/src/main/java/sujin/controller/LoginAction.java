@@ -64,7 +64,7 @@ public class LoginAction extends AbstractController {
 				}
 				
 				// 2) 찐 로그인 성공
-			//	System.out.println(">>> 확인용 로그인한 사용자명 loginuser.getName() : " + loginuser.getName());
+				System.out.println(">>> 확인용 로그인한 사용자명 loginuser.getName() : " + loginuser.getName());
 			//  >>> 확인용 로그인한 사용자명 loginuser.getName() : 용수진
 				
 				// > WAS 메모리 ram 에 생성되어져 있는 session 을 불러오는 것이다. 
@@ -92,7 +92,7 @@ public class LoginAction extends AbstractController {
 					super.setRedirect(true);
 					
 					// 로그인을 하면 시작페이지(index.moc)로 가는 것이 아니라 로그인을 시도하려고 머물렀던 그 페이지로 돌아가기 위한 것이다.
-					// --- 부모 abstract 에서 setattribute 해온거을 get 해온다! ---
+					// --- 부모 abstract 에서 setattribute 해온것을 get 해온다! ---
 					String goBackURL = (String) session.getAttribute("goBackURL");
 					// -> goBackURL 은 /shop/prodView.up?pnum=5 또는 null 이 들어올 수도 있다.
 					

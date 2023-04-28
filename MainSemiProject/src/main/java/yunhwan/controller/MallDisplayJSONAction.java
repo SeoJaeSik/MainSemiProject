@@ -28,7 +28,7 @@ public class MallDisplayJSONAction extends AbstractController {
 		Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("start", start);  
 		
-		String end = String.valueOf(Integer.parseInt(start) + Integer.parseInt(len) - 1);
+		String end = String.valueOf( Integer.parseInt(start) + Integer.parseInt(len) - 1);
 		paraMap.put("end", end);  
 		
 		List<ProductVO> prodList = pdao.selectProduct(paraMap);
