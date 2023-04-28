@@ -128,14 +128,15 @@ public class MyaccountAction extends AbstractController {
       else {
          // 로그인을 안했을 경우
          
-         String message = "비정상적인 접근입니다. 로그인 후 이용해주세요.";
-         String loc = "javascript:history.back()";
-         
+    	 String message = "비정상적인 접근입니다. 로그인 후 이용해주세요.";
+         String loc = request.getContextPath()+"/index.moc";
+          
          request.setAttribute("message", message);
          request.setAttribute("loc", loc);
-      
-         super.setRedirect(true);
-         super.setViewPage(request.getContextPath() + "/index.moc");
+       
+         super.setRedirect(false);
+         super.setViewPage("/WEB-INF/jaesik/msg.jsp");
+
       }
       
      
