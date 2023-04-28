@@ -122,22 +122,23 @@ public class MyaccountAction extends AbstractController {
          request.setAttribute("pageBar", pageBar);
 
          super.setRedirect(false);
-         super.setViewPage("/WEB-INF/sujin/member/myaccount_board.jsp");
+         super.setViewPage("/WEB-INF/sujin/member/myaccount.jsp");
          
       }
       else {
          // 로그인을 안했을 경우
          
-    	 String message = "비정상적인 접근입니다. 로그인 후 이용해주세요.";
+         String message = "비정상적인 접근입니다. 로그인 후 이용해주세요.";
          String loc = "javascript:history.back()";
-          
+         
          request.setAttribute("message", message);
          request.setAttribute("loc", loc);
-       
+      
          super.setRedirect(true);
          super.setViewPage(request.getContextPath() + "/index.moc");
       }
       
+     
    }
 
 }
