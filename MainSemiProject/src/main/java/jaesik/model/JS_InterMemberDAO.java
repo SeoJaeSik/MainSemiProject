@@ -32,4 +32,10 @@ public interface JS_InterMemberDAO {
 	// 회원 하나의 상세정보를 담아오는 메소드 
 	MemberVO memberOneDetailAction(String userid) throws SQLException;
 
+	// 고객센터 게시판의 게시물 총페이지를 알아오기
+	int getBoardTotalPage(Map<String, String> paraMap) throws SQLException;
+
+	// 검색form을 받아 페이징한 고객센터 게시판, 검색한 게시판 보여주기
+	List<BoardVO> selectPagingBoard(Map<String, String> paraMap) throws SQLException;
+
 }
