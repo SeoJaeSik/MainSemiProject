@@ -7,6 +7,8 @@
 
 <jsp:include page="../../jaesik/header.jsp"/>
 
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" /> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 
 <script type="text/javascript">
 
@@ -45,49 +47,66 @@
 			history.go(-1);
 		});
 		
+		const method = "${requestScope.method}"; /* "" 를 꼭써줘야 string 타입으로 잘 들어올 수 있다 */
+		//	console.log("method => " + method); // 잘 나오나 확인해봐~
+			
+		if(method == "GET") {
+			/* 그냥 비번찾기 폼만 보임 */
+		}	
+		else if(method == "POST") {
+			
+			$("input#userid").val("${requestScope.userid}"); /* POST 일때면 넘어온 userid 값을 그대로 넘겨준다 */
+			$("input#email").val("${requestScope.email}");   /* POST 일때면 넘어온 email 값을 그대로 넘겨준다 */
+		
+			if(${requestScope.isUserExist == false}) {
+				alert("입력하신 아이디 또는 이메일 사용자의 정보가 없습니다.");
+				// 다시 비번찾기 창에 원래 입력했던 값까지 유지함
+			}
+			else if (${requestScope.isUserExist == true && requestScope.sendMailSuccess == false}) {
+				alert("메일 발송에 실패하였습니다. 아이디와 이메일을 확인해주세요.");
+				// 다시 비번찾기 창에 원래 입력했던 값까지 유지함
+			}
+			else if (${requestScope.isUserExist == true && requestScope.sendMailSuccess == true}) {
+				
+				alert("비밀번호를 변경할 수 있는 링크를 ${requestScope.email} 로 전송되었습니다.");
+				location.href="javascript:history.go(-2);";
+				// 입력했던 정보를 지우고 로그인 창으로 돌아감
+			}
+			
+			
+			
+	   		
+		}//end of else if(method == "POST")-----------------------------------------
+		
+		
 	});//end of ready()-------------------------
+	
 	
 </script>
 
 
-<%-- ** 비밀번호 찾기 ** --%>
+<%-- ** 비밀번호 찾기 form ** --%>
 
 <div class="container my-5 mx-auto bg-white">
 
 	<form name="pwdFindFrm" class="col-md-10 py-3 mx-auto">
-		<h2 class="text-center pb-3" style="font-weight:bold;">FORGET YOUR PASSWORD?</h2>
+		<h2 class="text-center pb-3" style="font-weight:bold;">FORGET YOUR <br> PASSWORD?</h2>
 		<div style="margin-bottom: 40px; text-align: center;">
 			<small>Please enter your id and email address ro recieve password link.</small>
 		</div>
-		<div class="form-group row col-8 mx-auto my-3">
-		    <input class="form-control mx-auto" type="text" id="userid" placeholder = "Id" />
+		<div class="form-group row col-6 mx-auto my-3">
+		    <input class="form-control mx-auto" type="text" id="userid" name="userid" placeholder = "Id" autocomplete="off" required />
 		</div>
-		<div class="form-group row col-8 mx-auto my-3">
-		    <input class="form-control mx-auto" type="text" id="email" placeholder = "Email" />
+		<div class="form-group row col-6 mx-auto my-3">
+		    <input class="form-control mx-auto" type="text" id="email" name="email" placeholder = "Email" autocomplete="off" required />
 		</div>
-	   	<div class="form-group row col-8 mx-auto my-3" id="div_btnFind">
+	   	<div class="form-group row col-6 mx-auto my-3" id="div_btnFind">
 	       	<button type="button" class="btn btn-warning form-control mx-auto" id="btnFind">C O N T I N U E</button>
 	   	</div>
-	   	<div class="form-group row col-8 mx-auto my-3">
-	   		<small class="passwdFindClose" style="cursor:pointer; text-decoration:underline; text-align:left;">cancel</small>
+	   	<div class="form-group row col-6 mx-auto my-3">
+	   		<small class="passwdFindClose" style="cursor:pointer; text-decoration:underline; text-align:left; font-size:13pt;">cancel</small>
 	   	</div>
 	</form>
-	
-	<div class="my-3" id="div_findResult">
-	    <p class="text-center">
-	    	<c:if test="${requestScope.isUserExist == false}">
-	    		<span style="color: red;">사용자 정보가 없습니다.</span>
-	    	</c:if>
-	    	
-	    	<c:if test="${requestScope.isUserExist == true && requestScope.sendMailSuccess == true}">
-	    		<span style="font-size:10pt;">비밀번호를 변경할 수 있는 링크를 ${requestScope.email} 로 전송되었습니다.</span><br>
-	    	</c:if>
-	    	
-	    	<c:if test="${requestScope.isUserExist == true && requestScope.sendMailSuccess == false}">
-	    		<span style="color: red;">메일발송에 실패했습니다.</span><br>
-	    	</c:if>
-	  	</p>
-	</div>
 	
 </div>
 

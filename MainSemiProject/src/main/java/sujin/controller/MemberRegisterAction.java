@@ -53,6 +53,8 @@ public class MemberRegisterAction extends AbstractController {
 				
 				if(n==1) { // 회원이 정상적으로 가입되었다면,
 					
+					// ** [신규회원가입쿠폰을 발행한다면 이곳에 메소드 추가하면 끗~~~] **
+					
 					request.setAttribute("userid", userid);
 					request.setAttribute("pwd", pwd);
 					

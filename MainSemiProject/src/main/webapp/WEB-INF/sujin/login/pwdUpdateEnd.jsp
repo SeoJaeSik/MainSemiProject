@@ -76,9 +76,8 @@
 				frm.method = "POST";
 				frm.submit();
 			}
-			
 			 
-		});//end of ready----------------------------
+		});//end of $("button#btnUpdate").click(function(){})----------------------------
 		
 	});//end of ready()-------------------------
 	
@@ -107,10 +106,10 @@
    	</c:if>
 </form>
 
-	<c:if test="${requestScope.method == 'POST' && requestScope.n == 1}">
-	   	<div id="div_updateResult" align="center">
-	    	사용자 ID ${requestScope.userid} 님의 암호가 새로이 변경되었습니다.
-	    </div> 
-   	</c:if>
-   	
-   	<jsp:include page="../../jaesik/footer.jsp"/>
+<c:if test="${requestScope.method == 'POST' && requestScope.n == 1}">
+	<div id="div_updateResult" align="center">
+ 		사용자 ID ${requestScope.userid} 님의 암호가 새로이 변경되었습니다.
+ 	</div> 
+</c:if>
+
+<jsp:include page="../../jaesik/footer.jsp"/>

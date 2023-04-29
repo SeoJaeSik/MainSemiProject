@@ -8,7 +8,7 @@ import javax.mail.internet.*;
 public class GoogleMail {
 
 	// 비밀번호 변경을 할 수 있는 링크를 email 로 전송해주는 메소드 생성
-	public void sendmail(String recipient) throws Exception { 
+	public void sendmail(String recipient, String emailContents) throws Exception { 
 		
 		// 1. 정보를 담기 위한 객체
         Properties prop = new Properties(); 
@@ -43,7 +43,7 @@ public class GoogleMail {
         MimeMessage msg = new MimeMessage(ses);
 
         // 제목 설정
-        String subject = "MOSACOYA 회원님의 비밀번호를 변경하세요";
+        String subject = "[MOSACOYA] Password Reset";
         msg.setSubject(subject);
                 
         // 보내는 사람의 메일주소
@@ -55,9 +55,8 @@ public class GoogleMail {
         Address toAddr = new InternetAddress(recipient);
         msg.addRecipient(Message.RecipientType.TO, toAddr);
                 
-        // 메시지 "본문"의 내용과 형식, 캐릭터 셋 설정 [ㅠㅠ 아직 미완!!]
-        msg.setContent("<button class='btn btn-warning'>RESET PASSWORD</button>", "text/html;charset=UTF-8");
-                
+        msg.setContent(emailContents, "text/html;charset=UTF-8");
+        
         // 메일 발송하기
         Transport.send(msg);
         
