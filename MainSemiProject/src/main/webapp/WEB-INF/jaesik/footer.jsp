@@ -89,7 +89,7 @@
 		</div>
 	</div>
 	<div>
-		<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn px-3 py-2" style="z-index:1; font-weight: 700; justify-content: center; align-items: center; display: flex; position: fixed; top: 90%; left: 89%; background-color: #fdd007; color: #645510; fill: #645510; border-radius: 999rem; border: none;">
+		<button type="button" data-toggle="modal" data-target="#complainModal" class="btn px-3 py-2" style="z-index:1; font-weight: 700; justify-content: center; align-items: center; display: flex; position: fixed; top: 90%; left: 89%; background-color: #fdd007; color: #645510; fill: #645510; border-radius: 999rem; border: none;">
 			<span>
 				<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" class="mr-2 mb-1"> 
 					<path d="M11,12.3V13c0,0-1.8,0-2,0v-0.6c0-0.6,0.1-1.4,0.8-2.1c0.7-0.7,1.6-1.2,1.6-2.1c0-0.9-0.7-1.4-1.4-1.4 c-1.3,0-1.4,1.4-1.5,1.7H6.6C6.6,7.1,7.2,5,10,5c2.4,0,3.4,1.6,3.4,3C13.4,10.4,11,10.8,11,12.3z"></path>
@@ -101,7 +101,7 @@
 		</button>
 	</div>
 	<%-- 고객센터 Modal --%>
-	<div class="modal fade" id="exampleModal">
+	<div class="modal fade" id="complainModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 		      

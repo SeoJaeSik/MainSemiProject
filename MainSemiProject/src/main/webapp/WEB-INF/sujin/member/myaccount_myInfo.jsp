@@ -18,7 +18,7 @@
 	
 	.btn_userEdit {
 	  padding: 10px 20px;
-	  background-color: #f0e68f;
+	  background-color: #ffeb99;
 	  color: black;
 	  border: none;
 	  border-radius: 5px;

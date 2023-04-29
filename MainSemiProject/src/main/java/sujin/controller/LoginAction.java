@@ -8,9 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
-import sujin.model.InterMemberDAO;
-import sujin.model.MemberDAO;
-import sujin.model.MemberVO;
+import sujin.model.*;
+import sukyung.model.*;
 
 public class LoginAction extends AbstractController {
 
@@ -58,13 +57,13 @@ public class LoginAction extends AbstractController {
 					request.setAttribute("loc", loc);
 					
 					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/msg.jsp");
+					super.setViewPage("/WEB-INF/sujin/msg.jsp");
 					
 					return; // 메소드 종료
 				}
 				
 				// 2) 찐 로그인 성공
-				System.out.println(">>> 확인용 로그인한 사용자명 loginuser.getName() : " + loginuser.getName());
+			//	System.out.println(">>> 확인용 로그인한 사용자명 loginuser.getName() : " + loginuser.getName());
 			//  >>> 확인용 로그인한 사용자명 loginuser.getName() : 용수진
 				
 				// > WAS 메모리 ram 에 생성되어져 있는 session 을 불러오는 것이다. 
@@ -72,6 +71,10 @@ public class LoginAction extends AbstractController {
 				
 				session.setAttribute("loginuser", loginuser); // session 에 로그인된 사용자를 "loginuser" 로 저장
 			
+				InterProductDAO pdao = new ProductDAO();
+				int cartCount = pdao.cartCount(userid); // 로그인한 회원이 장바구니에 담은 상품수량
+				loginuser.setCartCount(cartCount); // 세션에 저장된 로그인회원의 상품수량 업데이트
+				
 				if( loginuser.isRequirePwdChange() ) {
 					System.out.println();
 					String message = "비밀번호를 변경한지 3개월이 지났습니다. 암호를 변경하세요.";
@@ -82,7 +85,7 @@ public class LoginAction extends AbstractController {
 					request.setAttribute("loc", loc);
 					
 					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/msg.jsp");
+					super.setViewPage("/WEB-INF/sujin/msg.jsp");
 					
 				}
 				else {
@@ -114,7 +117,7 @@ public class LoginAction extends AbstractController {
 				request.setAttribute("loc", loc);
 				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/msg.jsp");
+				super.setViewPage("/WEB-INF/sujin/msg.jsp");
 			
 			}//end of (loginuser == null)--------------------
 	 

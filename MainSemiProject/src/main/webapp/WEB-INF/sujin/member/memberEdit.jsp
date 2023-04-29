@@ -442,8 +442,8 @@
         </div>
 
 	  	<div class="form-group row col-md-10 mx-auto">
-	   		<button type="button" class="btn btn-md col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#f0e68f; " id="btnUpdate" onclick="goEdit()">수정하기</button>
-			<button type="button" class="btn btn-md col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#f0e68f; " onclick="javascript:location.href='myaccount.moc'">취소하기</button>
+	   		<button type="button" class="btn btn-md col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#ffeb99; " id="btnUpdate" onclick="goEdit()">수정하기</button>
+			<button type="button" class="btn btn-md col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#ffeb99; " onclick="javascript:location.href='myaccount.moc'">취소하기</button>
 	  	</div>
 
 	</form>
