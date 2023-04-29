@@ -8,16 +8,18 @@ public class MyUtil {
 	// *** ? 다음의 데이터까지 포함한 현재 url 주소를 알려주는 메소드를 생성하자 *** //
 	public static String getCurrentURL(HttpServletRequest request) {
 		
-		// 1. [URL] 예를들어 웹브라우저 주소 입력창에서 
-		// http://localhost:9090/MyMVC/member/memberList.up?searchType=name&searchWord=유&sizePerPage=5 와 같이 입력됐다면 
+		// 예를들어 아래처럼 웹브라우저 주소 입력창에 링크를 입력하면 
+		// http://localhost:9090/MyMVC/member/memberList.up?searchType=name&searchWord=유&sizePerPage=5
+		
+		// [getRequestURL] url 은 ? 앞까지만 보여준다 
 		String currentURL = request.getRequestURL().toString();
-	//	System.out.println("~~~ 확인용 currentURL = > " + currentURL);
-		// ~~~ 확인용 currentURL = > http://localhost:9090/MyMVC/member/memberList.up 로 url 은 ? 앞까지만 보여준다
+			// http://localhost:9090/MyMVC/member/memberList.up
 
+		// [getQueryString] ? 뒤에 데이터값을 보여준다
 		String queryString = request.getQueryString();
-	//	System.out.println("~~~ 확인용 queryString = > " + queryString);
-		// ~~~ 확인용 queryString  = > searchType=name&searchWord=유&sizePerPage=5 로 ? 뒤에 데이터값을 보여준다(GET방식일때)
-		// ~~~ 확인용 queryString  = > null (POST방식일때)
+			// (GET방식일때)  searchType=name&searchWord=유&sizePerPage=5  
+			// (POST방식일때) null 
+		
 		
 		if(queryString != null) { // GET 방식인 경우
 			currentURL += "?" + queryString;
@@ -26,15 +28,41 @@ public class MyUtil {
 		}
 		
 		
-		String ctxPath = request.getContextPath(); 	// ctxPath = /MyMVC
+		String ctxPath = request.getContextPath(); 	// ctxPath = /SemiProject_MOSACOYA
 		
 		int beginIndex = currentURL.indexOf(ctxPath) + ctxPath.length();	
-		// beginIndex (27) = ctxPath 가 시작되는 곳의 위치값 (21) + ctxPath 의 길이 (6)
+		// beginIndex (41) = ctxPath 가 시작되는 곳의 위치값 (21) + ctxPath 의 길이 (20)
 		
 		currentURL = currentURL.substring(beginIndex);
 		// --> "/member/memberList.up?searchType=name&searchWord=유&sizePerPage=5" 만을 얻어왔다
 		
 		return currentURL;
 	}
+	
+	
+	// *** 비밀번호 변경을 위해 전송된 URL 에서 이메일 알아내기 *** //
+	public static String getCurrentURLuserid(HttpServletRequest request) {
+		
+		String currentURLuserid = request.getRequestURL().toString();
+		
+		String queryString = request.getQueryString(); 
+		
+		if(queryString != null) { // GET 방식인 경우
+			currentURLuserid += "?" + queryString;
+		}
+		
+		int beginIndex = currentURLuserid.indexOf("?") + "userid=".length();
+		
+		int endIndex = currentURLuserid.indexOf("&", beginIndex);
+		
+		currentURLuserid = currentURLuserid.substring(beginIndex, endIndex-beginIndex);
+		// http://localhost:9090/SemiProject_MOSACOYA/login/pwdUpdateEnd.moc?userid=sudin&email=jin970510@naver.com 중
+		// --> sudin 만을 얻어왔다
+		
+		System.out.println("currentURLuserid 확인 : " + currentURLuserid);
+		
+		return currentURLuserid;
+	}
+	
 
 }

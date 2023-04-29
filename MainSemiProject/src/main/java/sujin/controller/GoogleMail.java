@@ -37,7 +37,7 @@ public class GoogleMail {
         Session ses = Session.getInstance(prop, smtpAuth);
            
         // 메일을 전송할 때 상세한 상황을 콘솔에 출력한다. *잘 가나 확인용*
-        ses.setDebug(true);
+   //     ses.setDebug(true);
                 
         // 메일의 내용을 담기 위한 객체생성
         MimeMessage msg = new MimeMessage(ses);
