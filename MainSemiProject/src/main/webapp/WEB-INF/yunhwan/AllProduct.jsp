@@ -85,8 +85,13 @@
 		// === scroll 이벤트 발생시키기 끝 === //
 		
 		
+		
+		
+		
+		
 	}); // end of $(document).ready(function() -----------------
 
+	// 모든제품에 대한 정보를 DB에서 가져와 뿌려주는 함수
 	function displayAll(start) {
        
 		$.ajax({
@@ -126,19 +131,18 @@
 					}
 					
 					html += "<div class='col-md-6 col-lg-4 col-xl-4' style='margin= 0 auto; padding=0px'>"+
-									"<div id='product-1' class='single-product'>"+
+								"<div id='product-1' class='single-product' style='display: flex; justify-content: center; align-items: center;'>"+
 									"<div class='part-1'>"+
-										"<img alt='제품 준비 중입니다.' style='width:inherit; height:inherit;' src="+item.product_image+" href='/MainSemiProject/shop/product.moc'>"+
-										"<span class='discount'>"+item.sale_count+"</span>"+
+										"<img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+" href='/MainSemiProject/shop/product.moc'>"+
 										"<ul>"+
 											"<li><a href='/MainSemiProject/shop/cartList.moc'><i class='fas fa-shopping-cart'></i></a></li>"+
 										"</ul>"+
 									"</div>"+
-									"<div class='part-2'>"+
+								"</div>"+
+									"<div class='part-2' style='text-align:center;'>"+
 										"<h3 class='product-title'>"+item.product_name+"</h3>"+
 										"<h4 class='product-price'><i class='fa fa-krw' style='font-size:14px'>&nbsp;"+(item.product_price).toLocaleString('en')+"</i></h4>"+
 									"</div>"+
-								"</div>"+
 							"</div>";
 					
 				//	2 5	8	
@@ -148,6 +152,8 @@
 							
 				});// end of $.each(json, function(index, item)-------------------
 			        
+				
+						
 			
 			// 전체상품 상품 결과물 출력하기
 			$("div#displayAll").append(html);		
@@ -172,8 +178,102 @@
 		
 		});
 		        
-		}
+		}// end of function displayAll(start)------------------------------------
 			
+		
+		
+		
+		// 모든제품에 대한 정보를 DB에서 가져와 뿌려주는 함수
+		function displayAllRunning(start) {
+	       
+			$.ajax({
+				url:"<%= request.getContextPath()%>/shop/mallDisplayJSON.moc",
+				//	type:"GET", // defualt 가 get
+				data:{"start":start, // "1" "7" "13" "19" "25"
+					  "len":lenAll}, //  6   6    6    6    6
+				dataType:"json",
+			//	async:true, // 비동기방식, default도 비동기임
+				success:function(json){
+					
+				//	console.log("확인용 json => " + json);
+				//	console.log("json 의 타입 => " + typeof json);
+				//	console.log("확인용 json => " + JSON.stringify(json));
+				//	console.log("JSON.stringify(json) 의 타입 => " + typeof JSON.stringify(json));
+				<%--
+				     확인용 json => [{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":200,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":190,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":180,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":170,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":210,"product_color":"black","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":200,"product_color":"black","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"}]
+				--%>	
+				
+				let html = "";
+				
+				if(start == "1" && json.length == 0) {
+				
+				    html += "현재 상품 준비중...";
+				
+					$("div#displayAll").html(html); // id가 displayAll인 div에 값을 뿌려준다.
+			
+				}
+				
+				else if(json.length > 0) {
+				
+					$.each(json, function(index, item) {
+						
+					//	0 3 6
+					    if(index%3 == 0) {
+							html += "<div style='display:flex'>";		
+						}
+						
+						html += "<div class='col-md-6 col-lg-4 col-xl-4' style='margin= 0 auto; padding=0px'>"+
+									"<div id='product-1' class='single-product' style='display: flex; justify-content: center; align-items: center;'>"+
+										"<div class='part-1'>"+
+											"<img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+" href='/MainSemiProject/shop/product.moc'>"+
+											"<ul>"+
+												"<li><a href='/MainSemiProject/shop/cartList.moc'><i class='fas fa-shopping-cart'></i></a></li>"+
+											"</ul>"+
+										"</div>"+
+									"</div>"+
+										"<div class='part-2' style='text-align:center;'>"+
+											"<h3 class='product-title'>"+item.product_name+"</h3>"+
+											"<h4 class='product-price'><i class='fa fa-krw' style='font-size:14px'>&nbsp;"+(item.product_price).toLocaleString('en')+"</i></h4>"+
+										"</div>"+
+								"</div>";
+						
+					//	2 5	8	
+						if((index+1)%3 == 0) {
+							html += "</div>";		
+						}
+								
+					});// end of $.each(json, function(index, item)-------------------
+				        
+					
+							
+				
+				// 전체상품 상품 결과물 출력하기
+				$("div#displayAll").append(html);		
+				
+				// $("span#countHIT") 에 지금까지 출력된 상품의 개수를 누적해서 기록한다.
+				$("span#countAll").text( Number($("span#countAll").text()) + json.length ); // span 태그는 value값이 없다. 그래서 text로 해준다.(아래 태그를 보면 이해할 수 있다.)
+																			  // text()는 읽어온다는 것 text(내용)은 넣어준다는 것
+																	
+				// 스크롤을 계속해서 countHIT 값과 totalHITCount 값이 일치하는 경우 
+				if( $("span#totalAllCount").text() == $("span#countAll").text() ) {
+				    $("span#end").html("더이상 조회할 제품이 없습니다.");
+				
+				}
+				
+				}// end of else if(json,length > 0)-------------------------
+							
+				},
+				
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			
+			});
+			        
+			}// end of function displayAll(start)------------------------------------
+		
+		
+		
 	
 
 </script>
@@ -320,16 +420,18 @@
 			<!-- select 태그 섹션 -->
 			<div>
 			<!-- select 태그 섹션 -->
-				<div class="exist_select">
-					<p>Product List
-						<!-- 상품 정렬 select 태그 -->
-						<select class="select" name="sortbar">
-							<option value="recommend" style="text-align: center;">추천순</option>
-							<option value="title-ascending" style="text-align: center;">이름 오름차순</option>
-							<option value="title-descending" style="text-align: center;">이름 내림차순</option>
-						</select>
+				<div class="exist_select" id="product_order_list">
+					<!-- 상품 정렬 select 태그 -->
+					<div style="padding-top: 42px; padding-right: 20px; padding-bottom: 0px; text-align: right;">
+						<a href="javascript:recentlist();" style="color: black;">최신순</a>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp
+						<a href="javascript:pricelist();" style="color: black;">낮은가격</a>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp
+						<a href="javascript:pricelistdesc();" style="color: black;">높은가격</a> 
+						<br>
+						<br>
+						<hr>
+					</div>
 					<!-- 상품 정렬 select 태그 끝 -->
-					</p>
+					
 						
 					
 			<!-- select 태그 섹션 끝 -->
@@ -341,7 +443,7 @@
 			<!-- 제품목록 섹션 -->
 				<div class="section-products">
 					<div class="container">
-						<div id="displayAll"> <%-- 이 안에 Ajax가 들어갈 것이다. --%>
+						<div id="displayAll" style="padding: 0;"> <%-- 이 안에 Ajax가 들어갈 것이다. --%>
 							<!-- Single Product -->
 						<%-- 	
 			 		 		<div class="col-md-6 col-lg-4 col-xl-4">

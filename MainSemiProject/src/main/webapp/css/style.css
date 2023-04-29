@@ -418,7 +418,7 @@ li.foot_bottom_list{
 	div#sidefull > div#div_row > div#side_md_2 > div#sidebar_area > nav#sidebar_group {
 		width: 100px;
 		margin: 5px;
-		padding: 10px 0 0 15px;
+		padding: 30px 0 0 15px;
 		vertical-align: baseline;
 		position: relative;
 	}
@@ -506,35 +506,43 @@ li.foot_bottom_list{
 		font-size: 20px;
 	}
 	
-	ul#sidebar_color > li.colors > a:nth-child(1) > span {
-	    background-color:red;
-	}
-	
-	ul#sidebar_color > li.colors > a:nth-child(2) > span {
-	    background-color:orange;
-	}
-	
-	ul#sidebar_color > li.colors > a:nth-child(3) > span {
-	    background-color:yellow;
-	}
-	
-	ul#sidebar_color > li.colors > a:nth-child(4) > span {
-	    background-color:green;
+	ul#sidebar_color > li.colors{
+		padding-left: 7px;
 	}
 	
 	ul#sidebar_color > li.colors:nth-child(2) > a:nth-child(1) > span {
-	    background-color:blue;
+	    background-color: gray;
 	}
-	
+
 	ul#sidebar_color > li.colors:nth-child(2) > a:nth-child(2) > span {
-	    background-color:navy;
+	    background-color:pink;
 	}
 	
 	ul#sidebar_color > li.colors:nth-child(2) > a:nth-child(3) > span {
-	    background-color:purple;
+	    background-color:red;
 	}
 	
-	ul#sidebar_color > li.colors:nth-child(2) > a:nth-child(4) > span {
+	ul#sidebar_color > li.colors:nth-child(3) > a:nth-child(1) > span {
+	    background-color:white;
+	}
+	
+	ul#sidebar_color > li.colors:nth-child(3) > a:nth-child(2) > span {
+	    background-color:yellow;
+	}
+	
+	ul#sidebar_color > li.colors:nth-child(3) > a:nth-child(3) > span {
+	    background-color:beige;
+	}
+	
+	ul#sidebar_color > li.colors:nth-child(4) > a:nth-child(1) > span {
+	    background-color:black;
+	}
+	
+	ul#sidebar_color > li.colors:nth-child(4) > a:nth-child(2) > span {
+	    background-color:blue;
+	}
+	
+	ul#sidebar_color > li.colors:nth-child(4) > a:nth-child(3) > span {
 	    background-color:silver;
 	}
 	
@@ -547,7 +555,7 @@ li.foot_bottom_list{
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
 
 .section-products {
-    padding: 80px 0 54px;
+    padding: 40px 0 54px;
 }
 
 .section-products .header {
@@ -567,7 +575,7 @@ li.foot_bottom_list{
 }
 
 .section-products .single-product {
-    margin-bottom: 26px;
+    margin-bottom: 0px;
 }
 
 .section-products .single-product .part-1 {
@@ -670,11 +678,15 @@ li.foot_bottom_list{
     color: #fe302f;
 }
 
-.section-products .single-product .part-2 .product-title {
+div.part-2 {
+	margin-bottom: 50px;
+}
+
+div.part-2 .product-title {
     font-size: 1rem;
 }
 
-.section-products .single-product .part-2 h4 {
+div.part-2 h4 {
     display: inline-block;
     font-size: 1rem;
 }
@@ -724,27 +736,6 @@ li.foot_bottom_list{
 
 
 /*-----------------------수진 로그인 css------------------------  */
-   table#loginTbl {
-         width: 100%;
-         margin-top: 50px;
-         margin-bottom: 50px;
-         text-align: center;
-    }
-   
-    table#loginTbl #th {
-         font-weight: bold;
-         font-size: 30pt;
-         text-align: center;
-         height: 30px;
-         letter-spacing: 10px;
-    }
-   
-    table#loginTbl td {
-         line-height: 35px;
-         width: 200px;
-         
-    }
-    
     #p2 {
           line-height: 10px;
           letter-spacing: 0;

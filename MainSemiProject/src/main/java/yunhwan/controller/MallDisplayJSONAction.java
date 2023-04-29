@@ -31,7 +31,10 @@ public class MallDisplayJSONAction extends AbstractController {
 		String end = String.valueOf( Integer.parseInt(start) + Integer.parseInt(len) - 1);
 		paraMap.put("end", end);  
 		
+		//전체제품을 가져옴
 		List<ProductVO> prodList = pdao.selectProduct(paraMap);
+		// 전체제품 중 러닝화만 가져옴
+		List<ProductVO> AllRunningProdList = pdao.selectAllRunningProduct(paraMap);
 		
 		JSONArray jsonArr = new JSONArray(); // []
 		
@@ -52,6 +55,7 @@ public class MallDisplayJSONAction extends AbstractController {
 	            jsonObj.put("upload_date", pvo.getUpload_date());
 	            jsonObj.put("product_color", pvo.getProduct_color());
 	            jsonObj.put("product_size", pvo.getProduct_size());
+	            jsonObj.put("sale_count", pvo.getSale_count());
 				
 	            jsonArr.put(jsonObj); 	// [{}]
 	            						// [{},{}]
@@ -77,6 +81,6 @@ public class MallDisplayJSONAction extends AbstractController {
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/jsonview.jsp");
 
-	}
+	}//end of public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception------------------------
 
 }
