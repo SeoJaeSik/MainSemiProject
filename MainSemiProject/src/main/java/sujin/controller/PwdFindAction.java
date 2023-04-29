@@ -77,16 +77,16 @@ public class PwdFindAction extends AbstractController {
 					
 					
 					String emailContents = sb.toString();
-					System.out.println("emailContents 확인 : " + emailContents);
+				//	System.out.println("emailContents 확인 : " + emailContents);
 					
 					mail.sendmail(email, emailContents);
 					sendMailSuccess = true; // 메일 전송이 성공했음을 기록함 
-					System.out.println("sendMailSuccess 확인 : " + sendMailSuccess);
+				//	System.out.println("sendMailSuccess 확인 : " + sendMailSuccess);
 					
 					// * 세션 불러오기 -> 현재 비밀번호 찾기에서 입력한 이메일을 세션에 저장시킨다
 					HttpSession session = request.getSession();
 					session.setAttribute("pwdfindsend_email", email);
-					System.out.println("email 확인 : " + email);
+				//	System.out.println("email 확인 : " + email);
 					
 				} catch (Exception e) { // 메일 전송이 실패한 경우 
 					System.out.println("메일 전송이 실패함...");
