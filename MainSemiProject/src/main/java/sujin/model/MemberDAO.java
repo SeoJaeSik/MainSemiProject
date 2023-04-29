@@ -343,7 +343,7 @@ public class MemberDAO implements InterMemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select userid, name, email"
+			String sql = " select userid, name, email "
 					   + " from tbl_member "
 					   + " where status = 0 and userid = ? and email = ? ";
 			

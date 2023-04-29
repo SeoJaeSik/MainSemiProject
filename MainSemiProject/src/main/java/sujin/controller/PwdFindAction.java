@@ -45,24 +45,36 @@ public class PwdFindAction extends AbstractController {
 				try {
 					
 					StringBuilder sb = new StringBuilder();
-					sb.append("<div style='background-color:#fefce7; padding: 30px;'>");
 					
-					sb.append("	<div>");
-					sb.append("		<a style='display:block; color:black; text-align:center; line-height:40px; font-size: 30px; font-weight: bold; text-decoration: none !important; text-underline: none;' href='http://localhost:9090/SemiProject_MOSACOYA/index.moc'>MOSACOYA<br>"); 	
-					sb.append("		OY! LET'S TRY THIS AGAIN!</a>");
-					sb.append("	</div>");
+					sb.append("<div style='background-color:rgb(255, 249, 231); padding-left:50px; padding: 30px; border-top: solid 3px gold;'>");
+					sb.append("<table style='border-collapse: collapse; margin: auto; border: none;'>");
+					sb.append("	<tr>");
+					sb.append("		<td colspan='2' style='padding: 10px; text-align: center;'>");
+					sb.append("			<h1 style='text-align: center;'><a style='color:black; text-align:center; line-height:40px; font-size: 30px; font-weight: bold; text-decoration: none !important; text-underline: none;' href='http://localhost:9090/SemiProject_MOSACOYA/index.moc'>MOSACOYA</a></h1>");
+					sb.append("			<h2 style='text-align: center;'>OY! LET'S TRY THIS AGAIN!</h2>");
+					sb.append("		</td>");
+					sb.append("	</tr>");
+					sb.append("	<tr>");
+					sb.append("		<td colspan='2' style='padding: 10px; text-align: center;'>");
+					sb.append("			<p style='text-align:left;'><small style='margin-top: 30px; margin-bottom: 30px;'>Hiya, </small></p>");
+					sb.append("			<p style='text-align:left;'><small style='margin-top: 30px; margin-bottom: 30px;'>Let’s reset your MOSCOT password by clicking the link below: </small></p>");
+					sb.append("		</td>");
+					sb.append("	</tr>");
+					sb.append("	<tr>");
+					sb.append("		<td colspan='2' style='padding: 10px; text-align: center;'>");
+					sb.append("			<a style='display:block; border-radius: 5px; margin: auto; color:black; text-align:center; background-color:#fdd007; width:350px; padding: 10px; font-size: 15pt; text-decoration: none !important; text-underline: none;' href='http://localhost:9090/SemiProject_MOSACOYA/login/pwdUpdateEnd.moc?userid=" + mbrforpwdReset.getUserid() + "&email=" + mbrforpwdReset.getEmail() + "'>RESET PASSWORD</a>");
+					sb.append("		</td>");
+					sb.append("	</tr>");
+					sb.append("	<tr>");
+					sb.append("		<td colspan='2' style='padding: 10px; text-align: center;'>");
+					sb.append("			<p style='text-align:left;'><small style='margin-top: 30px; margin-bottom: 30px;'>If you didn’t request a password reset, just toss this mail in the trash!</small></p>");
+					sb.append("			<p style='text-align:left;'><small style='margin-top: 30px; margin-bottom: 30px;'>– The MOSACOYA Family</small></p>");
+					sb.append("		</td>");
+					sb.append("	</tr>");
 					
-					sb.append("	<div>");
-					sb.append("		<small style='text-align:left;'>Hiya, <br> ");
-					sb.append("		Let’s reset your MOSCOT password by clicking the link below: </small><br>");
-					
-					sb.append("		<a style='display:block; color:black; text-align:center; background-color:#fdd007; width:350px; height:50px; font-size: 15pt; text-decoration: none !important; text-underline: none;' href='http://localhost:9090/SemiProject_MOSACOYA/login/pwdUpdateEnd.moc?userid=" + mbrforpwdReset.getUserid() + "&email=" + mbrforpwdReset.getEmail() + "'>RESET PASSWORD</a>");
-					
-					sb.append("		<small style='text-align:left;'>If you didn’t request a password reset, just toss this mail in the trash!<br> ");
-					sb.append("		– The MOSACOYA Family</small>");
-					sb.append("	</div>");
-					
+					sb.append("</table>");
 					sb.append("</div>");
+					
 					
 					String emailContents = sb.toString();
 					System.out.println("emailContents 확인 : " + emailContents);
