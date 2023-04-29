@@ -152,7 +152,7 @@ public class ProductDAO implements InterProductDAO {
 	
 	
 	
-	// 전체제품 중 러닝화만 가져옴
+	// 전체제품 중 러닝화만 가져와 페이징 처리하기
 	@Override
 	public List<ProductVO> selectAllRunningProduct(Map<String, String> paraMap) throws SQLException {
 		List<ProductVO> AllRunningProdList = new ArrayList<>();
