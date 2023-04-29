@@ -57,7 +57,7 @@ public class LoginAction extends AbstractController {
 					request.setAttribute("loc", loc);
 					
 					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/msg.jsp");
+					super.setViewPage("/WEB-INF/sujin/msg.jsp");
 					
 					return; // 메소드 종료
 				}
@@ -85,7 +85,7 @@ public class LoginAction extends AbstractController {
 					request.setAttribute("loc", loc);
 					
 					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/msg.jsp");
+					super.setViewPage("/WEB-INF/sujin/msg.jsp");
 					
 				}
 				else {
@@ -117,7 +117,7 @@ public class LoginAction extends AbstractController {
 				request.setAttribute("loc", loc);
 				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/msg.jsp");
+				super.setViewPage("/WEB-INF/sujin/msg.jsp");
 			
 			}//end of (loginuser == null)--------------------
 	 

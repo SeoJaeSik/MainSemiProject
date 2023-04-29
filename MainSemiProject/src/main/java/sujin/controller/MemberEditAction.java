@@ -36,7 +36,7 @@ public class MemberEditAction extends AbstractController {
 				request.setAttribute("loc", loc);
 
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/msg.jsp");				
+				super.setViewPage("/WEB-INF/sujin/msg.jsp");				
 			}
 		}
 		else {
@@ -48,7 +48,7 @@ public class MemberEditAction extends AbstractController {
 			request.setAttribute("loc", loc);
 
 			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/msg.jsp");
+			super.setViewPage("/WEB-INF/sujin/msg.jsp");
 		}
 		
 	}

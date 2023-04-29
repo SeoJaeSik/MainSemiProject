@@ -25,7 +25,7 @@
 	<div class="text-center">주문 내역이 없습니다.</div>
 	<br><br>
 	<div class="text-center">
-		<button class="btn btn-lg col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#f0e68f; " id="btnUpdate" onclick="goEdit()">지금 쇼핑하기</button>
+		<button class="btn btn-lg col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#ffeb99; " id="btnUpdate" onclick="goEdit()">지금 쇼핑하기</button>
 	</div>
 	<br><br><br><br><br>
 </div>
