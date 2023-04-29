@@ -102,7 +102,7 @@ public class ProductDAO implements InterProductDAO {
 				pvo.setProduct_color(rs.getString(7));
 				pvo.setProduct_size(rs.getInt(8));
 				pvo.setProduct_image(rs.getString(9));
-				pvo.setTotalPrice(cvo.getCart_product_count());
+				pvo.setOrder_price(cvo.getCart_product_count());
 				
 				cvo.setPvo(pvo);
 	            
@@ -257,7 +257,7 @@ public class ProductDAO implements InterProductDAO {
 					   + " where cart_no = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, Integer.parseInt(cart_no));
+			pstmt.setString(1, cart_no);
 			
 			result = pstmt.executeUpdate();
 			

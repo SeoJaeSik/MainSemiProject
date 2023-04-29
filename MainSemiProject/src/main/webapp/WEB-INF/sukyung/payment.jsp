@@ -21,7 +21,7 @@
 	$(document).ready(function(){
 		
 		$("div#div_container").hide();
-		$("div#div_container").fadeIn(800);
+		$("div#div_container").fadeIn(2000);
 		
 		
 	}); // end of $(document).ready(function(){})
@@ -29,7 +29,8 @@
 </script>
 
 <div id="div_container" class="container py-4 mx-auto my-3" style="background-color: #fefce7; border-radius: 1%;">
-		<h2 class="text-center pb-3">결제하기</h2>
+		
+		<h2 class="text-center py-2">결제하기</h2>
 		<div class="row pb-3 mx-1">
 			<div class="col-md-9"></div>
 			<div class="col-md-2">
@@ -67,7 +68,7 @@
 			    <tr class="pt-2">
 			      	<td>
 				      	<div class="position-relative">
-							<img src="https://image.nbkorea.com/NBRB_Product/20230331/NB20230331151327051001.jpg" id="product_image" name="product_image" width="150"/>					  
+							<img src="https://image.nbkorea.com/NBRB_Product/20230331/NB20230331151327051001.jpg" id="product_image" name="product_image" width="150" class="img-thumbnail"/>					  
 								<span id="badge_count" class="position-absolute translate-middle p-2 ml-n3 mt-n2 badge border border-light rounded-circle">
 									<span class="visually-hidden">10</span>
 							</span>
