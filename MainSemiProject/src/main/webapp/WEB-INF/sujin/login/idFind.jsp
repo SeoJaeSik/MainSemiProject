@@ -49,12 +49,12 @@
 	
 	
 	// 아이디 찾기 모달창에 입력한 input 태그 value 값 초기화 시키기
-	function func_form_empty() {
+	function func_idform_reset_empty() {
 		
 		document.querySelector("form[name='idFindFrm']").reset(); // 폼태그 삭제 
 		$("div#div_findResult > p.text-center").empty(); 
 		
-	};//end of func_form_empty() ----------------
+	};//end of func_idform_reset_empty() ----------------
 	
 </script>
 

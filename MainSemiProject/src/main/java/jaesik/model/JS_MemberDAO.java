@@ -16,6 +16,9 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import sujin.model.MemberVO;
+import yunhwan.model.BuyerTypeVO;
+import yunhwan.model.ProductVO;
+import yunhwan.model.ShoesCategoryVO;
 
 public class JS_MemberDAO implements JS_InterMemberDAO {
 	
@@ -380,6 +383,314 @@ public class JS_MemberDAO implements JS_InterMemberDAO {
 	}
 
 	
+	// ------------------------------------------------------------ 고객센터 게시판의 게시물 총페이지를 알아오기
+	@Override
+	public int getBoardTotalPage(Map<String, String> paraMap) throws SQLException {
+
+		int totalPage = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			
+			String sql =  " select ceil (count(*) / 10 )"
+						+ " from tbl_board ";
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			
+			if ( !"".equals(colname) && searchWord != null && !searchWord.trim().isEmpty() ) {
+				sql += " where "+colname+" like '%'|| ? || '%' ";
+			}
+			// 컬럼명과 테이블명은 위치홀더로 사용하면 안된다. 위치홀더로 들어오는 것은 오직 데이터 값이어야 한다.
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			if ( !"".equals(colname) && searchWord != null && !searchWord.trim().isEmpty() ) {
+				pstmt.setString(1, searchWord);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalPage = rs.getInt(1);
+		
+			
+		} finally {
+			close();
+		}
+		
+		return totalPage;
+		
+	}
+
+	
+	// 검색form을 받아 페이징한 고객센터 게시판, 검색한 게시판 보여주기
+	@Override
+	public List<BoardVO> selectPagingBoard(Map<String, String> paraMap) throws SQLException {
+
+		List <BoardVO> boardList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " SELECT board_no, board_title, board_content, fk_userid, board_registerdate"+
+						 " FROM"+
+						 " ("+
+						 " select rownum AS RNO, board_no, board_title, board_content, fk_userid, board_registerdate"+
+						 " from("+
+						 "     select board_no, board_title, board_content, fk_userid, to_char( board_registerdate, 'yyyy-mm-dd') as board_registerdate"+
+						 "     from tbl_board";
+			
+			String colname = paraMap.get("searchType");
+			String searchWord = paraMap.get("searchWord");
+			
+			
+			if ( !"".equals(colname) && searchWord != null && !searchWord.trim().isEmpty() ) {
+				sql += " where "+colname+" like '%'||  ?  ||'%' ";
+			}
+			// 컬럼명과 테이블명은 위치홀더로 사용하면 안된다. 위치홀더로 들어오는 것은 오직 데이터 값이어야 한다.
+			
+			sql +=  "     order by board_registerdate desc , board_no desc"+
+					"     ) V"+
+					" ) T"+
+					" WHERE RNO between ? and ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));  // 조회하고자하는 페이지번호
+			
+			
+			// 페이징 처리 공식
+			// WHERE RNO between (조회하고자하는 페이지번호 * 한페이지당 보여줄 행의개수) - (한페이지당 보여줄 행의개수 - 1) 
+			// and (조회하고자하는 페이지번호 * 한페이지당 보여줄 행의개수);
+			
+			if ( !"".equals(colname) && searchWord != null && !searchWord.trim().isEmpty() ) {
+				pstmt.setString(1, searchWord);
+				pstmt.setInt(2, (currentShowPageNo * 10) - (10 - 1) );
+				pstmt.setInt(3, (currentShowPageNo * 10) );
+			}
+			else {
+				pstmt.setInt(1, (currentShowPageNo * 10) - (10 - 1) );
+				pstmt.setInt(2, (currentShowPageNo * 10) );
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while ( rs.next() ) {
+				BoardVO board = new BoardVO();
+				
+				board.setBoard_no(rs.getInt(1));
+				board.setBoard_title(rs.getString(2));
+				board.setBoard_content(rs.getString(3));
+				board.setFk_userid(rs.getString(4));
+				board.setBoard_registerdate(rs.getString(5));
+								
+				boardList.add(board);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return boardList;
+	}
+
+	
+	
+	// 고객유형 (제품 대분류) 목록을 조회해오기
+	@Override
+	public List<BuyerTypeVO> selectBuyerTypeList() throws SQLException {
+
+		List<BuyerTypeVO> buyerType = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select * "
+						+ " from tbl_buyer_type "
+						+ " order by buyer_type_no asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				
+				BuyerTypeVO bvo = new BuyerTypeVO();
+				
+				bvo.setBuyer_type_no(rs.getString(1));
+				bvo.setBuyer_type_name(rs.getString(2));
+				
+				buyerType.add(bvo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return buyerType;
+	}
+
+	
+	
+	// 신발 카테고리 목록 조회해오기
+	@Override
+	public List<ShoesCategoryVO> selectCategoryList() throws SQLException {
+
+		List<ShoesCategoryVO> categoryList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select shoes_category_no, shoes_category_name, buyer_type_name "
+						+ " from tbl_shoes_category C "
+						+ " join tbl_buyer_type B on c.fk_buyer_type_no = b.buyer_type_no "
+						+ " order by shoes_category_no asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				
+				ShoesCategoryVO shoevo = new ShoesCategoryVO();
+				
+				shoevo.setShoes_category_no(rs.getString(1));
+				shoevo.setShoes_category_name(rs.getString(2));
+				shoevo.setFk_buyer_type_no(rs.getString(3));
+				
+				categoryList.add(shoevo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return categoryList;
+	}
+	
+	
+	// 색상 컬럼 가져오기
+	@Override
+	public List<String> selectColorList() throws SQLException {
+
+		List<String> colorList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select distinct( product_color) as color "
+						+ " from tbl_product "
+						+ " order by color asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				colorList.add(rs.getString(1));
+			}
+			
+		} finally {
+			close();
+		}
+	
+		return colorList;
+	}
+
+	
+	
+	// 신발 사이즈 컬럼 가져오기
+	@Override
+	public List<String> selectSizeList() throws SQLException {
+
+		List<String> sizeList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select distinct( product_size) as psize "
+						+ " from tbl_product "
+						+ " order by psize asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				sizeList.add(rs.getString(1));
+			}
+			
+		} finally {
+			close();
+		}
+	
+		return sizeList;
+	}
+
+	@Override
+	public int getProduct_no() throws SQLException {
+
+		int product_no = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select seq_product_no.nextval AS product_no "
+						+ " from dual ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			product_no = rs.getInt(1);
+			
+			
+		} finally {
+			close();
+		}
+		
+		return product_no;
+	
+	}
+
+	
+	
+	// 제품등록할 pvo를 tbl_product 테이블에 insert
+	@Override
+	public int productInsert(ProductVO pvo) throws SQLException {
+
+		int result = 0;
+	      
+	    try {
+	    	conn = ds.getConnection();
+	         
+	        String sql = " insert into tbl_product (product_no, product_name, fk_shoes_category_no"
+	        		   + ", product_price, product_color, product_size, product_image, product_date "
+	        		   + ", product_content, stock_count) " 
+	        		   + " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	         
+	        pstmt = conn.prepareStatement(sql);
+	         
+	        pstmt.setString(1, pvo.getProduct_no());
+	        pstmt.setString(2, pvo.getProduct_name());
+	        pstmt.setInt(3, pvo.getFk_shoes_category_no());
+	        pstmt.setInt(4, pvo.getProduct_price());
+	        pstmt.setString(5, pvo.getProduct_color());
+	        pstmt.setInt(6, pvo.getProduct_size());
+	        pstmt.setString(7, pvo.getProduct_image());
+	        pstmt.setString(8, pvo.getProduct_date());
+	        pstmt.setString(9, pvo.getProduct_content());
+	        pstmt.setInt(10, pvo.getStock_count());
+
+	        result = pstmt.executeUpdate();
+	         
+	    } finally {
+	    	close();
+	    }
+	      
+	    return result;
+	}
+
 }
 
 

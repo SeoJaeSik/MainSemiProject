@@ -8,9 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
-import sujin.model.InterMemberDAO;
-import sujin.model.MemberDAO;
-import sujin.model.MemberVO;
+import sujin.model.*;
+import sukyung.model.*;
 
 public class LoginAction extends AbstractController {
 
@@ -58,7 +57,7 @@ public class LoginAction extends AbstractController {
 					request.setAttribute("loc", loc);
 					
 					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/msg.jsp");
+					super.setViewPage("/WEB-INF/sujin/msg.jsp");
 					
 					return; // 메소드 종료
 				}
@@ -71,6 +70,11 @@ public class LoginAction extends AbstractController {
 				HttpSession session = request.getSession();
 				
 				session.setAttribute("loginuser", loginuser); // session 에 로그인된 사용자를 "loginuser" 로 저장
+				
+				InterProductDAO pdao = new ProductDAO();
+				int cartCount = pdao.cartCount(userid); // 로그인한 회원이 장바구니에 담은 상품수량
+				loginuser.setCartCount(cartCount); // 세션에 저장된 로그인회원의 상품수량 업데이트
+				
 			
 				if( loginuser.isRequirePwdChange() ) {
 					System.out.println();
@@ -82,7 +86,7 @@ public class LoginAction extends AbstractController {
 					request.setAttribute("loc", loc);
 					
 					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/msg.jsp");
+					super.setViewPage("/WEB-INF/sujin/msg.jsp");
 					
 				}
 				else {
@@ -114,7 +118,7 @@ public class LoginAction extends AbstractController {
 				request.setAttribute("loc", loc);
 				
 				super.setRedirect(false);
-				super.setViewPage("/WEB-INF/msg.jsp");
+				super.setViewPage("/WEB-INF/sujin/msg.jsp");
 			
 			}//end of (loginuser == null)--------------------
 	 

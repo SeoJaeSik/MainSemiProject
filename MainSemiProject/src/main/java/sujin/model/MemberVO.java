@@ -37,9 +37,6 @@ public class MemberVO {
 	// 마지막으로 암호를 변경한 날짜가 현재시각으로부터 3개월이 지났으면 true 로 변경 
 	// 마지막으로 암호를 변경한 날짜가 현재시각으로부터 3개월이 안됐으면 false 로 유지
 	
-	private String pwdchange_daygap;
-
-	
 	//////////////////////////////////////////////////////////////
 	
 	
@@ -261,8 +258,12 @@ public class MemberVO {
 
 	//////////////////////////////////////////////////
 	
-	
+
 	// 마이페이지에서 비밀번호 변경한지 며칠이 지났는지 나타내는데 사용함
+	
+
+	private String pwdchange_daygap;
+
 	public String getPwdchange_daygap() {
 		return pwdchange_daygap;
 	}

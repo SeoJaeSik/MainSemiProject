@@ -16,10 +16,10 @@ public class MemberEditEndAction extends AbstractController {
 
 		String method = request.getMethod();
 		
-		String message = ""; /* alert 에 띄울 메세지 */
-		String loc = "";     /* 돌아갈 페이지(위치값) */
+		String message = ""; // alert 에 띄울 메세지 
+		String loc = "";     // 돌아갈 페이지(위치값) 
 		
-		if("POST".equals(method)) { /* POST 방식으로 넘어왔다면, */
+		if("POST".equals(method)) { // POST 방식으로 넘어왔다면, 
 		
 			String userid = request.getParameter("userid");
 			
@@ -53,7 +53,6 @@ public class MemberEditEndAction extends AbstractController {
 					// !!! session 에 저장된 loginuser 를 변경된 사용자의 정보값으로 변경해주어야 한다 !!! (다시 로그인 하지 않아도 바로 수정된 게 적용되도록!)
 					HttpSession session = request.getSession();
 					MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-					
 					loginuser.setName(name);
 					loginuser.setPwd(pwd);
 					loginuser.setEmail(email);
@@ -73,18 +72,18 @@ public class MemberEditEndAction extends AbstractController {
 			}
 			
 		}
-		else { /* POST 방식으로 넘어온것이 아니라면, */ 
+		else { // POST 방식으로 넘어온것이 아니라면, alert 띄우기
 			
-			message = "비정상적인 경로를 통해 들어왔습니다."; /* alert 에 띄울 메세지 */
+			message = "비정상적인 경로를 통해 들어왔습니다.";
 		}
 
-		loc = "javascript:history.back()"; // 자바스크립트를 이용한 이전 페이지로 이동한다. *[암기]*
+		loc = "javascript:history.back()"; // 자바스크립트를 이용한 이전 페이지로 이동
 		
 		request.setAttribute("message", message);
 		request.setAttribute("loc", loc);
 		
 		super.setRedirect(false);
-		super.setViewPage("/WEB-INF/msg.jsp");
+		super.setViewPage("/WEB-INF/sujin/msg.jsp");
 		
 	}
 

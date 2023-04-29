@@ -354,7 +354,7 @@
 		////////////////////////////////////////
 		
 		if( gogo == true ) {
-			const frm = document.editFrm;
+			const frm = document.frmMemberEdit;
 			frm.action = "<%= ctxPath%>/member/memberEditEnd.moc";
 			frm.method = "post";
 			frm.submit();
@@ -371,12 +371,12 @@
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">성명</label>
-		    <input type="text" name="name" id="name" value="${sessionScope.loginuser.name}" readonly /> 
+		    <input class="col-5" type="text" name="name" id="name" value="${sessionScope.loginuser.name}" readonly /> 
 	  	</div>
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">아이디</label>
-		    <input type="text" name="userid" value="${sessionScope.loginuser.userid}" readonly />
+		    <input class="col-5" type="text" name="userid" value="${sessionScope.loginuser.userid}" readonly />
 	  	</div>
 	  
 	  	<div class="form-group row col-md-10 mx-auto" >
@@ -442,17 +442,10 @@
         </div>
 
 	  	<div class="form-group row col-md-10 mx-auto">
-	   		<button type="button" class="btn btn-md col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#f0e68f; " id="btnUpdate" onclick="goEdit()">수정하기</button>
-			<button type="button" class="btn btn-md col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#f0e68f; " onclick="self.close()">취소하기</button>
+	   		<button type="button" class="btn btn-md col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#ffeb99; " id="btnUpdate" onclick="goEdit()">수정하기</button>
+			<button type="button" class="btn btn-md col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#ffeb99; " onclick="javascript:location.href='myaccount.moc'">취소하기</button>
 	  	</div>
 
 	</form>
-	
-	<div id="p2" class="col-10 mx-auto text-center" style="width:500px">
-		"Already have an account?"
-		<a id="p2" style="cursor: pointer; text-decoration: underline;" href="<%= ctxPath%>/login/login.moc">Sign in here.</a>
-	</div>
-	
-	<br><br><br><br><br><br>
 
 </div>

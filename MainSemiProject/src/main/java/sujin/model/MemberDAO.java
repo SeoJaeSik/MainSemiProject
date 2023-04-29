@@ -181,7 +181,7 @@ public class MemberDAO implements InterMemberDAO {
 					   + "            , substr(birthday,5,2) AS birthmm "
 					   + "            , substr(birthday,7,2) AS birthdd "
 					   + "            , point, to_char(registerday, 'yyyy-mm-dd') AS registerday "
-					   + "            , trunc(sysdate-lastpwdchangedate) AS pwdchange_daygap "
+					   + "            , ceil(sysdate-lastpwdchangedate) AS pwdchange_daygap "
 					   + "            , trunc(months_between(sysdate,lastpwdchangedate)) AS pwdchangegap "
 					   + "     from tbl_member "
 					   + "     where status = 0 and userid = ? and pwd = ? "
@@ -302,7 +302,7 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of 5. 아이디찾기----------------------------------------------------
 
 
-	// 6. 비밀번호 찾기 : 입력한 paraMap 으로 아이디&이메일을 가진 회원이 존재하는지 알아보는 메소드 구현하기
+	// 6. (사용) 비밀번호 찾기 : 입력한 paraMap 으로 아이디&이메일을 가진 회원이 존재하는지 알아보는 메소드 구현하기
 	@Override
 	public boolean isUserExist(Map<String, String> paraMap) throws SQLException {
 	
@@ -314,10 +314,11 @@ public class MemberDAO implements InterMemberDAO {
 			// status = 0 : 탈퇴하지 않은 회원중에서만! 
 			String sql = " select userid "
 					   + " from tbl_member "
-					   + " where status = 0 and and email = ? ";
+					   + " where status = 0 and userid = ? and email = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, aes.encrypt(paraMap.get("email"))); // 평문 이메일말고 아에 암호된 이메일을 넣어준다
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, aes.encrypt(paraMap.get("email"))); // 평문 이메일말고 아에 암호된 이메일을 넣어준다
 			rs = pstmt.executeQuery();
 		
 			isUserExist = rs.next();
@@ -332,6 +333,49 @@ public class MemberDAO implements InterMemberDAO {
 	
 	}//end of 6. 비밀번호 찾기--------------------------------------------------
 
+	
+	// == 비밀번호 변경 이메일을 보내기 위해 Map 에 userid 와 Email 을 보내 해당 사용자의 이메일을 알려주는 메소드 구현하기 == 
+	@Override
+	public MemberVO selectmbrforpwdReset(Map<String, String> paraMap) throws SQLException {
+		
+		MemberVO member = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select userid, name, email"
+					   + " from tbl_member "
+					   + " where status = 0 and userid = ? and email = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, aes.encrypt(paraMap.get("email"))); // 평문 이메일말고 아에 암호된 이메일을 넣어준다
+			
+			rs = pstmt.executeQuery(); // 존재한다면 딱 하나의 값이 나올 것이다.
+			
+			if(rs.next()) { // DB에 존재하는게 있다면 나올 딱 하나의 값을 가져오자
+				
+				member = new MemberVO();
+				
+				member.setUserid(rs.getString(1));
+				member.setName(rs.getString(2));
+				member.setEmail(aes.decrypt(rs.getString(3)));
+				
+				
+			}//end of if(rs.next())-----------------------------------
+			
+			
+		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} finally {
+			close(); /* 무조건 자원반납 */
+		}
+		
+		return member;
+		
+	}//end of == 비밀번호 변경 이메일을 보내기 위해 Map 에 userid 와 Email 을 보내 해당 사용자의 이메일을 알려주는 메소드--------- 
+	
 
 	// 7. 암호변경하기 : 입력한 paraMap 으로 들어온 아이디와 일치하는 회원의 암호를 변경해주는 메소드 구현하기
 	@Override
@@ -363,7 +407,7 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of 7. 암호변경하기--------------------------------------------------
 
 	
-	// 9. 회원의 개인정보 변경하기 메소드 구현하기
+	// 9. (사용) 회원의 개인정보 변경하기 메소드 구현하기
 	@Override
 	public int updateMember(MemberVO member) throws SQLException {
 		
@@ -372,23 +416,24 @@ public class MemberDAO implements InterMemberDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " update tbl_member set name = ? , pwd = ? , email = ? , mobile = ? , postcode = ? ,"
+			String sql = " update tbl_member set name = ? , userid = ?, pwd = ? , email = ? , mobile = ? , postcode = ? ,"
 					   + "                       address = ? , detailaddress = ? , extraaddress = ? , birthday = ? , "
 					   + "                       lastpwdchangedate = sysdate "
 					   + " where userid = ? ";
 
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, member.getName());                /* 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다. */
-			pstmt.setString(2, Sha256.encrypt(member.getPwd())); /* Sha256.encrypt(평문) : qwer1234! 가 비번이라면 aksjhdluhsmeafoiwlhe1243242@#$%@ 이렇게 들어가도록 암호화 해줌 */			
-			pstmt.setString(3, aes.encrypt(member.getEmail()));  /* 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 익셉션처리 필수 */
-			pstmt.setString(4, aes.encrypt(member.getMobile())); /* 연락처를 AES256 알고리즘으로 양방향 암호화 시킨다. 익셉션처리 필수 */
-			pstmt.setString(5, member.getPostcode());
-			pstmt.setString(6, member.getAddress());
-			pstmt.setString(7, member.getDetailaddress());
-			pstmt.setString(8, member.getExtraaddress());
-			pstmt.setString(9, member.getBirthday());
-			pstmt.setString(10, member.getUserid());
+			pstmt.setString(1, member.getName());                
+			pstmt.setString(2, member.getUserid());				 /* 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다. */
+			pstmt.setString(3, Sha256.encrypt(member.getPwd())); /* Sha256.encrypt(평문) : qwer1234! 가 비번이라면 aksjhdluhsmeafoiwlhe1243242@#$%@ 이렇게 들어가도록 암호화 해줌 */			
+			pstmt.setString(4, aes.encrypt(member.getEmail()));  /* 이메일을 AES256 알고리즘으로 양방향 암호화 시킨다. 익셉션처리 필수 */
+			pstmt.setString(5, aes.encrypt(member.getMobile())); /* 연락처를 AES256 알고리즘으로 양방향 암호화 시킨다. 익셉션처리 필수 */
+			pstmt.setString(6, member.getPostcode());
+			pstmt.setString(7, member.getAddress());
+			pstmt.setString(8, member.getDetailaddress());
+			pstmt.setString(9, member.getExtraaddress());
+			pstmt.setString(10, member.getBirthday());
+			pstmt.setString(11, member.getUserid());
 			
 			result = pstmt.executeUpdate();
 			// 정상적으로 insert 됐다면 1 이 나올 것이다.
@@ -404,7 +449,7 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of 9. 회원의 개인정보 변경하기 메소드--------------------------------
 
 
-	// 10. 암호 변경시 현재 사용중인 암호인지 아닌지 알아오는 메소드 구현하기
+	// 10. (사용) 암호 변경시 현재 사용중인 암호인지 아닌지 알아오는 메소드 구현하기
 	@Override
 	public int duplicatePwdCheck(Map<String, String> paraMap) throws SQLException {
 		
@@ -435,208 +480,6 @@ public class MemberDAO implements InterMemberDAO {
 		return n; 
 		
 	}//end of 10. 암호 변경시 현재 사용중인 암호인지 아닌지 알아오는 메소드------------ 
-	
-	
-	// 11. 페이징 처리를 안한 모든 회원 또는 검색한 회원 목록 보여주기 메소드 구현하기
-	@Override
-	public List<MemberVO> selectMember(Map<String, String> paraMap) throws SQLException {
-		
-		List<MemberVO> memberList = new ArrayList<>();
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " select userid, name, email, gender "
-					   + " from tbl_member "
-				 	   + " where userid != 'admin' ";
-			
-			String colname = paraMap.get("searchType");    /* 컬럼명 즉, 넘어온 검색유형 -> 회원명/아이디/이메일 */
-			String searchWord = paraMap.get("searchWord"); /* 넘어온 검색어 */
-			
-			if("email".equals(colname)) {
-				// 1) 검색대상이 email 인 경우, 들어온 것을 암호화해 다시 searchWord 에 넣어줘야 한다
-				searchWord = aes.encrypt(searchWord);
-			}
-			
-			if( searchWord != null && !searchWord.trim().isEmpty() ) { // 검색어 입력부분에 null 이나 공백만이 들어온 게 아닐 때
-				sql += " and " + colname + " like '%' || ? || '%' "; 
-				// [중요] 위치홀더? 에는 무조건 데이터 값만 넣어야 하므로 " + colname + " 를 ? 로 쓰면 안된다!!!
-				// 왜? 컬럼명과 테이블명은 위치홀더(?)로 사용하면 에러가 난다!!! 그냥 위처럼 변수로 넣어줘야 한다!!!
-			};
-			
-			sql += "order by registerday desc ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			if( searchWord != null && !searchWord.trim().isEmpty() ) {
-				pstmt.setString(1, searchWord); /* searchWord : 위에서 암호화 한 그 상태를 가져와야 함 */
-			};
-			
-			rs = pstmt.executeQuery(); // 돌려라~ 존재한다면 딱 하나의 값이 나올 것이다.
-			
-			while(rs.next()) { // DB에 존재하는게 있다면 나올 여러개의 값을 가져오자
-				MemberVO member = new MemberVO();
-				
-				member.setUserid(rs.getString(1));
-				member.setName(rs.getString(2));
-				member.setEmail(aes.decrypt(rs.getString(3))); // 복호화
-				member.setGender(rs.getString(4));
-				
-				memberList.add(member);
-				
-			}//end of while(rs.next())-----------------------------------
-			
-		} catch (GeneralSecurityException | UnsupportedEncodingException e) { /* 복호화시 날수있는 에러 잡아줌 */
-			e.printStackTrace();
-		} finally {
-			close(); /* 무조건 자원반납 */
-		}
-		
-		return memberList;
-		
-	}//end of 11. 페이징 처리를 안한 모든 회원 또는 검색한 회원 목록 보여주기 메소드-----------
-
-
-	// 12. 페이징 처리를 한 모든 회원 또는 검색한 회원 목록 보여주기 메소드 구현하기
-	@Override
-	public List<MemberVO> selectPagingMember(Map<String, String> paraMap) throws SQLException {
-		
-		List<MemberVO> memberList = new ArrayList<>();
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " SELECT userid, name, email, gender "
-					   + " FROM "
-					   + " ( "
-					   + "     select rownum as RNO, userid, name, email, gender "
-					   + "     from "
-					   + "     ( "
-					   + "         select userid, name, email, gender  "
-					   + "         from tbl_member "
-					   + "         where userid != 'admin' ";
-			
-			String colname = paraMap.get("searchType");    /* 컬럼명 즉, 넘어온 검색유형 -> 회원명/아이디/이메일 */
-			String searchWord = paraMap.get("searchWord"); /* 넘어온 검색어 */
-			
-			if("email".equals(colname)) {
-				// 1) 검색대상이 email 인 경우, 들어온 것을 암호화해 다시 searchWord 에 넣어줘야 한다
-				searchWord = aes.encrypt(searchWord);
-			}
-			
-			if( !"".equals(colname) && searchWord != null && !searchWord.trim().isEmpty() ) { // 검색어 입력부분에 null 이나 공백만이 들어온 게 아닐 때
-				sql += " and " + colname + " like '%' || ? || '%' "; 
-				// [중요] 위치홀더? 에는 무조건 데이터 값만 넣어야 하므로 " + colname + " 를 ? 로 쓰면 안된다!!!
-				// 왜? 컬럼명과 테이블명은 위치홀더(?)로 사용하면 에러가 난다!!! 그냥 위처럼 변수로 넣어줘야 한다!!!
-			};
-			
-			sql += " order by registerday desc "
-		         + "     ) V "
-				 + " ) T "
-				 + " WHERE RNO between ? and ? ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			// 사칙연산 계산 하려고 int 로 형변환 해줌
-			int currentShowPageNo = Integer.parseInt(paraMap.get("currentShowPageNo"));  // * 조회하고자하는 페이지번호
-			int sizePerPage = Integer.parseInt(paraMap.get("sizePerPage"));              // * 한페이지당 보여줄 행의개수
-			
-		/*
-			=== 페이지 처리 공식 ===
-    		WHERE RNO between (조회하고자하는 페이지번호 * 한페이지당 보여줄 행의개수)-(한페이지당 보여줄 행의개수-1) 
-    		          and (조회하고자하는 페이지번호 * 한페이지당 보여줄 행의개수) 		 
-		*/
-			if( !"".equals(colname) && searchWord != null && !searchWord.trim().isEmpty() ) {
-				pstmt.setString(1, searchWord); /* searchWord : 위에서 암호화 한 그 상태를 가져와야 함 */
-				pstmt.setInt(2, (currentShowPageNo * sizePerPage)-(sizePerPage-1) );
-				pstmt.setInt(3, (currentShowPageNo * sizePerPage) );
-			}
-			else {
-				pstmt.setInt(1, (currentShowPageNo * sizePerPage)-(sizePerPage-1) );
-				pstmt.setInt(2, (currentShowPageNo * sizePerPage) );
-			}
-			
-			
-			rs = pstmt.executeQuery(); // 돌려라~ 존재한다면 딱 하나의 값이 나올 것이다.
-			
-			while(rs.next()) { // DB에 존재하는게 있다면 나올 여러개의 값을 가져오자
-				MemberVO member = new MemberVO();
-				
-				member.setUserid(rs.getString(1));
-				member.setName(rs.getString(2));
-				member.setEmail(aes.decrypt(rs.getString(3))); // 복호화
-				member.setGender(rs.getString(4));
-				
-				memberList.add(member);
-				
-			}//end of while(rs.next())-----------------------------------
-			
-		} catch (GeneralSecurityException | UnsupportedEncodingException e) { /* 복호화시 날수있는 에러 잡아줌 */
-			e.printStackTrace();
-		} finally {
-			close(); /* 무조건 자원반납 */
-		}
-		
-		return memberList;
-
-		
-	}// end of 12. 페이징 처리를 한 모든 회원 또는 검색한 회원 목록 보여주기 메소드----------
-
-
-	// 13. 페이징 처리를 위해 검색이 있거나 없는 전체 회원에 대한 총 페이지 수 알아오기 메소드
-	@Override
-	public int getTotalPage(Map<String, String> paraMap) throws SQLException {
-		
-	int totalPage = 0;
-			
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " select ceil( count(*)/ ? ) "
-					   + " from tbl_member "
-					   + " where userid != 'admin' "; /* admin 을 제외한 전체 회원수 구하기 */
-			
-			String colname = paraMap.get("searchType");    /* 컬럼명 즉, 넘어온 검색유형 -> 회원명/아이디/이메일 */
-			String searchWord = paraMap.get("searchWord"); /* 넘어온 검색어 */
-			
-			if("email".equals(colname)) {
-				// 1) 검색대상이 email 인 경우, 들어온 것을 '암호화'해 다시 searchWord 에 넣어줘야 한다
-				searchWord = aes.encrypt(searchWord);
-			}
-			
-			if( !"".equals(colname) && searchWord != null && !searchWord.trim().isEmpty() ) { 
-				// 검색어 입력부분에 null 이나 공백만이 들어온 게 아닐 때
-				
-				sql += " and " + colname + " like '%' || ? || '%' "; 
-				// [중요] 위치홀더? 에는 무조건 데이터 값만 넣어야 하므로 " + colname + " 를 ? 로 쓰면 안된다!!!
-				// 왜? 컬럼명과 테이블명은 위치홀더(?)로 사용하면 에러가 난다!!! 그냥 위처럼 변수로 넣어줘야 한다!!!
-			};
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, paraMap.get("sizePerPage"));
-			
-			if( !"".equals(colname) && searchWord != null && !searchWord.trim().isEmpty() ) { 
-				// 검색어 입력부분에 null 이나 공백만이 들어온 게 아닐 때
-				
-				pstmt.setString(2, searchWord);
-			}
-			
-			rs = pstmt.executeQuery(); // 돌려라~ 존재한다면 딱 하나의 값이 나올 것이다.
-			
-			rs.next(); // *얘 빼먹으면 안됨!*
-			
-			totalPage = rs.getInt(1);
-			
-		} catch (GeneralSecurityException | UnsupportedEncodingException e) { /* 복호화시 날수있는 에러 잡아줌 */
-			e.printStackTrace();
-		} finally {
-			close(); /* 무조건 자원반납 */
-		}
-		
-		return totalPage;
-		
-	}//end of 13. 페이징 처리를 위해 총 페이지 수 알아오기 메소드 -----------------------
 
 
 	// 14. userid 값을 입력받아 회원 1명에 대한 상세정보를 알아오는 메소드 구현하기
@@ -689,5 +532,7 @@ public class MemberDAO implements InterMemberDAO {
 		return mvo;
 		
 	}//end of 14. userid 값을 입력받아 회원 1명에 대한 상세정보를 알아오는 메소드---------- 
+
+	
 
 }
