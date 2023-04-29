@@ -181,7 +181,7 @@ public class MemberDAO implements InterMemberDAO {
 					   + "            , substr(birthday,5,2) AS birthmm "
 					   + "            , substr(birthday,7,2) AS birthdd "
 					   + "            , point, to_char(registerday, 'yyyy-mm-dd') AS registerday "
-					   + "            , trunc(sysdate-lastpwdchangedate) AS pwdchange_daygap "
+					   + "            , ceil(sysdate-lastpwdchangedate) AS pwdchange_daygap "
 					   + "            , trunc(months_between(sysdate,lastpwdchangedate)) AS pwdchangegap "
 					   + "     from tbl_member "
 					   + "     where status = 0 and userid = ? and pwd = ? "
@@ -333,6 +333,49 @@ public class MemberDAO implements InterMemberDAO {
 	
 	}//end of 6. 비밀번호 찾기--------------------------------------------------
 
+	
+	// == 비밀번호 변경 이메일을 보내기 위해 Map 에 userid 와 Email 을 보내 해당 사용자의 이메일을 알려주는 메소드 구현하기 == 
+	@Override
+	public MemberVO selectmbrforpwdReset(Map<String, String> paraMap) throws SQLException {
+		
+		MemberVO member = null;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select userid, name, email"
+					   + " from tbl_member "
+					   + " where status = 0 and userid = ? and email = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, paraMap.get("userid"));
+			pstmt.setString(2, aes.encrypt(paraMap.get("email"))); // 평문 이메일말고 아에 암호된 이메일을 넣어준다
+			
+			rs = pstmt.executeQuery(); // 존재한다면 딱 하나의 값이 나올 것이다.
+			
+			if(rs.next()) { // DB에 존재하는게 있다면 나올 딱 하나의 값을 가져오자
+				
+				member = new MemberVO();
+				
+				member.setUserid(rs.getString(1));
+				member.setName(rs.getString(2));
+				member.setEmail(aes.decrypt(rs.getString(3)));
+				
+				
+			}//end of if(rs.next())-----------------------------------
+			
+			
+		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} finally {
+			close(); /* 무조건 자원반납 */
+		}
+		
+		return member;
+		
+	}//end of == 비밀번호 변경 이메일을 보내기 위해 Map 에 userid 와 Email 을 보내 해당 사용자의 이메일을 알려주는 메소드--------- 
+	
 
 	// 7. 암호변경하기 : 입력한 paraMap 으로 들어온 아이디와 일치하는 회원의 암호를 변경해주는 메소드 구현하기
 	@Override
@@ -489,5 +532,7 @@ public class MemberDAO implements InterMemberDAO {
 		return mvo;
 		
 	}//end of 14. userid 값을 입력받아 회원 1명에 대한 상세정보를 알아오는 메소드---------- 
+
+	
 
 }
