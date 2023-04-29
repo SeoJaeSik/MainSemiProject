@@ -16,6 +16,9 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import sujin.model.MemberVO;
+import yunhwan.model.BuyerTypeVO;
+import yunhwan.model.ProductVO;
+import yunhwan.model.ShoesCategoryVO;
 
 public class JS_MemberDAO implements JS_InterMemberDAO {
 	
@@ -496,6 +499,198 @@ public class JS_MemberDAO implements JS_InterMemberDAO {
 	}
 
 	
+	
+	// 고객유형 (제품 대분류) 목록을 조회해오기
+	@Override
+	public List<BuyerTypeVO> selectBuyerTypeList() throws SQLException {
+
+		List<BuyerTypeVO> buyerType = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select * "
+						+ " from tbl_buyer_type "
+						+ " order by buyer_type_no asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				
+				BuyerTypeVO bvo = new BuyerTypeVO();
+				
+				bvo.setBuyer_type_no(rs.getString(1));
+				bvo.setBuyer_type_name(rs.getString(2));
+				
+				buyerType.add(bvo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return buyerType;
+	}
+
+	
+	
+	// 신발 카테고리 목록 조회해오기
+	@Override
+	public List<ShoesCategoryVO> selectCategoryList() throws SQLException {
+
+		List<ShoesCategoryVO> categoryList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select shoes_category_no, shoes_category_name, buyer_type_name "
+						+ " from tbl_shoes_category C "
+						+ " join tbl_buyer_type B on c.fk_buyer_type_no = b.buyer_type_no "
+						+ " order by shoes_category_no asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				
+				ShoesCategoryVO shoevo = new ShoesCategoryVO();
+				
+				shoevo.setShoes_category_no(rs.getString(1));
+				shoevo.setShoes_category_name(rs.getString(2));
+				shoevo.setFk_buyer_type_no(rs.getString(3));
+				
+				categoryList.add(shoevo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return categoryList;
+	}
+	
+	
+	// 색상 컬럼 가져오기
+	@Override
+	public List<String> selectColorList() throws SQLException {
+
+		List<String> colorList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select distinct( product_color) as color "
+						+ " from tbl_product "
+						+ " order by color asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				colorList.add(rs.getString(1));
+			}
+			
+		} finally {
+			close();
+		}
+	
+		return colorList;
+	}
+
+	
+	
+	// 신발 사이즈 컬럼 가져오기
+	@Override
+	public List<String> selectSizeList() throws SQLException {
+
+		List<String> sizeList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select distinct( product_size) as psize "
+						+ " from tbl_product "
+						+ " order by psize asc ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				sizeList.add(rs.getString(1));
+			}
+			
+		} finally {
+			close();
+		}
+	
+		return sizeList;
+	}
+
+	@Override
+	public int getProduct_no() throws SQLException {
+
+		int product_no = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql =  " select seq_product_no.nextval AS product_no "
+						+ " from dual ";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			product_no = rs.getInt(1);
+			
+			
+		} finally {
+			close();
+		}
+		
+		return product_no;
+	
+	}
+
+	
+	
+	// 제품등록할 pvo를 tbl_product 테이블에 insert
+	@Override
+	public int productInsert(ProductVO pvo) throws SQLException {
+
+		int result = 0;
+	      
+	    try {
+	    	conn = ds.getConnection();
+	         
+	        String sql = " insert into tbl_product (product_no, product_name, fk_shoes_category_no"
+	        		   + ", product_price, product_color, product_size, product_image, product_date "
+	        		   + ", product_content, stock_count) " 
+	        		   + " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	         
+	        pstmt = conn.prepareStatement(sql);
+	         
+	        pstmt.setString(1, pvo.getProduct_no());
+	        pstmt.setString(2, pvo.getProduct_name());
+	        pstmt.setInt(3, pvo.getFk_shoes_category_no());
+	        pstmt.setInt(4, pvo.getProduct_price());
+	        pstmt.setString(5, pvo.getProduct_color());
+	        pstmt.setInt(6, pvo.getProduct_size());
+	        pstmt.setString(7, pvo.getProduct_image());
+	        pstmt.setString(8, pvo.getProduct_date());
+	        pstmt.setString(9, pvo.getProduct_content());
+	        pstmt.setInt(10, pvo.getStock_count());
+
+	        result = pstmt.executeUpdate();
+	         
+	    } finally {
+	    	close();
+	    }
+	      
+	    return result;
+	}
+
 }
 
 

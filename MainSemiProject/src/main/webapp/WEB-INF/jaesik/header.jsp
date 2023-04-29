@@ -23,7 +23,7 @@
 <!-- Optional JavaScript -->
 <script type="text/javascript" src="<%= ctxPath%>/js/jquery-3.6.4.min.js"></script>
 <script type="text/javascript" src="<%= ctxPath%>/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js" ></script>
-
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <!-- Font Awesome 6 Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    
 
@@ -32,6 +32,10 @@
 
 <!-- 페이지로고 -->
 <link rel="icon" href="<%= ctxPath%>/images/KakaoTalk_20230424_170300653.png">
+
+<!-- JQueryUI CSS 및 JS --> 
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/jquery-ui-1.13.1.custom/jquery-ui.min.css"/>
+<script type="text/javascript" src="<%= ctxPath%>/jquery-ui-1.13.1.custom/jquery-ui.min.js"></script>
  
 <script type="text/javascript">
 	
@@ -338,7 +342,7 @@
 			<c:if test="${sessionScope.loginuser != null and sessionScope.loginuser.userid == 'admin'}">
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle menufont_size header_nav_link" style="color: white;" href="#" id="navbarDropdown" data-toggle="dropdown"> 
-			           관리자전용 
+			           관리자메뉴 
 					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 						<a class="dropdown-item text-body" href="<%= ctxPath %>/member/admin/memberList.moc">회원목록</a>

@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import sujin.model.MemberVO;
+import yunhwan.model.BuyerTypeVO;
+import yunhwan.model.ProductVO;
+import yunhwan.model.ShoesCategoryVO;
 
 public interface JS_InterMemberDAO {
 
@@ -37,5 +40,23 @@ public interface JS_InterMemberDAO {
 
 	// 검색form을 받아 페이징한 고객센터 게시판, 검색한 게시판 보여주기
 	List<BoardVO> selectPagingBoard(Map<String, String> paraMap) throws SQLException;
+
+	// 고객유형 (제품 대분류) 목록을 조회해오기
+	List<BuyerTypeVO> selectBuyerTypeList() throws SQLException;
+
+	// 신발 카테고리 목록 조회해오기
+	List<ShoesCategoryVO> selectCategoryList() throws SQLException;
+
+	// 색상 컬럼 가져오기
+	List<String> selectColorList() throws SQLException;
+
+	// 신발 사이즈 컬럼 가져오기
+	List<String> selectSizeList() throws SQLException;
+
+	// 채번해오기
+	int getProduct_no() throws SQLException;
+
+	// 제품등록할 pvo를 tbl_product 테이블에 insert
+	int productInsert(ProductVO pvo) throws SQLException;
 
 }
