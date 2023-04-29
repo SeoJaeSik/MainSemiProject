@@ -42,18 +42,6 @@ public interface InterMemberDAO {
 	int duplicatePwdCheck(Map<String, String> paraMap) throws SQLException;
 
 
-	// 11. *** 페이징 처리를 안한 모든 회원 또는 검색한 회원 목록 보여주기 메소드
-	List<MemberVO> selectMember(Map<String, String> paraMap) throws SQLException;
-
-
-	// 12. *** 페이징 처리를 한 모든 회원 또는 검색한 회원 목록 보여주기 메소드
-	List<MemberVO> selectPagingMember(Map<String, String> paraMap) throws SQLException;
-
-	
-	// 13. 페이징 처리를 위해 검색이 있거나 없는 전체 회원에 대한 총 페이지 수 알아오기 메소드
-	int getTotalPage(Map<String, String> paraMap) throws SQLException;
-
-
 	// 14. userid 값을 입력받아 회원 1명에 대한 상세정보를 알아오는 메소드 
 	MemberVO memberOneDetail(String userid) throws SQLException;
 
