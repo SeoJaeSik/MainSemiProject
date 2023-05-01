@@ -1,0 +1,491 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    
+<jsp:include page="../jaesik/header.jsp"/>
+
+<style type="text/css">
+
+
+
+	
+	
+	
+		
+	
+</style>
+
+<script type="text/javascript">
+
+	let start = 1;
+	
+	// HIT 상품 "스크롤" 할 때 보여줄 상품의 개수(단위) 크기
+	let lenAll = 6; 
+
+	$(document).ready(function() {
+	 	
+		$("span#totalAllCount").hide();
+		$("span#countAll").hide(); 
+		// ALL상품 게시물을 더보기 위하여 "scroll" 이벤트에 대한 초기값 호출하기 
+        // 즉, 맨처음에는 "scroll" 을 하지 않더라도 scroll한 것 처럼 8개의 ALL상품을 게시해주어야 한다는 말이다. 
+	   /* displayAll(start); 문서가 로딩되자마자 함수 호출시켜서 제품을 자동으로 보여줌 */
+		
+	   displayAll(start); 
+	  // === scroll 이벤트 발생시키기 시작 === //
+		$(window).scroll(function() {
+
+			// 스크롤탑의 위치값 
+		    // console.log( "$(window).scrollTop() => " + $(window).scrollTop() );
+			
+			// 보여주어야할 문서의 높이값(더보기를 해주므로 append 되어져서 높이가 계속 증가 될것이다)
+       		// console.log( "$(document).height() => " + $(document).height() );	
+			
+       		// 웹브라우저창의 높이값(디바이스마다 다르게 표현되는 고정값) 
+            // console.log( "$(window).height() => " + $(window).height() );
+			
+			// 아래는 scroll 되어진 scroll 탑의 위치값이 웹브라우저창의 높이만큼 내려갔을 경우를 알아보는 것이다.
+		//	console.log( "$(window).scrollTop() => " + $(window).scrollTop() );
+	    //    console.log( "$(document).height() - $(window).height() => " + ( $(document).height() - $(window).height() ) );
+			
+	         
+	        // 아래는 만약에 위의 값이 제대로 안나오는 경우 이벤트가 발생되는 숫자를 만들기 위해서 스크롤탑의 위치값에 +1 을 더해서 보정해준 것이다. 
+            // console.log( "$(window).scrollTop() + 1  => " + ( $(window).scrollTop() + 1  ) );
+            // console.log( "$(document).height() - $(window).height() => " + ( $(document).height() - $(window).height() ) ); 
+			
+            if($(window).scrollTop() +1 >= $(document).height() - $(window).height() ) {
+            	// 만약 스크롤이 잘 안되면 아래의 것 중 하나를 골라서 하도록 한다.
+	            // if($(window).scrollTop() +1 >= $(document).height() - $(window).height() ) {
+	            // if( $(window).scrollTop() == $(document).height() - $(window).height() )	
+	            //	alert("기존 문서 내용을 끝까지 봤습니다. 이제 새로운 내용을 읽어다가 보여드리겠습니다.");
+	            $("span#totalAllCount").text();
+	            $("span#countAll").text();
+	            
+	            if( $("span#totalAllCount").text() != $("span#countAll").text() ) {
+		            start += lenAll;
+		            
+		            displayAll(start); 
+	            }
+	            
+	         }
+	            
+            if( $(window).scrollTop() == 0 ) {
+            	// 다시 처음부터 시작하도록 한다.
+            	
+            	$("div#displayAll").empty();
+            	$("span#end").empty();
+            	$("span#countAll").text(0);
+            	
+            	start = 1;
+            	displayAll(start);
+            	
+            }
+			
+		});	//end of $(window).scroll(function()---------------------------
+		 
+					
+		// === scroll 이벤트 발생시키기 끝 === //
+		
+		
+		
+		
+		
+		
+	}); // end of $(document).ready(function() -----------------
+
+	// 모든제품에 대한 정보를 DB에서 가져와 뿌려주는 함수
+	function displayAll(start) {
+       
+		$.ajax({
+			url:"<%= request.getContextPath()%>/shop/mallDisplayJSON.moc",
+			//	type:"GET", // defualt 가 get
+			data:{"start":start, // "1" "7" "13" "19" "25"
+				  "len":lenAll}, //  6   6    6    6    6
+			dataType:"json",
+		//	async:true, // 비동기방식, default도 비동기임
+			success:function(json){
+				
+			//	console.log("확인용 json => " + json);
+			//	console.log("json 의 타입 => " + typeof json);
+			//	console.log("확인용 json => " + JSON.stringify(json));
+			//	console.log("JSON.stringify(json) 의 타입 => " + typeof JSON.stringify(json));
+			<%--
+			     확인용 json => [{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":200,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":190,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":180,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":170,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":210,"product_color":"black","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":200,"product_color":"black","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"}]
+			--%>	
+			
+			let html = "";
+			
+			if(start == "1" && json.length == 0) {
+			
+			    html += "현재 상품 준비중...";
+			
+				$("div#displayAll").html(html); // id가 displayAll인 div에 값을 뿌려준다.
+		
+			}
+			
+			else if(json.length > 0) {
+			
+				$.each(json, function(index, item) {
+					
+				//	0 3 6
+				    if(index%3 == 0) {
+						html += "<div style='display:flex'>";		
+					}
+					
+					html += "<div class='col-md-6 col-lg-4 col-xl-4' style='margin= 0 auto; padding=0px'>"+
+								"<div id='product-1' class='single-product' style='display: flex; justify-content: center; align-items: center;'>"+
+									"<div class='part-1'>"+
+										"<img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+" href='/MainSemiProject/shop/product.moc'>"+
+										"<ul>"+
+											"<li><a href='/MainSemiProject/shop/cartList.moc'><i class='fas fa-shopping-cart'></i></a></li>"+
+										"</ul>"+
+									"</div>"+
+								"</div>"+
+									"<div class='part-2' style='text-align:center;'>"+
+										"<h3 class='product-title'>"+item.product_name+"</h3>"+
+										"<h4 class='product-price'><i class='fa fa-krw' style='font-size:14px'>&nbsp;"+(item.product_price).toLocaleString('en')+"</i></h4>"+
+									"</div>"+
+							"</div>";
+					
+				//	2 5	8	
+					if((index+1)%3 == 0) {
+						html += "</div>";		
+					}
+							
+				});// end of $.each(json, function(index, item)-------------------
+			        
+				
+						
+			
+			// 전체상품 상품 결과물 출력하기
+			$("div#displayAll").append(html);		
+			
+			// $("span#countHIT") 에 지금까지 출력된 상품의 개수를 누적해서 기록한다.
+			$("span#countAll").text( Number($("span#countAll").text()) + json.length ); // span 태그는 value값이 없다. 그래서 text로 해준다.(아래 태그를 보면 이해할 수 있다.)
+																		  // text()는 읽어온다는 것 text(내용)은 넣어준다는 것
+																
+			// 스크롤을 계속해서 countHIT 값과 totalHITCount 값이 일치하는 경우 
+			if( $("span#totalAllCount").text() == $("span#countAll").text() ) {
+			    $("span#end").html("더이상 조회할 제품이 없습니다.");
+			
+			}
+			
+			}// end of else if(json,length > 0)-------------------------
+						
+			},
+			
+			error: function(request, status, error){
+				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			}
+		
+		});
+		        
+		}// end of function displayAll(start)------------------------------------
+			
+		
+		
+		
+		// 모든제품에 대한 정보를 DB에서 가져와 뿌려주는 함수
+		function displayAllRunning(start) {
+	       
+			$.ajax({
+				url:"<%= request.getContextPath()%>/shop/mallDisplayJSON.moc",
+				//	type:"GET", // defualt 가 get
+				data:{"start":start, // "1" "7" "13" "19" "25"
+					  "len":lenAll}, //  6   6    6    6    6
+				dataType:"json",
+			//	async:true, // 비동기방식, default도 비동기임
+				success:function(json){
+					
+				//	console.log("확인용 json => " + json);
+				//	console.log("json 의 타입 => " + typeof json);
+				//	console.log("확인용 json => " + JSON.stringify(json));
+				//	console.log("JSON.stringify(json) 의 타입 => " + typeof JSON.stringify(json));
+				<%--
+				     확인용 json => [{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":200,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":190,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":180,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":170,"product_color":"white","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":210,"product_color":"black","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"},{"stock_count":100,"product_content":"샌들","product_image":"https://image.nbkorea.com/NBRB_Product/20230418/NB20230418094631477001.jpg","product_size":200,"product_color":"black","fk_shoes_category_no":3003,"product_price":0,"product_name":"키즈샌들"}]
+				--%>	
+				
+				let html = "";
+				
+				if(start == "1" && json.length == 0) {
+				
+				    html += "현재 상품 준비중...";
+				
+					$("div#displayAll").html(html); // id가 displayAll인 div에 값을 뿌려준다.
+			
+				}
+				
+				else if(json.length > 0) {
+				
+					$.each(json, function(index, item) {
+						
+					//	0 3 6
+					    if(index%3 == 0) {
+							html += "<div style='display:flex'>";		
+						}
+						
+						html += "<div class='col-md-6 col-lg-4 col-xl-4' style='margin= 0 auto; padding=0px'>"+
+									"<div id='product-1' class='single-product' style='display: flex; justify-content: center; align-items: center;'>"+
+										"<div class='part-1'>"+
+											"<img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+" href='/MainSemiProject/shop/product.moc'>"+
+											"<ul>"+
+												"<li><a href='/MainSemiProject/shop/cartList.moc'><i class='fas fa-shopping-cart'></i></a></li>"+
+											"</ul>"+
+										"</div>"+
+									"</div>"+
+										"<div class='part-2' style='text-align:center;'>"+
+											"<h3 class='product-title'>"+item.product_name+"</h3>"+
+											"<h4 class='product-price'><i class='fa fa-krw' style='font-size:14px'>&nbsp;"+(item.product_price).toLocaleString('en')+"</i></h4>"+
+										"</div>"+
+								"</div>";
+						
+					//	2 5	8	
+						if((index+1)%3 == 0) {
+							html += "</div>";		
+						}
+								
+					});// end of $.each(json, function(index, item)-------------------
+				        
+					
+							
+				
+				// 전체상품 상품 결과물 출력하기
+				$("div#displayAll").append(html);		
+				
+				// $("span#countHIT") 에 지금까지 출력된 상품의 개수를 누적해서 기록한다.
+				$("span#countAll").text( Number($("span#countAll").text()) + json.length ); // span 태그는 value값이 없다. 그래서 text로 해준다.(아래 태그를 보면 이해할 수 있다.)
+																			  // text()는 읽어온다는 것 text(내용)은 넣어준다는 것
+																	
+				// 스크롤을 계속해서 countHIT 값과 totalHITCount 값이 일치하는 경우 
+				if( $("span#totalAllCount").text() == $("span#countAll").text() ) {
+				    $("span#end").html("더이상 조회할 제품이 없습니다.");
+				
+				}
+				
+				}// end of else if(json,length > 0)-------------------------
+							
+				},
+				
+				error: function(request, status, error){
+					alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+				}
+			
+			});
+			        
+			}// end of function displayAll(start)------------------------------------
+		
+		
+		
+	
+
+</script>
+
+<body>
+<!-- 전체 틀 (사이드바 및 제품목록 포함) -->
+<div class="container-fluid" id="sidefull">
+
+<!-- 전체 틀-->
+	<div class="row" id="div_row">
+	
+	
+	<!-- 사이드구역 및 사이드바 -->
+		<div class="col-md-2" id="side_md_2">
+		
+			<!-- 사이드바 구역 -->
+			<div id="sidebar_area">
+			<!-- 사이드바 시작 -->
+		  	<!-- 대분류 카테고리 그룹핑 -->
+			  	<nav class="navbar" id="sidebar_group">
+			  	<div>
+				  <ul class="navbar-nav all_sidebar">
+				  	<li class="nav-item sidebar_title_name">
+				      <a class="nav-link big_cat" href="#">ALL</a>
+				    </li>
+				    <li class="nav-item sidebar_title_name">  
+				      <a class="nav-link middle_cat" href="#">running</a>
+				    </li>  
+				    <li class="nav-item sidebar_title_name">
+				      <a class="nav-link middle_cat" href="#">walking</a>
+				    </li>  
+				    <li class="nav-item sidebar_title_name"> 
+				      <a class="nav-link middle_cat" href="#">golf</a>
+				    </li>  
+				    <li class="nav-item sidebar_title_name">
+				      <a class="nav-link middle_cat" href="#">sandal</a>
+				    </li>
+				  </ul>  
+				</div>
+				
+				<div >    
+				  <ul class="navbar-nav all_sidebar">
+					<li class="nav-item sidebar_title_name">	
+				      <a class="nav-link big_cat" href="#">MENS</a>
+				    </li>  
+					<li class="nav-item sidebar_title_name">	
+				      <a class="nav-link middle_cat" href="#">running</a>
+				    </li>  
+					<li class="nav-item sidebar_title_name">	
+				      <a class="nav-link middle_cat" href="#">walking</a>
+				    </li>  
+					<li class="nav-item sidebar_title_name">	
+				      <a class="nav-link middle_cat" href="#">golf</a>
+				    </li>  
+					<li class="nav-item sidebar_name">	
+				      <a class="nav-link middle_cat" style="color: black;" href="#">sandal</a>
+				    </li>  
+				  </ul>  
+				</div>  
+				  
+				<div>    
+				  <ul class="navbar-nav all_sidebar">
+					<li class="nav-item sidebar_title_name">
+				      <a class="nav-link big_cat" href="#">LADIES</a>
+				    </li>  
+					<li class="nav-item sidebar_title_name">
+				      <a class="nav-link middle_cat" href="#">running</a>
+				    </li>  
+					<li class="nav-item sidebar_title_name">
+				      <a class="nav-link middle_cat" href="#">walking</a>
+				    </li>  
+					<li class="nav-item sidebar_title_name">
+				      <a class="nav-link middle_cat" href="#">golf</a>
+				    </li>  
+					<li class="nav-item sidebar_title_name">
+				      <a class="nav-link middle_cat" href="#">sandal</a>
+				    </li>  
+				  </ul>  
+				</div>    
+					
+				<div>    
+				  <ul class="navbar-nav all_sidebar">
+					<li class="nav-item sidebar_title_name">
+				      <a class="nav-link big_cat" href="#">KIDS</a>
+				    </li>  
+					<li class="nav-item sidebar_title_name">
+				      <a class="nav-link middle_cat" href="#">running</a>
+				    </li>  
+					<li class="nav-item sidebar_title_name">
+				      <a class="nav-link middle_cat" href="#">aqua shoes</a>
+				    </li>  
+					<li class="nav-item sidebar_title_name">
+				      <a class="nav-link middle_cat" href="#">sandal</a>
+				    </li>  
+				  </ul>  
+				  
+				<hr style="width: 80%; margin-left: 0; text-align: left;">	
+				</div>    
+				  <!-- 사이즈 추가 -->
+				  
+				   	
+				  
+				  
+				  
+				  
+				<!-- 컬러 서클	 -->
+				
+				<div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+		        	<ul class="navbar-nav"  id="sidebar_color">
+		        	<li class="color_title">COLOR</li>
+		            <li class="colors">
+		                <a href="#"><span></span></a>
+		                <a href="#"><span></span></a>
+		                <a href="#"><span></span></a>
+		            </li>
+		            <li class="colors">
+		                <a href="#"><span></span></a>
+		                <a href="#"><span></span></a>
+		                <a href="#"><span></span></a>
+		            </li>
+		            <li class="colors">
+		                <a href="#"><span></span></a>
+		                <a href="#"><span></span></a>
+		                <a href="#"><span></span></a>
+		            </li>
+		            </ul>
+	        	</div>
+				
+				
+				  <!-- 가격버튼	 -->
+				  
+				  
+				  
+				</nav>  
+	<!-- 사이드바 끝 -->
+			</div>
+		</div>
+	<!-- 사이드섹션 끝 -->
+	
+	
+	<!-- 우측 제품목록 및 기타 기능 섹션 -->
+		<div class="col-md-10">
+		
+			<!-- select 태그 섹션 -->
+			<div>
+			<!-- select 태그 섹션 -->
+				<div class="exist_select" id="product_order_list">
+					<!-- 상품 정렬 select 태그 -->
+					<div style="padding-top: 42px; padding-right: 20px; padding-bottom: 0px; text-align: right;">
+						<a href="javascript:recentlist();" style="color: black;">최신순</a>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp
+						<a href="javascript:pricelist();" style="color: black;">낮은가격</a>&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp
+						<a href="javascript:pricelistdesc();" style="color: black;">높은가격</a> 
+						<br>
+						<br>
+						<hr>
+					</div>
+					<!-- 상품 정렬 select 태그 끝 -->
+					
+						
+					
+			<!-- select 태그 섹션 끝 -->
+				</div>
+			</div>
+			<!-- select 태그 섹션 끝 -->
+			
+			
+			<!-- 제품목록 섹션 -->
+				<div class="section-products">
+					<div class="container">
+						<div id="displayAll" style="padding: 0;"> <%-- 이 안에 Ajax가 들어갈 것이다. --%>
+							<!-- Single Product -->
+						<%-- 	
+			 		 		<div class="col-md-6 col-lg-4 col-xl-4">
+								<div id="product-1" class="single-product">
+									<div class="part-1">
+										<img alt="제품 준비중" style="width:inherit; height:inherit;" src="https://image.nbkorea.com/NBRB_Product/20230321/NB20230321153529285001.jpg">
+									</div>
+									<div class="part-2">
+										<h3 class="product-title">Here Product Title</h3>
+										<h4 class="product-price">$49.99</h4>
+									</div>
+								</div>   
+							</div>  
+						--%>   
+							<!-- ajax로 제품 들어올 자리 -->
+						</div>
+					</div>
+				</div>
+			<!-- 제품목록 섹션 끝 -->
+			
+				<div>
+			         <p class="text-center">
+			            <span id="end" style="display:block; margin:20px; font-size: 14pt; font-weight: bold; color: black;"></span> 
+			            <span id="totalAllCount">${requestScope.totalAllCount}</span>
+			            <span id="countAll">0</span>
+			         </p>
+      			</div>
+			
+			</div>
+	<!-- 우측 제품목록 및 기타 기능 섹션  -->
+	
+			
+	
+		</div>
+<!-- 전체 섹션 끝-->
+
+
+	</div>
+<!-- 전체 틀 (사이드바 및 제품목록 포함) 끝 -->
+</body>	
+
+
+
+    
+<jsp:include page="../jaesik/footer.jsp"/>
