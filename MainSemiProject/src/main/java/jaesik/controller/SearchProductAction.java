@@ -39,12 +39,9 @@ public class SearchProductAction extends AbstractController {
 		
 		// 타입과 검색단어를 받아와 검색하는 메소드
 		List<ProductVO> prodList = dao.selectSearchProduct(paraMap);
-		int searchResult = prodList.size();
-		// 검색결과의 행을 나타내려 선언
 		
 		request.setAttribute("prodList", prodList);
 		request.setAttribute("search_word", search_word);
-		request.setAttribute("searchResult", searchResult);
 		
 		super.setRedirect(false);
 		super.setViewPage("/WEB-INF/jaesik/searchProduct.jsp");

@@ -386,7 +386,7 @@
 </nav>
 
 <%-- 검색창 시작 --%>
-<div id="header_search_menu" style="border-radius: 10px; position:absolute; z-index:2; background-color: white; right: 0%; padding: 20px 0px 20px 30px;">  
+<div id="header_search_menu" style="border-radius: 15px; position:absolute; z-index:2; background-color: white; right: 0%; padding: 20px 0px 20px 30px;">  
 	<div style="display: flex; align-items: center; width: 460px;"> 
 		<form name="searchFrm" style="width: 100%; height:36px;">
 			<div style="display: flex; align-items: center; width: 100%; height: 100%;">
