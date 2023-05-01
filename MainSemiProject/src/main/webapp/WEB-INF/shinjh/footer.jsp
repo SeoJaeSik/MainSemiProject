@@ -19,10 +19,10 @@
 			<div id="footer_center_left" class="col-md-6 px-5 pt-4">
 				<p id="foot_info"> 
 					<a style="color:black; font-weight: bold; text-decoration-line: none;" href="https://www.nbkorea.com/support/terms.action?tabCode=PP">개인정보 처리방침</a> / 이용약관 / (주)이랜드월드패션사업부 <br>
-					서울특별시 금천구 가산디지털1로 159 이랜드월드<br>
+					서울특별시 마포구 월드컵북로 21 풍성빌딩 2층<br>
 					온라인 고객센터 : 1566-0086<br>
 					AS/오프라인 고객센터 : 080-999-0456<br>
-					대표 이메일 : abcd1234@naver.com<br>
+					대표 이메일 : MOSACOYA@naver.com<br>
 					호스팅 서비스 제공자 : (주)라드씨엔에스<br><br>
 					대표이사 : 최운식   사업자등록번호 : 113-85-19030<br>
 					통신판매업신고 : 금천구청 제 2005-01053<br>
@@ -40,19 +40,19 @@
 						</p>
 						<div style="display: flex; justify-content: space-around;"class="space-around">
 							<p>
-								<a href="#" class="complain_menu" style="color: black; text-decoration: none;">
+								<a type="button" class="complain_menu" data-toggle="popover_complain" title="온라인 고객센터" data-placement="bottom" data-content="1566 - 0086" style="color: black; text-decoration: none;">
 									<i class="fa-solid fa-phone fa-2xl mb-4" style="color: #000000;"></i>
 									<span style="font-size: 8pt; letter-spacing: 1px; display:block;">(+82) MOSACOYA</span>
 								</a> 
 							</p>
 							<p>
-								<a href="#" class="complain_menu" style="color: black; text-decoration: none;">
+								<a type="button" class="complain_menu" data-toggle="popover_complain" title="메일 문의사항" data-placement="bottom" data-content="support@mosacoya.com" style="color: black; text-decoration: none;">
 									<i class="fa-regular fa-envelope fa-2xl mb-4" style="color: #000000;"></i>
 									<span style="font-size: 8pt; letter-spacing: 1px; display:block;">support@mosacoya.com</span>
 								</a>
 							</p>
 							<p>
-								<a type="button" data-toggle="modal" data-target="#exampleModal" class="complain_menu" style="color: black; text-decoration: none;">
+								<a type="button" data-toggle="modal" data-target="#complainModal" class="complain_menu" style="color: black; text-decoration: none;">
 									<i class="fa-regular fa-comment fa-2xl mb-4" style="color: #000000;"></i>
 									<span style="font-size: 8pt; letter-spacing: 1px; display:block;">Chat With Us</span>
 								</a>
@@ -89,7 +89,7 @@
 		</div>
 	</div>
 	<div>
-		<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn px-3 py-2" style="z-index:1; font-weight: 700; justify-content: center; align-items: center; display: flex; position: fixed; top: 90%; left: 89%; background-color: #fdd007; color: #645510; fill: #645510; border-radius: 999rem; border: none;">
+		<button type="button" data-toggle="modal" data-target="#complainModal" class="btn px-3 py-2" style="z-index:1; font-weight: 700; justify-content: center; align-items: center; display: flex; position: fixed; top: 90%; left: 89%; background-color: #fdd007; color: #645510; fill: #645510; border-radius: 999rem; border: none;">
 			<span>
 				<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" class="mr-2 mb-1"> 
 					<path d="M11,12.3V13c0,0-1.8,0-2,0v-0.6c0-0.6,0.1-1.4,0.8-2.1c0.7-0.7,1.6-1.2,1.6-2.1c0-0.9-0.7-1.4-1.4-1.4 c-1.3,0-1.4,1.4-1.5,1.7H6.6C6.6,7.1,7.2,5,10,5c2.4,0,3.4,1.6,3.4,3C13.4,10.4,11,10.8,11,12.3z"></path>
@@ -101,7 +101,7 @@
 		</button>
 	</div>
 	<%-- 고객센터 Modal --%>
-	<div class="modal fade" id="exampleModal">
+	<div class="modal fade" id="complainModal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 		      
@@ -113,24 +113,24 @@
 				<!-- Modal body -->
 				<div class="modal-body" style="padding: 2rem;"> 
 					We apologize we aren't online at the moment. Please leave us a message and we'll get back to you as soon as we can. Thanks!
-					<form>
+					<form name="customer_content">
 						<div class="mt-3">
-							<p style="font-weight: 700; margin-bottom: 0.5rem;">이름</p>
-							<input type="text" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;"/>
+							<p style="font-weight: 700; margin-bottom: 0.5rem;">아이디</p>
+							<input id="userid" name="userid" type="text" size="20" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;"/>
 						</div>
 						<div class="mt-3">
-							<p style="font-weight: 700; margin-bottom: 0.5rem;">이메일</p>
-							<input type="text" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;">
+							<p style="font-weight: 700; margin-bottom: 0.5rem;">제목</p>
+							<input id="board_title" name="board_title" size="50" type="text" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;">
 						</div>
 						<div class="mt-3">
 							<p style="font-weight: 700; margin-bottom: 0.5rem;">메시지</p>
-							<textarea style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;" rows="5" cols="30"></textarea>
+							<textarea id="board_content" name="board_content" size="500" style="border-radius: 4px; border: 1px solid rgb(216, 220, 222); width: 100%; padding: 10px;" rows="5" cols="30"></textarea>
 						</div>
 					</form>
 				</div>
 				<!-- Modal footer -->
 				<div class="modal-footer">
-					<button type="button" class="btn btn-dark">메시지 보내기</button>
+					<button onclick="send_message()" type="button" class="btn btn-dark">메시지 보내기</button>
 				</div>
 				
 			</div>
