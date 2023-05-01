@@ -53,7 +53,7 @@ public class ProductDAO implements InterProductDAO {
 					+ " ( "
 					+ " 	select FK_SHOES_CATEGORY_NO, product_no, product_date, product_price, product_size, stock_count, product_content, product_image, product_color "
 					+ " 	from tbl_product "
-					+ " 	where product_name = ? and stock_count != 0 "
+					+ " 	where product_name = ? "
 					+ " ) P JOIN tbl_shoes_category S "
 					+ " ON P.fk_shoes_category_no = S.shoes_category_no ";
 			
@@ -79,7 +79,6 @@ public class ProductDAO implements InterProductDAO {
 				pvo.setProduct_image(rs.getString(9));
 				pvo.setProduct_color(rs.getString(10));
 				scvo.setShoes_category_no(rs.getString(11));
-				pvo.setProduct_name(product_name);
 				
 				pvo.setScvo(scvo);
 				
@@ -153,17 +152,17 @@ public class ProductDAO implements InterProductDAO {
 			conn = ds.getConnection();
 			
 			String sql = " select product_image "
-						+ " from tbl_product "
-						+ " where product_name = ? and stock_count != 0 "
-						+ " group by product_image ";
+					+ "from tbl_product "
+					+ "where product_name = ? and stock_count != 0 "
+					+ "group by product_image ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, product_name);
 			
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {				
-				colorList.add(rs.getString(1));				
+			while(rs.next()) {
+				colorList.add(rs.getString(1));
 			}
 		} finally {
 			close();

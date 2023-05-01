@@ -10,24 +10,6 @@
     
 <jsp:include page="./header.jsp"/>
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-   
-<!-- Font Awesome 6 Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
-
-<!-- 직접 만든 CSS -->
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/css/style.css" />
-
-<!-- Optional JavaScript -->
-<script type="text/javascript" src="<%= ctxPath%>/js/jquery-3.6.4.min.js"></script>
-<script type="text/javascript" src="<%= ctxPath%>/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js" ></script> 
-
-<!-- jQueryUI CSS 및 JS -->
-<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/jquery-ui-1.13.1.custom/jquery-ui.min.css" />
-<script type="text/javascript" src="<%= ctxPath%>/jquery-ui-1.13.1.custom/jquery-ui.min.js"></script>
-
-
 <style type="text/css">
 
 	div.container{
@@ -67,24 +49,17 @@
 		font-weight: bold;
 	}
 	
-	span#price {
+	span.price {
 		font: 28px courier, arial, sans-serif;
 	}
 	
-	img#img_select {
-		width: 18%;
-		margin: 2%;
-		padding: 1%;
-		cursor: pointer;
-	}
-	
-	button#btn_select {
-		border: solid 1px black;
-		cursor: pointer;
+	div.review {
+		margin-left: 25px;
+		padding-top: 5px;
 	}
 	
 	.img_selected {
-		border: solid 1px #FDD007;
+		border: solid 1px FDD007;
 	}
 	
 	.img_not_selected {
@@ -99,12 +74,6 @@
 	ul {
 		list-style: none;
 	}
-	
-	.wrap {
-		display: flex;
-		flex-wrap: wrap;
-	}
-	
 	
 	div#testimonial{
 		display: flex;
@@ -152,13 +121,6 @@
 		text-align: center;
 	}
 	
-	.loading {
-		background-image: url('spinner.gif');
-		background-repeat: no-repeat;
-		background-position: center;
-		cursor: wait;
-	}
-	
 	.loader {
 	    position: relative;
 		justify-content: center;
@@ -188,71 +150,29 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
-		 
-	    $("p#order_error_msg").css('display','none'); // 코인잔액 부족시 주문이 안된다는 표시해주는 곳. 
 		
-		// 초기 로딩 시 선택된 색상 강조 표시
-		$('img[name="colorList"]').each(function() {
-			let img1 = this.src;
-			let img2 = $('input[name="product_image"]').val();
-
-		    if (img1 == img2) {
-		    	$(this).addClass('img_selected').removeClass('img_not_selected');
-		    } else {
-		    	$(this).addClass('img_not_selected').removeClass('img_selected');
-		    }
-		});
-		
-		// 초기 로딩 시 선택된 사이즈 강조 표시
-		$('button[name="sizeList"]').each(function() {
-			let size1 = $(this).val();
-			let size2 = $('input[name="product_size"]').val();
-
-		    if (size1 == size2) {
-		    	$(this).addClass('btn-warning').removeClass('btn-white');
-		    } else {
-		    	$(this).addClass('btn-white').removeClass('btn-warning');
-		    }
+		$("img[name='img_color']").each(function() {
+			if ($(this).attr("src") == "${requestScope.pvo.product_image}") {
+				$(this).addClass("img_selected");
+			    $(this).removeClass("img_not_selected");
+			} else {
+			    $(this).addClass("img_not_selected");
+			    $(this).removeClass("img_selected");
+			}
 		});
 		
 		
-		// 스피너
-		$("input#spinner").spinner( {
-	         spin: function(event, ui) {
-	            if(ui.value > 100) {
-	               $(this).spinner("value", 100);
-	               return false;
-	            }
-	            else if(ui.value < 1) {
-	               $(this).spinner("value", 1);
-	               return false;
-	            }
-	         }
-	      } );// end of $("input#spinner").spinner({});----------------   
-				
 	}); // end of $(document).ready();------------------------------
 
 	// Function Declaration
 	
-	// *** 이미지 클릭 ***//
+	// *** 제품이미지 클릭 ***//
 	function imgSelect(img) {
-	    $('img[name="imgList"]').addClass('img_not_selected').removeClass('img_selected');
-	    $(img).addClass('img_selected').removeClass('img_not_selected');
-	    $('#expandedImg').attr('src', $(img).attr('src'));
-	}
+		
+		$('img[name="imgList"]').addClass('img_not_selected').removeClass('img_selected');
+		img.addClass('img_selected').removeClass('img_not_selected');
+		$('#expandedImg').attr('src', img.src);
 	
-	// *** 색상 클릭 ***//
-	function colorSelect(img) {
-	    $('img[name="colorList"]').addClass('img_not_selected').removeClass('img_selected');
-	    $(img).addClass('img_selected').removeClass('img_not_selected');
-	    $('input[name="product_color"]').val($(img).attr('src'));
-	}
-	
-	// *** 사이즈 클릭 ***//
-	function sizeSelect(btn) {
-	    $('button[name="sizeList"]').addClass('btn-white').removeClass('btn-warning');
-	    $(btn).addClass('btn-warning').removeClass('btn-white');
-	    $('input[name="product_size"]').val($(btn).val());
 	}
 	
 	
@@ -290,65 +210,6 @@
    
    }// end of function goCart()-------------------------
    
-   
-   // *** 바로주문하기 *** // 
-   function goOrder(btn) {
-	   
-	   if( ${not empty sessionScope.loginuser} ) {
-			   
-		   const current_coin = Number("${sessionScope.loginuser.coin}"); // 현재코인액
-		   const sum_totalPrice = Number("${requestScope.pvo.product_price}") * Number($("input#spinner").val()); // 제품총판매가
-		   
-			if( sum_totalPrice > current_coin) {
-				$("p#order_error_msg").html("코인잔액이 부족하므로 주문이 불가합니다.<br>주문총액 : "+sum_totalPrice.toLocaleString('en')+"원 / 코인잔액 : "+current_coin.toLocaleString('en')+"원").css('display','');
-				return;
-			}
-	   
-	  		
-		   else {
-			   $("p#order_error_msg").css('display','none');
-		   
-			   if( confirm("총주문액 : " + sum_totalPrice.toLocaleString('en') + "원 결제하시겠습니까?") ) {
-
-				   $(btn).html('<i class="fa-solid fa-circle-notch fa-spin"></i> loading');
-				   
-					$.ajax({
-						url:"<%= request.getContextPath()%>/shop/orderAdd.up",
-						type:"post",
-						data:{"sum_totalPrice":sum_totalPrice,
-							"product_no_join":"${requestScope.pvo.product_no}",
-							"oqty_join":$("input#spinner").val(),
-							"totalPrice_join":sum_totalPrice
-							},
-						dataType:"json",
-						success:function(json) {
-							// json은 {"isSuccess":1} 또는 {"isSuccess":0}이다.
-							
-							if(json.isSuccess == 1) {
-								location.href="<%= request.getContextPath()%>/shop/orderList.up";
-							}
-							else {
-								location.href="<%=request.getContextPath()%>/shop/orderError.up";
-							}
-							
-						},
-			        	 error: function(request, status, error){
-			                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				        }
-							
-					});
-					   
-					}// end of if
-				}
-			}// end of if
-		
-		else {
-	   		alert("주문을 하시려면 먼저 로그인 하세요!!");
-	   }
-			
-   } // end of function goOrder()----------------------   
-   
-   
 </script>  
    
 <!-- container -->
@@ -371,36 +232,41 @@
   <!-- // product-breadcrumbs -->  
   
   <!-- detail_top -->
-  <div class="mt-3 detail_top row">
+  <div class="detail_top row">
+    <input type="text" name="product_no" value="${requestScope.pvo.product_no}" />
+    <input type="text" name="product_color" value="${requestScope.pvo.product_color}" />
+    <input type="text" name="product_size" value="${requestScope.pvo.product_size}" />
+    <input type="text" name="product_image" value="${requestScope.pvo.product_image}" />
   
-    <div class="col-md-7">
-	  <div class="container">
-	    <img id="expandedImg" class="col-md-12" src="${requestScope.pvo.product_image}">
+  <div class="col-md-7">
+	<div class="container">
+	  <img id="expandedImg" src="${requestScope.pvo.product_image}">
+	</div>
+	
+	<!-- columns -->
+	<div class="row">
+	  <div class="column">
+	    <img name="imgList" class="img_selected" src="${requestScope.pvo.product_image}" style="width:100%" onclick="imgSelect(this);">
 	  </div>
 	
-	  <div class="row">
-	    <div class="column">
-	      <img id="img_select" name="imgList" class="img_small img_selected" src="${requestScope.pvo.product_image}" onclick="imgSelect(this);">
-	    </div>
-	
-	    <c:if test="${not empty requestScope.imgList}">
-	      <c:forEach var="imgfilename" items="${requestScope.imgList}">
-	        <div class="column">
-	          <img id="img_select" name="imgList" class="col-md-2 img_small img_not_selected" src="${imgfilename}" style="width:100%" onclick="colorSelect(this);">
-	        </div>
-	      </c:forEach>
-	    </c:if>
-      </div>
+	  <c:if test="${not empty requestScope.imgList}">
+	    <c:forEach var="imgfilename" items="${requestScope.imgList}">
+	      <div class="column">
+	        <img name="imgList" class="img_not_selected" src="${imgfilename}" style="width:100%" onclick="imgSelect(this);">
+	      </div>
+	    </c:forEach>
+	  </c:if>
     </div>
+  </div>
     
-    <div class="col-md-5 product-main_block">
-      <h1 class="product-main_title h1">${requestScope.pvo.product_name}</h1>
+  <div class="col-md-5 product-main_block">
+    <h1 class="product-main_title h1">${requestScope.pvo.product_name}</h1>
     
-        <div class="d-flex product-main_meta">
-          <span class="col product-main_price p1">
-            <span id="price"><fmt:formatNumber value="${requestScope.pvo.product_price}" pattern="###,###" /></span>
-          </span>
-        <div class="ml-5 pt-2 review">
+      <div class="d-flex product-main_meta">
+        <span class="col product-main_price p1">
+          <span style="text-decoration: line-through;"><fmt:formatNumber value="${requestScope.pvo.product_price}" pattern="###,###" /></span>
+        </span>
+        <div class="pt-2 review">
           <span class="fa-stars">
             <span class="fa fa-star checked"></span>
             <span class="fa fa-star checked"></span>
@@ -411,19 +277,9 @@
         <a id="link" href="#" class="text-m">538 리뷰</a>
         </div>
       </div>
-      
-      <div class="mt-3">
-	      <span class="color_select">색상</span>  
-	      <hr/>
-      </div>
-      
-	  <div class="row">	
-	    <c:if test="${not empty requestScope.colorList}">
-	      <c:forEach var="colorfilename" items="${requestScope.colorList}">
-	        <img id="img_select" name="colorList" class="img_small col-2" src="${colorfilename}" onclick="colorSelect(this);">	        
-	      </c:forEach>
-	    </c:if>
-      </div>
+     
+      <span class="color_select">${requestScope.pvo.product_color}</span>  
+      <hr/>
 
     
       <div class="mt-5"> 
@@ -431,63 +287,17 @@
           <a id="link" style="float:right;">가이드</a>
         </p>
         <hr/>
-        
-        
-	    <div class="row">
-          <div class="col-md-12">
-            <div class="btn-group wrap" role="group">	
-	          <c:if test="${not empty requestScope.sizeList}">
-	            <c:forEach var="size" items="${requestScope.sizeList}">
-	              <div class="col-md-2 mt-2">
-	                <button type="button" id="btn_select" name="sizeList" class="btn btn-white" value="${size}" onclick="sizeSelect(this);">${size}</button>	        
-	              </div>
-	            </c:forEach>
-	          </c:if>
-            </div>
-          </div>
-        </div>
-    
-    
-      <%--  
-      <ul class="">
-        <li>
-          <label for="spinner">주문개수&nbsp;</label>
-          <input id="spinner" name="oqty" value="1" style="width: 110px;">
-        </li>
-      </ul>
-      <div>
-	      <button type="button" id="btn_select" class="col-4 btn btn-white" onClick="goCart()">장바구니</button>
-	      <button type="button" id="btn_select" class="col-8 ml-1 btn btn-warning" onClick="goOrder(this)">구매하기</button>
-      </div>
-    </div>
-    --%>
-        <form name="cartOrderFrm">
-          <div class="mt-3 d-flex flex-column justify-content-between">
-            <div class="align-self-end">
-              <ul class="text-right">
-                <li>
-                  <label for="spinner">주문개수&nbsp;</label>
-                  <input id="spinner" name="oqty" value="1" style="width: 110px;">
-                </li>
-              </ul>
-            </div>
-            <div class="d-flex justify-content-between mt-3">
-              <button type="button" id="btn_select" class="col-4 btn btn-white" onClick="goCart()">장바구니</button>
-              <button type="button" id="btn_select" class="col-8 ml-1 btn btn-warning" onClick="goOrder(this)">구매하기</button>
-            </div>
-          </div>
-          <input type="hidden" name="product_no" value="${requestScope.pvo.product_no}" />
-          <input type="hidden" name="product_color" value="${requestScope.pvo.product_color}" />
-          <input type="hidden" name="product_size" value="${requestScope.pvo.product_size}" />
-          <input type="hidden" name="product_image" value="${requestScope.pvo.product_image}" />
-        </form>  
-    
-         
-	    <div>
-		  <p id="order_error_msg" class="text-center text-danger font-weight-bold h4">코인잔액이 부족하므로<br>주문이 불가합니다.</p>
-	    </div>
+     
+        <button type="button" class="mt-1 btn btn-warning">${requestScope.pvo.product_size}</button>
      
       </div>
+    
+    
+    <div class="d-flex mt-5"> 
+      <button type="button" class="col-4 btn btn-warning" onClick="goCart()">장바구니</button>
+      <button type="button" class="col-8 ml-1 btn btn-warning">구매하기</button>
+    </div> 
+     
     </div>
   </div>
   <!-- // detail_top -->
@@ -531,8 +341,9 @@
 </div>
 <!-- // container -->
 
+
  
-<div id="testimonial" class="my-5">
+<div id="testimonial">
   <div id="testimonial_container" class="row">
     <div id="testimonial_left" class="col-md-6 px-5 pt-4">
       <div id="testimonial_left_contents" class="col">
