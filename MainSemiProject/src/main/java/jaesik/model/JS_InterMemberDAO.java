@@ -59,4 +59,7 @@ public interface JS_InterMemberDAO {
 	// 제품등록할 pvo를 tbl_product 테이블에 insert
 	int productInsert(ProductVO pvo) throws SQLException;
 
+	// 타입과 검색단어를 받아와 검색하는 메소드
+	List<ProductVO> selectSearchProduct(Map<String, String> paraMap) throws SQLException;
+
 }

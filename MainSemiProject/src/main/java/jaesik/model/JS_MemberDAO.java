@@ -691,6 +691,68 @@ public class JS_MemberDAO implements JS_InterMemberDAO {
 	    return result;
 	}
 
+	
+	
+	// ----------------------------------------------------------------------- 타입과 검색단어를 받아와 검색하는 메소드
+	@Override
+	public List<ProductVO> selectSearchProduct(Map<String, String> paraMap) throws SQLException {
+
+		List<ProductVO> prodList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			String sql =  " select product_no, product_name, fk_shoes_category_no, product_color, product_size, product_image"
+						+ "		, product_content , stock_count, sale_count, product_price "
+						+ " from tbl_product ";
+			
+			String buyer_type = paraMap.get("buyer_type");
+			String search_word = paraMap.get("search_word");
+			
+			if ( "".equals(buyer_type)) {
+				buyer_type = "'%'";
+			}
+			
+			if ( search_word != null && !search_word.trim().isEmpty() ) {
+				sql += " where product_no like "+buyer_type+" and product_name like '%'|| ? || '%' ";
+			}
+			// 컬럼명과 테이블명은 위치홀더로 사용하면 안된다. 위치홀더로 들어오는 것은 오직 데이터 값이어야 한다.
+			
+			sql += " order by upload_date desc";
+			// 신상품으로 정렬
+			
+			
+			pstmt = conn.prepareStatement(sql);
+			if ( search_word != null && !search_word.trim().isEmpty() ) {
+				pstmt.setString(1, search_word);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while ( rs.next() ) {
+				
+				ProductVO pvo = new ProductVO();
+				
+				pvo.setProduct_no(rs.getString("product_no") );
+				pvo.setProduct_name(rs.getString("product_name"));  
+				pvo.setFk_shoes_category_no(rs.getInt("fk_shoes_category_no"));
+			    pvo.setProduct_color(rs.getString("product_color"));
+				pvo.setProduct_size(rs.getInt("product_size"));
+				pvo.setProduct_image(rs.getString("product_image"));
+				pvo.setProduct_content(rs.getString("product_content"));
+				pvo.setStock_count(rs.getInt("stock_count"));
+				pvo.setSale_count(rs.getInt("sale_count"));
+				pvo.setProduct_price(rs.getInt("product_price"));
+				
+				prodList.add(pvo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return prodList;
+	}
+
 }
 
 
