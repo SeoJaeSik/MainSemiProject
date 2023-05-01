@@ -51,7 +51,7 @@ public class ProductAction extends AbstractController {
 			request.setAttribute("sizeList", sizeList); // 해당 제품의 사이즈 선택지
 			
 //			super.setRedirect(false);
-			super.setViewPage("/WEB-INF/myshop/prodView.jsp");
+			super.setViewPage("/WEB-INF/shinjh/product.jsp");
 		}
 
 	}
