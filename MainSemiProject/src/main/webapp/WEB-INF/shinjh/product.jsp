@@ -219,6 +219,7 @@
   <div class="product-breadcrumbs">
     <nav class="breadcrumbs p2">
     
+<<<<<<< shinjh
       <a id="link" href="<%= ctxPath%>/index.moc" title="HOME" >HOME</a>
       /
       <a id="link" href="<%= ctxPath%>/allproduct.moc?buyer_type_no='${requestScope.pvo.btvo.buyer_type_no}'" title="${requestScope.pvo.btvo.buyer_type_name}">${requestScope.pvo.btvo.buyer_type_name}</a>
@@ -226,6 +227,13 @@
       <a id="link" href="<%= ctxPath%>/allproduct.moc?buyer_type_no='${requestScope.pvo.btvo.buyer_type_no}'&shoes_category_no='${requestScope.pvo.scvo.shoes_category_no}'" title="${requestScope.pvo.scvo.shoes_category_name}">${requestScope.pvo.scvo.shoes_category_name}</a>
       /
       <span>${requestScope.pvo.product_name}</span>
+=======
+    <a class="breadcrumbs_item a1" href="#" title="HOME" >HOME</a>
+    /
+    <a class="breadcrumbs_item a1" href="#" title="남성">남성</a>
+    /
+    <span class="breadcrumbs_item">제품명</span>
+>>>>>>> c260391 DAO, VO 추가
      
     </nav>
   </div>
@@ -339,9 +347,13 @@
 <!-- // carousel -->
   --%>
 </div>
+<<<<<<< shinjh
 <!-- // container -->
 
 
+=======
+ <!-- // container -->
+>>>>>>> c260391 DAO, VO 추가
  
 <div id="testimonial">
   <div id="testimonial_container" class="row">
