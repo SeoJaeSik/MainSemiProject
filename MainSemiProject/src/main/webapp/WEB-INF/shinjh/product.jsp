@@ -57,41 +57,19 @@
 		margin-left: 25px;
 		padding-top: 5px;
 	}
+	
+	.img_selected {
+		border: solid 1px FDD007;
+	}
+	
+	.img_not_selected {
+		border: solid 1px gray;
+	}
 
 	.checked {
 		color: orange;
 	}
 	
-	/* 컬러서클 */
-	li.colors {
-	    display:flex;
-	    padding:5px; 
-	}
-	
-	li.colors > a > span  {
-	    width:15px;
-	    height:15px;
-	    border-radius:50%;
-	    cursor:pointer;
-	    display:flex;
-	    margin-right:6px;	
-	}
-
-	ul.color-select > li.colors > a:nth-child(1) > span {
-	    background-color:silver;
-	}
-	
-	ul.color-select > li.colors > a:nth-child(2) > span {
-	    background-color:black;
-	}
-	
-	ul.color-select > li.colors > a:nth-child(3) > span {
-	    background-color:cyan;
-	}
-	
-	ul.color-select > li.colors > a:nth-child(4) > span {
-	    background-color:black;
-	}		
 	
 	ul {
 		list-style: none;
@@ -173,16 +151,28 @@
 
 	$(document).ready(function() {
 		
+		$("img[name='img_color']").each(function() {
+			if ($(this).attr("src") == "${requestScope.pvo.product_image}") {
+				$(this).addClass("img_selected");
+			    $(this).removeClass("img_not_selected");
+			} else {
+			    $(this).addClass("img_not_selected");
+			    $(this).removeClass("img_selected");
+			}
+		});
+		
 		
 	}); // end of $(document).ready();------------------------------
 
 	// Function Declaration
 	
 	// *** 제품이미지 클릭 ***//
-	function imgSelect(imgs) {
-	  var expandImg = document.getElementById("expandedImg");
-	  expandImg.src = imgs.src;
-	  expandImg.parentElement.style.display = "block";
+	function imgSelect(img) {
+		
+		$('img[name="imgList"]').addClass('img_not_selected').removeClass('img_selected');
+		img.addClass('img_selected').removeClass('img_not_selected');
+		$('#expandedImg').attr('src', img.src);
+	
 	}
 	
 	
@@ -222,27 +212,33 @@
    
 </script>  
    
- <!-- container -->
- <div class="container">
+<!-- container -->
+<div class="container">
  
   <!-- product-breadcrumbs -->
   <div class="product-breadcrumbs">
-   <nav class="breadcrumbs p2">
+    <nav class="breadcrumbs p2">
     
-    <a id="link" href="<%= ctxPath%>/index.moc" title="HOME" >HOME</a>
-    /
-    <a id="link" href="<%= ctxPath%>/allproduct.moc/${requestScope.pvo.btvo.buyer_type_name}" title="${requestScope.pvo.btvo.buyer_type_name}">${requestScope.pvo.btvo.buyer_type_name}</a>
-    /
-    <span>${requestScope.pvo.product_name}</span>
+      <a id="link" href="<%= ctxPath%>/index.moc" title="HOME" >HOME</a>
+      /
+      <a id="link" href="<%= ctxPath%>/allproduct.moc?buyer_type_no='${requestScope.pvo.btvo.buyer_type_no}'" title="${requestScope.pvo.btvo.buyer_type_name}">${requestScope.pvo.btvo.buyer_type_name}</a>
+      /
+      <a id="link" href="<%= ctxPath%>/allproduct.moc?buyer_type_no='${requestScope.pvo.btvo.buyer_type_no}'&shoes_category_no='${requestScope.pvo.scvo.shoes_category_no}'" title="${requestScope.pvo.scvo.shoes_category_name}">${requestScope.pvo.scvo.shoes_category_name}</a>
+      /
+      <span>${requestScope.pvo.product_name}</span>
      
-   </nav>
+    </nav>
   </div>
   <!-- // product-breadcrumbs -->  
   
   <!-- detail_top -->
   <div class="detail_top row">
+    <input type="text" name="product_no" value="${requestScope.pvo.product_no}" />
+    <input type="text" name="product_color" value="${requestScope.pvo.product_color}" />
+    <input type="text" name="product_size" value="${requestScope.pvo.product_size}" />
+    <input type="text" name="product_image" value="${requestScope.pvo.product_image}" />
   
-   <div class="col-md-7">
+  <div class="col-md-7">
 	<div class="container">
 	  <img id="expandedImg" src="${requestScope.pvo.product_image}">
 	</div>
@@ -250,75 +246,63 @@
 	<!-- columns -->
 	<div class="row">
 	  <div class="column">
-	    <img src="${requestScope.pvo.product_image}" style="width:100%" onclick="imgSelect(this);">
+	    <img name="imgList" class="img_selected" src="${requestScope.pvo.product_image}" style="width:100%" onclick="imgSelect(this);">
 	  </div>
 	
 	  <c:if test="${not empty requestScope.imgList}">
 	    <c:forEach var="imgfilename" items="${requestScope.imgList}">
 	      <div class="column">
-	        <img src="${imgfilename}" style="width:100%" onclick="imgSelect(this);">
+	        <img name="imgList" class="img_not_selected" src="${imgfilename}" style="width:100%" onclick="imgSelect(this);">
 	      </div>
-		</c:forEach>
+	    </c:forEach>
 	  </c:if>
-	</div>
-   </div>
+    </div>
+  </div>
     
-   <div class="col-md-5 product-main_block">
+  <div class="col-md-5 product-main_block">
     <h1 class="product-main_title h1">${requestScope.pvo.product_name}</h1>
     
-    <div class="d-flex product-main_meta">
-     <span class="col product-main_price p1">
-      <span style="text-decoration: line-through;"><fmt:formatNumber value="${requestScope.pvo.product_price}" pattern="###,###" /></span>
-     </span>
-     <div class="pt-2 review">
-      <span class="fa-stars">
-       <span class="fa fa-star checked"></span>
-       <span class="fa fa-star checked"></span>
-       <span class="fa fa-star checked"></span>
-       <span class="fa fa-star"></span>
-       <span class="fa fa-star"></span>
-      </span>
-      <a id="link" href="#" class="text-m">538 리뷰</a>
-     </div>
-    </div>
+      <div class="d-flex product-main_meta">
+        <span class="col product-main_price p1">
+          <span style="text-decoration: line-through;"><fmt:formatNumber value="${requestScope.pvo.product_price}" pattern="###,###" /></span>
+        </span>
+        <div class="pt-2 review">
+          <span class="fa-stars">
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+          </span>
+        <a id="link" href="#" class="text-m">538 리뷰</a>
+        </div>
+      </div>
      
-     
-    <br>
-    
-    <span class="color_select">${requestScope.pvo.product_color}</span>  
-    <hr/>
-	<ul class="pl-0 color-select">
-	 <li class="colors">
-	  <a href="#"><span></span></a>
-	  <a href="#"><span></span></a>
-	  <a href="#"><span></span></a>
-      <a href="#"><span></span></a>
-   	 </li>
-	</ul>  
-     
-    
-    <div class="mt-5"> 
-     <p>사이즈
-      <a id="link" style="float:right;">가이드</a>
-     </p>
-     <hr/>
-     
-     <button type="button" class="mt-1 btn btn-warning">${requestScope.pvo.product_size}</button>
-     
-    </div>
-    
+      <span class="color_select">${requestScope.pvo.product_color}</span>  
+      <hr/>
 
-    <br><br>
+    
+      <div class="mt-5"> 
+        <p>사이즈
+          <a id="link" style="float:right;">가이드</a>
+        </p>
+        <hr/>
+     
+        <button type="button" class="mt-1 btn btn-warning">${requestScope.pvo.product_size}</button>
+     
+      </div>
+    
     
     <div class="d-flex mt-5"> 
-     <button type="button" class="col-4 btn btn-warning" onClick="goCart()">장바구니</button>
-     <button type="button" class="col-8 ml-1 btn btn-warning">구매하기</button>
+      <button type="button" class="col-4 btn btn-warning" onClick="goCart()">장바구니</button>
+      <button type="button" class="col-8 ml-1 btn btn-warning">구매하기</button>
     </div> 
      
-   </div>
+    </div>
   </div>
   <!-- // detail_top -->
-  
+
+ <%-- 
  <!-- carousel -->
  <div id="carousel" class="mt-5 carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
@@ -353,34 +337,34 @@
   </a>
 </div>
 <!-- // carousel -->
-
+  --%>
 </div>
 <!-- // container -->
- 
+
 
  
 <div id="testimonial">
- <div id="testimonial_container" class="row">
-  <div id="testimonial_left" class="col-md-6 px-5 pt-4">
-   <div id="testimonial_left_contents" class="col">
-    <p id="testimonial_text">
-    "유명한 변덕스러운 패션 비즈니스의<br>
-     썰물과 흐름을 극복하면서 100 년 <br>
-     이상의 사업을 자랑하는 브랜드는 거 <br>
-     의 없습니다. 가족 관계를 유지하면<br>
-     서 글로벌 인지도를 가진 비즈니스를 <br>
-     성장시키는 것은 확실히 축하할만한 <br>
-     일입니다."
-    </p>
+  <div id="testimonial_container" class="row">
+    <div id="testimonial_left" class="col-md-6 px-5 pt-4">
+      <div id="testimonial_left_contents" class="col">
+      <p id="testimonial_text">
+        "유명한 변덕스러운 패션 비즈니스의<br>
+        썰물과 흐름을 극복하면서 100 년 <br>
+        이상의 사업을 자랑하는 브랜드는 거 <br>
+        의 없습니다. 가족 관계를 유지하면<br>
+        서 글로벌 인지도를 가진 비즈니스를 <br>
+        성장시키는 것은 확실히 축하할만한 <br>
+        일입니다."
+      </p>
     <img id="img_logo" title="Los Angeles Times" alt="Los Angeles Times" src="https://cdn.accentuate.io/752526983272/-1679306522877/Los_Angeles_Times_logo-v1679947630614.png?1280x161">
-   </div>
+    </div>
   </div>
-  <div id="testimonial_right" class="col-md-6">
-   <div class="img_loader">
-    <img id="img_wagon" src="./images/wagon.png" alt="수레 이미지">
-   </div>
-  </div>
- </div> 
+    <div id="testimonial_right" class="col-md-6">
+      <div class="img_loader">
+        <img id="img_wagon" src="./images/wagon.png" alt="수레 이미지">
+      </div>
+    </div>
+  </div> 
 </div>
 
   
