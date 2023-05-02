@@ -549,9 +549,9 @@
     </div>
   </div>
     <div id="testimonial_right" class="col-md-6">
-      <div class="img_loader">
-        <img id="img_wagon" src="./images/wagon.png" alt="수레 이미지">
-      </div>
+	  <div class="main_video"> 
+		<video src="https://image.nbkorea.com/NBRB_PC/event/imc/premium574/video1.mp4" style="width: 100%;" autoplay="" muted="" playsinline="" loop=""></video>
+	  </div>
     </div>
   </div> 
 </div>
