@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
+
 <% 
 	String ctxPath = request.getContextPath(); 
 %>
@@ -41,11 +44,12 @@
 		-webkit-box-sizing: border-box;
 	}
 	label{
-		padding: 5px 0px 5px 15px;
+		border: solid 1px #333333;
+		padding: 5px 15px 5px 0px;
 		border-radius: 3px;
 		text-align: center;
+		box-shadow: 1px 1px 1px 1px #e6e6e6;
 	}
-	label#label_size{border:solid 1px gray;}
 	input.btn{opacity: 0;}
 	label:hover{
 		cursor: pointer;
@@ -54,115 +58,169 @@
 		margin: 0 10px auto;
 		box-shadow: 1px 1px 1px 1px #e6e6e6;
 	}
+	.selected {
+		background-color: #fdd007;
+	}
+	
 </style>
 
 <script type="text/javascript">
 
 	$(document).ready(function(){
+	
+		$("img[name='product_image']").hide();
+
+		let selectedColor = "${pvo.product_color}";
+		let selectedSize = "${pvo.product_size}";
+		
+		// 회원의 원래옵션(색상) checked 로 표시하기
+		$("input:radio[name='product_color']").each(function(index, elmt){
+			if($(elmt).val() == "${pvo.product_color}"){
+				$(elmt).prop("checked", true);
+				$("label#product_color").removeClass('selected');
+				$(elmt).parent().addClass('selected');
+			}
+		}); // end of $("input:radio[name='product_color']").each(function(index, elmt){})
+
+		
+		// 회원의 원래옵션(사이즈) checked 로 표시하기
+		$("input:radio[name='product_size']").each(function(index, elmt){
+			if($(elmt).val() == "${pvo.product_size}"){
+				$(elmt).prop("checked", true);
+				$("label#product_size").removeClass('selected');
+				$(elmt).parent().addClass('selected');
+			}
+		}); // end of $("input:radio[name='product_color']").each(function(index, elmt){})
+		
+
+		// 회원의 원래옵션(이미지) 보여주기
+		$("img[name='product_image']").each(function(index, elmt){
+			if($(elmt).attr('src') == "${pvo.product_image}"){
+				$(elmt).show();
+			}
+		}); // end of $("img[name='product_image']").each(function(index, elmt){})
 		
 		
+		// 선택한 색상의 css 변경
+		$("input:radio[name='product_color']").click(function(){
+			if($(this).prop("checked")){
+				$("label#product_color").removeClass('selected', {duration:1000});
+				$(this).parent().addClass('selected', {duration:1000});
+				selectedColor = $(this).val();
+
+				// 선택한 색상에 따른 이미지 보여주기
+				$("img[name='product_image']").each(function(index, elmt){
+					if($(elmt).parent().attr('id') == selectedColor){
+						$("img[name='product_image']").hide();
+						$(elmt).show();
+					}
+				}); // end of $("img[name='product_image']").each(function(index, elmt){})
+			}
+		}); // end of $("input:radio[name='product_color']")
+
 		
+		// 선택한 사이즈의 css 변경
+		$("input:radio[name='product_size']").click(function(){
+			if($(this).prop("checked")){
+				$("label#product_size").removeClass('selected', {duration:500});
+				$(this).parent().addClass('selected', {duration:500});
+				selectedSize = $(this).val();
+			}
+		}); // end of $("input:radio[name='product_size']").click(function(){})
+
 		
+		// 취소 클릭하면 팝업창 닫기
+		$("button[type='reset']").click(function(){
+			self.close();
+		}); // end of $("button[type='reset']").click(function(){})
 		
 	}); // end of $(document).ready(function(){})
 
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	// "변경" 클릭하면 호출되는 함수
+	function goOptionEdit() {
+		const frm = document.OptionEditFrm;
+		frm.action = "<%= request.getContextPath()%>/shop/cartListOptionEdit.moc";
+		frm.method = "post";
+		frm.submit();
+	} // end of function goOptionEdit()
+	
 </script>
 
 </head>
 
 <body>
 
-<div class="container mt-5 mx-auto align-self-center">
-	<div class="table-responsive mx-auto">
-		<table class="table text-center" id="tbl_optionEdit" style="border-top:solid 1px gray; border-bottom:solid 1px gray;" >
-		  <thead>
-		    <tr>
-		    	<th colspan="2" class="h4" style="border-bottom: solid 1px gray; border-top: solid 1px gray; background-color: #fff9e5;">색상/사이즈 변경하기</th>
-		    </tr>
-		  </thead>
-		  <tbody>
-		 	<tr>
-		      	<td class="mx-auto p-0" width="85">
-		      		<div class="mx-auto my-3">
-			      		<div id="product_name" name="product_name" class="my-2 h6">${pvo.product_name}</div>
-			      		<img src="${pvo.product_image}" id="product_image" name="product_image" width="200" class="img-thumbnail my-2"/>
-		      		</div>
-		      	</td>
-		      	<td class="mx-auto p-0" width="100">
-			      	<div class="mx-auto my-4">
-			      		<div id="product_color" name="product_color">
-			      			<p class="h6 my-1">색상</p>
-			      			<label for="product_color">${pvo.product_color}
-			      				<span id="product_color" name="product_color" class="rounded-circle" style="background-color: ${pvo.product_color};"></span>
-			      				<input type="radio" class="btn" id="product_color" name="product_color" value="${pvo.product_color}" />
-			      			</label>
-			      			<label for="product_color">${pvo.product_color}
-			      				<span id="product_color" name="product_color" class="rounded-circle" style="background-color: ${pvo.product_color};"></span>
-			      				<input type="radio" class="btn" id="product_color" name="product_color" value="${pvo.product_color}" />
-			      			</label>
-			      		</div>
-		      			<div id="product_size" name="product_size">
-		      				<p class="h6 my-4">사이즈</p>
-			      			<div>
-			      			<ul class="my-2 px-0">
-			      				<li>
-			      					<label for="product_size" id="label_size">${pvo.product_size}
-			      						<input type="radio" class="btn" id="product_size" name="product_size" value="${pvo.product_size}" />
-			      					</label>
-			      				</li>
-			      				<li>
-			      					<label for="product_size" id="label_size">${pvo.product_size}
-			      						<input type="radio" class="btn" id="product_size" name="product_size" value="${pvo.product_size}" />
-			      					</label>
-			      				</li>
-			      				<li>
-			      					<label for="product_size" id="label_size">${pvo.product_size}
-			      						<input type="radio" class="btn" id="product_size" name="product_size" value="${pvo.product_size}" />
-			      					</label>
-			      				</li>
-			      				<li>
-			      					<label for="product_size" id="label_size">${pvo.product_size}
-			      						<input type="radio" class="btn" id="product_size" name="product_size" value="${pvo.product_size}" />
-			      					</label>
-			      				</li>
-			      				<li>
-			      					<label for="product_size" id="label_size">${pvo.product_size}
-			      						<input type="radio" class="btn" id="product_size" name="product_size" value="${pvo.product_size}" />
-			      					</label>
-			      				</li>
-			      				<li>
-			      					<label for="product_size" id="label_size">${pvo.product_size}
-			      						<input type="radio" class="btn" id="product_size" name="product_size" value="${pvo.product_size}" />
-			      					</label>
-			      				</li>
-			      				<li>
-			      					<label for="product_size" id="label_size">${pvo.product_size}
-			      						<input type="radio" class="btn" id="product_size" name="product_size" value="${pvo.product_size}" />
-			      					</label>
-			      				</li>
-			      				<li>
-			      					<label for="product_size" id="label_size">${pvo.product_size}
-			      						<input type="radio" class="btn" id="product_size" name="product_size" value="${pvo.product_size}" />
-			      					</label>
-			      				</li>
-			      			</ul>
-			      			</div>
-						</div>
-		      		</div>
-		      	</td>
-		 	</tr>
-		  </tbody>
-		  <tfoot>
-		  	<tr>
-		    	<td colspan="2" class="pb-4" style="border-bottom: solid 1px gray; border-top: none;">
-					<button type="button" class="btn" onclick="goOptionEdit()" style="background-color: #fdd007;">변경</button>		    	
-					<button type="reset" class="btn btn-dark">취소</button>		    	
-		    	</td>
-		  	</tr>
-		  </tfoot>
-		</table>
-	</div>
-</div>
+<form name="OptionEditFrm">
+  <input type="hidden" name="cart_no" value="${requestScope.cart_no}">
+  <input type="hidden" name="product_name" value="${pvo.product_name}">
 
+	<div class="container mt-5 mx-auto align-self-center">
+		<div class="table-responsive mx-auto" style="background-color: #fefce7; border-radius: 2%; box-shadow: 1px 1px 1px 1px #e6e6e6;">
+			<table class="table text-center table-borderless" id="tbl_optionEdit">
+			  <thead>
+			    <tr>
+			    	<th colspan="2">
+			    		<div id="product_name" name="product_name" class="mt-3 h5">${pvo.product_name}</div>
+			    	</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			 	<tr>
+			      	<td class="mx-auto p-0" width="85">
+			      		<div class="mx-auto mb-3">
+				      		<c:forEach var="colorpvo" items="${requestScope.colorList}" varStatus="status" >
+		      				  <span id="${colorpvo.product_color}">
+		      					<img src="${colorpvo.product_image}" id="product_image${status.index}" name="product_image" width="200" class="img-thumbnail my-2"/>
+		      				  </span>
+				      		</c:forEach>
+			      		</div>
+			      	</td>
+			      	<td class="mx-auto p-0" width="100">
+				      	<div class="mx-auto">
+				      		<div id="product_color" name="product_color">
+				      			<p class="h6 mb-3">색상</p>
+				      			<c:forEach var="colorpvo" items="${requestScope.colorList}" varStatus="status">
+					      			<label for="product_color${status.index}" id="product_color">
+					      				<input type="radio" class="btn" id="product_color${status.index}" name="product_color" value="${colorpvo.product_color}" />
+					      				${colorpvo.product_color}
+					      				<span id="product_color" name="product_color" class="rounded-circle" style="background-color: ${colorpvo.product_color};"></span>
+					      			</label>
+				      			</c:forEach>
+				      		</div>
+	
+			      			<div id="product_size" name="product_size">
+			      				<p class="h6 my-3">사이즈</p>
+				      			<div>
+				      			  <ul class="my-2 px-0">
+					      			<c:forEach var="sizepvo" items="${requestScope.sizeList}" varStatus="status">
+					      			  <li>
+				      					<label for="product_size${status.index}" id="product_size">
+				      						<input type="radio" class="btn" id="product_size${status.index}" name="product_size" value="${sizepvo.product_size}" />
+				      						${sizepvo.product_size}
+				      					</label>
+					      			  </li>		      			
+					      			</c:forEach>
+				      			  </ul>
+				      			</div>
+							</div>
+			      		</div>
+			      	</td>
+			 	</tr>
+			  </tbody>
+			  <tfoot>
+			  	<tr>
+			    	<td colspan="2" class="pb-4">
+						<button type="button" class="btn" onclick="goOptionEdit()" style="background-color: #fdd007;">변경</button>		    	
+						<button type="reset" class="btn btn-dark">취소</button>		    	
+			    	</td>
+			  	</tr>
+			  </tfoot>
+			</table>
+		</div>
+	</div>
+</form>
+<div style="height: 50px;"></div>
 </body>
 </html>

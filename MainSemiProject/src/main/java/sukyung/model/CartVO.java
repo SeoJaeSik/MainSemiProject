@@ -3,9 +3,9 @@ package sukyung.model;
 public class CartVO { 
 
 	// insert 용 field
-	private int cart_no;       		 //  장바구니코드
+	private int cart_no;       		 //  장바구니번호
 	private String fk_userid; 		 //  회원아이디            
-	private int fk_product_no;       //  제품코드                
+	private String fk_product_no;    //  제품코드                
 	private int cart_product_count;  //  수량            
 	private String cart_registerday; //  장바구니 등록일자            
 		
@@ -16,7 +16,7 @@ public class CartVO {
 	public CartVO() {}
 	
 	// 파라미터생성자
-	public CartVO(int cart_no, String fk_userid, int fk_product_no, int cart_product_count, 
+	public CartVO(int cart_no, String fk_userid, String fk_product_no, int cart_product_count, 
 				  String cart_registerday, ProductVO pvo) {
 		this.cart_no = cart_no;
 		this.fk_userid = fk_userid;
@@ -42,11 +42,11 @@ public class CartVO {
 		this.fk_userid = fk_userid;
 	}
 
-	public int getFk_product_no() {
+	public String getFk_product_no() {
 		return fk_product_no;
 	}
 
-	public void setFk_product_no(int fk_product_no) {
+	public void setFk_product_no(String fk_product_no) {
 		this.fk_product_no = fk_product_no;
 	}
 
