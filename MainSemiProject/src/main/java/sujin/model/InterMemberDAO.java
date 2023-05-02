@@ -1,7 +1,6 @@
 package sujin.model;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 
 public interface InterMemberDAO {
@@ -21,6 +20,10 @@ public interface InterMemberDAO {
 	// 4. 입력받은 paraMap 을 갖고 한명의 회원정보를 리턴시켜주는 메소드 (로그인처리) 
 	MemberVO selectOneMember(Map<String, String> paraMap) throws SQLException;
 
+	
+	// == 입력받은 paraMap 을 갖고 한명의 쿠폰정보를 리턴시켜주는 메소드 (로그인 할 때 동시에 되게 하자) == 
+	Map<String, String> selectMembercoupon(Map<String, String> paraMap) throws SQLException;
+	
 
 	// 5. 아이디찾기 : 입력받은 paraMap 으로 성명&이메일을 입력받아 해당 사용자의 아이디를 알려주는 메소드
 	String findUserid(Map<String, String> paraMap) throws SQLException;
@@ -49,6 +52,6 @@ public interface InterMemberDAO {
 	// 14. userid 값을 입력받아 회원 1명에 대한 상세정보를 알아오는 메소드 
 	MemberVO memberOneDetail(String userid) throws SQLException;
 
-
+	
 
 }
