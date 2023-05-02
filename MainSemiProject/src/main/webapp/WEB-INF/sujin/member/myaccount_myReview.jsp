@@ -3,7 +3,7 @@
 
 <style type="text/css">
 
-	div#viewmyreview {
+	div#viewmy2 {
 		background-color:#fefce7; 
 		padding-top:40px;
 		padding-bottom:40px;
@@ -11,7 +11,7 @@
 
 </style>
 
-<div class="tab-pane container fade" id="viewmyreview" >
+<div class="tab-pane container fade" id="viewmy2" >
 
   	<h4 class="my-3" style="font-weight: bold; text-align: center;">내가 작성한 리뷰 보기</h4>
   	<div class="row justify-content-around my-4 pb-2 border-bottom ">

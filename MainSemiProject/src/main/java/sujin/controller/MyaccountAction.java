@@ -22,21 +22,18 @@ public class MyaccountAction extends AbstractController {
       HttpSession session = request.getSession();
       MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
       
+  //  System.out.println("loginuser 확인 : " + loginuser);
+      
       if ( loginuser != null ) {
          // 로그인한 경우
          
          String searchType = request.getParameter("searchType"); 
          String searchWord = request.getParameter("searchWord");
-         String checkSearch = request.getParameter("checkSearch");
-         if (checkSearch != null) {
-        	 checkSearch = "true";
-             request.setAttribute("checkSearch", checkSearch);
-         }
-
+         
          if ( searchType == null ||
             ( !"fk_userid".equals(searchType) && 
-              !"board_title".equals(searchType) &&
-              !"board_content".equals(searchType) )) {
+             !"board_title".equals(searchType) &&
+             !"board_content".equals(searchType) )) {
             searchType = "";
          }
          if ( searchWord == null ||
@@ -109,10 +106,10 @@ public class MyaccountAction extends AbstractController {
                pageBar += "<li class='page-item'><a class='page-link bg-dark text-white' href='myaccount.moc?searchType="+searchType+"&searchWord="+searchWord+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>"; 
             }
 
-            loop++;   //  1  2  3  4  5  6  7  8  9 10
+            loop++; // 1 2 3 4 5 6 7 8 9 10
             pageNo++; //  1  2  3  4  5  6  7  8  9 10
-                      // 11 12 13 14 15 16 17 18 19 20
-                      // 21 22 23 24 25 26 27 28 29 30
+                    // 11 12 13 14 15 16 17 18 19 20
+                    // 21 22 23 24 25 26 27 28 29 30
          } // end while 
          
          
@@ -134,7 +131,7 @@ public class MyaccountAction extends AbstractController {
          // 로그인을 안했을 경우
          
          String message = "비정상적인 접근입니다. 로그인 후 이용해주세요.";
-         String loc = request.getContextPath()+"/index.moc";
+         String loc = "javascript:history.back()";
          
          request.setAttribute("message", message);
          request.setAttribute("loc", loc);
@@ -143,7 +140,6 @@ public class MyaccountAction extends AbstractController {
          super.setViewPage("/WEB-INF/jaesik/msg.jsp");
       }
       
-     
    }
 
 }

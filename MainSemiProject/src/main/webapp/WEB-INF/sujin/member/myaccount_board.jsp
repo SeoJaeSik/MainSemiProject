@@ -9,7 +9,7 @@
 
 <style type="text/css">
 
-	div#viewmyqna {
+	div#viewmy4 {
 		background-color:#fefce7; 
 		padding-top:40px;
 		padding-bottom:40px;
@@ -20,21 +20,23 @@
 
 <script type="text/javascript">
    
-	let searchCheck = false;
-
-
 	$(document).ready(function(){
       
-      	<%-- if ( "${fn:trim(requestScope.searchWord)}" != "" ) --%> 
+		// -- 이상한 값이(""이나 null 이나 조건에 맞지 않는 검색어) 들어오면 값을 꽂아주지 않도록 한다 --
+   <%-- if ( "${fn:trim(requestScope.searchWord)}" != "" ) --%> 
       	if( "${requestScope.searchType}" != "" && "${requestScope.searchWord}" != "" ) {
          	$("select#searchType").val("${requestScope.searchType}");
          	$("input#searchWord").val("${requestScope.searchWord}");
       	}
       
+      	
+      	// -- 조회하고자하는 페이지번호 sizePerPage 선택한것이 보이도록 값을 넣어준다. --
       	$("select#sizePerPage").val("${requestScope.sizePerPage}");
       
+      	
+     	// -- 검색창에서 엔터를 입력하면 검색 함수를 실행 --
       	$("input#searchWord").keydown(function(e){
-         	if( e.keyCode == 13 ){ // 검색창에서 엔터를 입력하면 검색 함수를 실행
+         	if( e.keyCode == 13 ){ 
             	goSearch();
          	}
       	});
@@ -50,11 +52,9 @@
    
    	function goSearch(){
       
-   		searchCheck = true;
-   		
       	const frm = document.searchFrm;
       	frm.action = "<%= ctxPath%>/member/myaccount.moc"; 
-      	frm.method = "get";
+      	frm.method = "get"; // 개인정보이지만 이미 화면에 뿌려진 것을 빨리 찾으려는 용도이므로 GET 방식으로 한다
       	frm.submit();
 
    	}
@@ -62,7 +62,7 @@
 </script>
 
 
-<div class="tab-pane container fade" id="viewmyqna">
+<div class="tab-pane container fade" id="viewmy4">
 	<h4 class="my-3" style="font-weight: bold; text-align: center;">자주 묻는 질문</h4>
    
    	<form name="searchFrm" class="col-md-10 py-3 mx-auto">
@@ -82,7 +82,7 @@
 	            그런데 실제 화면에 보여질 input 태그는 1개이어야 한다.
 	            이럴 경우 (--!무작성 hidden 넣으면 안되고!--) 아래와 같이 display 를 none 으로 해주면 된다. 
 	        --%>
-	        <input type="text" name="checkSearch" value="false" style="display:none;"/>
+	        <input type="text" style="display:none;"/>
 	      
 	        <button type="button" class="btn btn-secondary col-2" style="margin-left: 30px; margin-right: 30px;" onclick="goSearch();">검색</button>
   		</div>
