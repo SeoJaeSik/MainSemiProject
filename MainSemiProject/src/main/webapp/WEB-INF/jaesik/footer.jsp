@@ -19,10 +19,10 @@
 			<div id="footer_center_left" class="col-md-6 px-5 pt-4">
 				<p id="foot_info"> 
 					<a style="color:black; font-weight: bold; text-decoration-line: none;" href="https://www.nbkorea.com/support/terms.action?tabCode=PP">개인정보 처리방침</a> / 이용약관 / (주)이랜드월드패션사업부 <br>
-					서울특별시 금천구 가산디지털1로 159 이랜드월드<br>
+					서울특별시 마포구 월드컵북로 21 풍성빌딩 2층<br>
 					온라인 고객센터 : 1566-0086<br>
 					AS/오프라인 고객센터 : 080-999-0456<br>
-					대표 이메일 : abcd1234@naver.com<br>
+					대표 이메일 : MOSACOYA@naver.com<br>
 					호스팅 서비스 제공자 : (주)라드씨엔에스<br><br>
 					대표이사 : 최운식   사업자등록번호 : 113-85-19030<br>
 					통신판매업신고 : 금천구청 제 2005-01053<br>
@@ -52,7 +52,7 @@
 								</a>
 							</p>
 							<p>
-								<a type="button" data-toggle="modal" data-target="#exampleModal" class="complain_menu" style="color: black; text-decoration: none;">
+								<a type="button" data-toggle="modal" data-target="#complainModal" class="complain_menu" style="color: black; text-decoration: none;">
 									<i class="fa-regular fa-comment fa-2xl mb-4" style="color: #000000;"></i>
 									<span style="font-size: 8pt; letter-spacing: 1px; display:block;">Chat With Us</span>
 								</a>

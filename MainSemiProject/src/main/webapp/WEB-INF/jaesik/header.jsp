@@ -23,7 +23,7 @@
 <!-- Optional JavaScript -->
 <script type="text/javascript" src="<%= ctxPath%>/js/jquery-3.6.4.min.js"></script>
 <script type="text/javascript" src="<%= ctxPath%>/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js" ></script>
-
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 <!-- Font Awesome 6 Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    
 
@@ -32,6 +32,10 @@
 
 <!-- 페이지로고 -->
 <link rel="icon" href="<%= ctxPath%>/images/KakaoTalk_20230424_170300653.png">
+
+<!-- JQueryUI CSS 및 JS --> 
+<link rel="stylesheet" type="text/css" href="<%= ctxPath%>/jquery-ui-1.13.1.custom/jquery-ui.min.css"/>
+<script type="text/javascript" src="<%= ctxPath%>/jquery-ui-1.13.1.custom/jquery-ui.min.js"></script>
  
 <script type="text/javascript">
 	
@@ -40,6 +44,7 @@
 		
 		$('[data-toggle="popover_complain"]').popover();
 		
+		$("div#header_search_menu").hide();
 		$("div.nav-group").hide();
 		$("a#main_logo").hide();
 		$("div#nav_bar_menu").hide();
@@ -56,22 +61,22 @@
 		
 		// 헤더 메뉴 호버 이벤트
 		$("a.header_menu").hover(function(e) {
-						  if( $(e.target).children().hasClass("fa-cart-shopping") == true ){
-							  $(e.target).css("opacity","1");
-							  $("i.fa-cart-shopping").addClass("fa-bounce");
-						  }
-						  else{
-							  $(e.target).css("opacity","0.5");
-						  }
+							  if( $(e.target).children().hasClass("fa-cart-shopping") == true ){
+								  $(e.target).css("opacity","1");
+								  $("i.fa-cart-shopping").addClass("fa-bounce");
+							  }
+							  else{
+								  $(e.target).css("opacity","0.5");
+							  }
 						  },
 						  function(e) {
-						  if( $(e.target).children().hasClass("fa-cart-shopping") == true ){
-							  $("i.fa-cart-shopping").removeClass("fa-bounce");
-							  $(e.target).css("opacity","1");
-						  }
-						  else{
-							  $(e.target).css("opacity","1");
-						  }
+							  if( $(e.target).children().hasClass("fa-cart-shopping") == true ){
+								  $("i.fa-cart-shopping").removeClass("fa-bounce");
+								  $(e.target).css("opacity","1");
+							  }
+							  else{
+								  $(e.target).css("opacity","1");
+							  }
 		}) // end $("a.header_menu").hover
 		
 		
@@ -102,6 +107,11 @@
 			$("nav#header_nav_bar").bind("mouseleave", function(e){
 				$("div.nav-group").hide().css("opacity","0");
 			});
+		});
+		
+		
+		$("a#header_search").on('click', function(e){
+			$("div#header_search_menu").toggle("fast");
 		});
 		
 		
@@ -156,6 +166,7 @@
 		
 	} // end function goSubscribe()
 	
+	<%-- 고객센터 모달창에서 문의사항을 남기면 게시판으로 넘겨주는 함수 --%>
 	function send_message() {
 		
 		const userid = $("input#userid").val().trim();
@@ -187,6 +198,17 @@
 		
 	} // end function send_message
 	
+	<%-- 검색창에 제품검색하는 함수 --%>
+	function goSearch() {
+		
+		const frm = document.searchFrm;
+		frm.action = "<%= ctxPath%>/main/searchProduct.moc";
+		frm.method = "get";
+		frm.submit();
+	
+	}
+	
+	
 </script>
 
 </head>
@@ -214,7 +236,7 @@
 				<c:if test="${not empty sessionScope.loginuser}">
 					<a href="<%= ctxPath%>/member/myaccount.moc" style="color:black; text-decoration: none;" class="header-menu__link a1 mx-1 header_menu" title="Login">My Account</a>
 				</c:if>
-				<a href="#" class="header_menu" ><i class="fa-solid fa-magnifying-glass mx-1" style="color: #000000;"></i></a>
+				<a id="header_search" class="header_menu" style="cursor: pointer;"><i class="fa-solid fa-magnifying-glass mx-1" style="color: #000000;"></i></a>
 				<c:if test="${empty sessionScope.loginuser}">
 					<a href="<%= ctxPath%>/shop/cartList.moc" style="display: inline-block; width: auto;" class="header_menu"><i class="fa-solid fa-cart-shopping mx-1" style="color: #000000;"></i><span id="cart_count">0</span></a>
 				</c:if>
@@ -338,7 +360,7 @@
 			<c:if test="${sessionScope.loginuser != null and sessionScope.loginuser.userid == 'admin'}">
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle menufont_size header_nav_link" style="color: white;" href="#" id="navbarDropdown" data-toggle="dropdown"> 
-			           관리자전용 
+			           관리자메뉴 
 					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 						<a class="dropdown-item text-body" href="<%= ctxPath %>/member/admin/memberList.moc">회원목록</a>
@@ -362,4 +384,25 @@
 		<a href="#" class="header_menu"><i class="fa-solid fa-magnifying-glass mx-1" style="color: #ffffff;"></i></a>
 	</div>
 </nav>
-<%-- Sticky Navbar 끝 --%>
+
+<%-- 검색창 시작 --%>
+<div id="header_search_menu" style="border-radius: 10px; position:absolute; z-index:2; background-color: white; right: 0%; padding: 20px 0px 20px 30px;">  
+	<div style="display: flex; align-items: center; width: 460px;"> 
+		<form name="searchFrm" style="width: 100%; height:36px;">
+			<div style="display: flex; align-items: center; width: 100%; height: 100%;">
+				<select id="searchType" name="buyer_type" style="padding-left: 5px; width:20%; border: solid 2px black; border-right:0; height: 100%; margin-right: 0;">  
+					<option value="">전체</option>
+					<c:forEach var="bvo" items="${requestScope.buyerType}">
+		            	<option value="${bvo.buyer_type_no}">${bvo.buyer_type_name}</option>
+		            </c:forEach>
+				</select>
+				<input name="search_word" style="height: 100%; width: 70%; margin-left: 0; padding-left: 10px;" type="search" placeholder="제품명 검색"/>
+				<input type="text" style="display: none;">
+				<a onclick="goSearch()" style="margin-left: 5px; margin-right: 5px; width:5%; cursor: pointer;">  
+					<i class="fa-solid fa-magnifying-glass fa-lg mx-1" style="margin-left: 5px; margin-right: 5px; color: #000000;"></i>
+				</a>
+			</div>
+		</form>
+	</div>
+</div>
+<%-- 검색창 끝 --%>

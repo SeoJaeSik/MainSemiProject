@@ -1,4 +1,4 @@
-package yunhwan.model;
+package shinjh.myshop.model;
 
 public class ProductVO {
 	
@@ -178,4 +178,5 @@ public class ProductVO {
 	
 	
 }
+
 

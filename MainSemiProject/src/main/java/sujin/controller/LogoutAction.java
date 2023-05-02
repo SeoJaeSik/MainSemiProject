@@ -19,6 +19,7 @@ public class LogoutAction extends AbstractController {
 		
 		super.setRedirect(true);
 		super.setViewPage(request.getContextPath()+"/index.moc");
+	
 	}
 
 }

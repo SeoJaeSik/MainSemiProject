@@ -37,9 +37,6 @@ public class MemberVO {
 	// 마지막으로 암호를 변경한 날짜가 현재시각으로부터 3개월이 지났으면 true 로 변경 
 	// 마지막으로 암호를 변경한 날짜가 현재시각으로부터 3개월이 안됐으면 false 로 유지
 	
-	private String pwdchange_daygap;
-
-	
 	//////////////////////////////////////////////////////////////
 	
 	
@@ -261,8 +258,10 @@ public class MemberVO {
 
 	//////////////////////////////////////////////////
 	
-	
 	// 마이페이지에서 비밀번호 변경한지 며칠이 지났는지 나타내는데 사용함
+	
+	private String pwdchange_daygap;
+
 	public String getPwdchange_daygap() {
 		return pwdchange_daygap;
 	}
@@ -270,5 +269,35 @@ public class MemberVO {
 	public void setPwdchange_daygap(String pwdchange_daygap) {
 		this.pwdchange_daygap = pwdchange_daygap;
 	}
+	
+	//////////////////////////////////////////////////
+	
+	// 마이페이지에서 보일 쿠폰개수
+
+	private int couponCnt;
+	
+	public int getCouponCnt() {
+		return couponCnt;
+	}
+
+	public void setCouponCnt(int couponCnt) {
+		this.couponCnt = couponCnt;
+	}
+	
+	// 마이페이지에서 보일 쿠폰이름
+	
+	private String couponName;
+	
+	public String getCouponName() {
+		return couponName;
+	}
+
+	public void setCouponName(String couponName) {
+		this.couponName = couponName;
+	}
+
+	
+	
+	
 	
 }

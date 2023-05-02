@@ -30,9 +30,26 @@
 
 </style>
 
-<%-- carousel 시작 --%>
-<div id="body" >
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		
+	})
 	
+	
+</script>
+
+<div id="body">
+	
+	<div class="main_video" style="margin-bottom: 100px;"> 
+		<video src="https://image.nbkorea.com/NBRB_PC/event/imc/premium574/video1.mp4" style="width: 100%;" autoplay="" muted="" playsinline="" loop=""></video>
+		<div class="btn_wrap btn_wrap-main py-5 text-center">
+			<button class="btn btn-light btn-outline-dark btn-lg" style="width: 140px; height:50px; font-weight: bold; font-size: 11pt !important;">더 알아보기</button>
+			<button onclick="location.href = '<%= ctxPath%>/main/searchProduct.moc?buyer_type=&search_word=U574RH2'" class="btn btn-dark btn-lg" style="margin-left:10px; background-color: black !important; width: 140px; height:50px; font-weight: bold; font-size: 11pt !important;">구매하기</button>
+		</div>
+	</div>
+	
+	<%-- 첫번째 carousel 시작 --%>
 	<div id="carouselView1" class="carousel slide carousel-fade" data-ride="carousel">
 		<ol class="carousel-indicators">
 			<li data-target="#carouselView1" data-slide-to="0" class="active"></li>
@@ -58,6 +75,10 @@
 			<span class="carousel-control-next-icon" aria-hidden="true"></span>
 			<span class="sr-only">Next</span>
 		</a>
+	</div>
+	<div class="btn_wrap btn_wrap-main pb-5 text-center" style="margin-bottom: 100px;">
+		<button class="btn btn-light btn-outline-dark btn-lg" style="width: 140px; height:50px; font-weight: bold; font-size: 11pt !important;">더 알아보기</button>
+		<button onclick="location.href = '<%= ctxPath%>/main/searchProduct.moc?buyer_type=&search_word=BB550'" class="btn btn-dark btn-lg" style="margin-left:10px; background-color: black !important; width: 140px; height:50px; font-weight: bold; font-size: 11pt !important;">구매하기</button>
 	</div>
 	
 	
@@ -90,6 +111,10 @@
 	</div>
 	
 	<img src="https://image.nbkorea.com/NBRB_Collection/20230413/NB20230413130306777001.jpg	" class="d-block w-100 test1" alt="...">
+	<div class="btn_wrap btn_wrap-main py-5 text-center" style="padding-bottom: 100px !important;"> 
+		<button class="btn btn-light btn-outline-dark btn-lg" style="width: 140px; height:50px; font-weight: bold; font-size: 11pt !important;">더 알아보기</button>
+		<button onclick="location.href = '<%= ctxPath%>/main/searchProduct.moc?buyer_type=&search_word=ML610TAE'" class="btn btn-dark btn-lg" style="margin-left:10px; background-color: black !important; width: 140px; height:50px; font-weight: bold; font-size: 11pt !important;">구매하기</button>
+	</div>
 	
 </div>
 <%-- carousel 끝 --%>

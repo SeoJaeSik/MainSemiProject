@@ -6,6 +6,32 @@
 
 <jsp:include page="../../jaesik/header.jsp"/>
 
+<style>
+
+	table#loginTbl {
+         width: 100%;
+         margin-top: 50px;
+         margin-bottom: 50px;
+         text-align: center;
+         border-collapse: separate;
+         border-spacing: 10px; 
+    }
+   
+    table#loginTbl #th {
+         font-weight: bold;
+         font-size: 30pt;
+         text-align: center;
+         height: 30px;
+         letter-spacing: 10px;
+    }
+   
+    table#loginTbl td {
+         line-height: 35px;
+         width: 200px;
+    }
+    
+</style>
+
 <script type="text/javascript">
 
 	$(document).ready(function(){ 
@@ -41,8 +67,22 @@
 			const iframe_idFind = document.getElementById("iframe_idFind");
 			
 			const iframe_window = iframe_idFind.contentWindow;
-			iframe_window.func_form_empty(); // func_form_empty 함수는 idFind.jsp 에 있음 	
-		});		
+			iframe_window.func_idform_reset_empty(); // func_idform_reset_empty 함수는 idFind.jsp 에 있음 	
+		});	
+		
+		
+		// 4. 'x' 표시를 누르거나 '닫기'를 눌러서 비밀번호찾기 끝낼 때
+		$("button.pwdFindClose").click(function(){ 
+			
+			/* // 대상 iframe 을 선택한다.
+			const iframe_pwdFind = document.getElementById("iframe_pwdFind");
+			
+			const iframe_window = iframe_pwdFind.contentWindow;
+			iframe_window.func_pwdform_reset_empty(); // func_pwdform_reset_empty 함수는 pwdFind.jsp 에 있음 */ 	
+			
+			history.go(0); // 일단 그냥 새로고침으로 둠;;
+		});	
+		
 		
 	});//end of ready()-------------
 	
@@ -86,75 +126,101 @@
 
 </script>
 
-<div class="container my-5 mx-auto bg-white">
-	<c:if test="${empty sessionScope.loginuser}">
-	 	<form name="loginFrm">
-			<table id="loginTbl">
-		    	<thead>
-		           <tr>
-		               <th id="th" style="margin-bottom: 50px;">LOGIN</th>
-		           </tr>
-		        </thead>
-		         
-		        <tbody>
-		           <tr>
-		               <td>
-			               <input type="text" id="loginUserid" name="userid" size="30" class="box " autocomplete="off" placeholder = "ID" />
-			           </td> 
-		           </tr>   
-		           <tr>
-		               <td>
-		               	   <input type="password" id="loginPwd" name="pwd" size="30" class="box" placeholder = "PASSWORD"/>
-		               </td>
-		           </tr>
-		           <tr>
-		               <td align="center" style="padding: 10px;">
-		               	   <input type="checkbox" id="saveid" name="saveid" /><label for="saveid"> &nbsp;id save </label><br>
-		                   <button style="font-weight:bold;" id="btnSubmit" class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTINUE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-		           	   </td>
-		           </tr>
-		      
-		           <%-- === 아이디 찾기, 비밀번호 찾기 === --%>
-		           <tr>
-		               <td id="userid_pwd_find" class="p2" colspan="2" align="center">
-		                   <a id="p2" style="cursor: pointer; text-decoration: underline; color: black;"  data-toggle="modal" data-target="#userIdfind" data-dismiss="modal" data-backdrop="static">Forget your id?</a> 
-		                   <a id="p2" style="cursor: pointer; text-decoration: underline; color: black;" href="<%= request.getContextPath()%>/login/pwdFind.moc">Forget your passward?</a> 
-		                   <br>
-		               	   <a id="p2">"Don't have an account?"</a> 
-		               	   <a id="p2" style="cursor: pointer; text-decoration: underline; color: black;" href="<%= request.getContextPath()%>/login/memberRegister.moc">Register now.</a>
-		               </td>
-		           </tr>
-		        </tbody>
-		    </table>
-	    </form>
- 
-	    <%-- ****** 아이디 찾기 Modal ****** --%>
-	  	<div class="modal fade" id="userIdfind">
-	    	<div class="modal-dialog">
-		      	<div class="modal-content">
-		      
-		        	<!-- Modal header -->
-		        	<div class="modal-header">
-			          	<h4 class="modal-title">FORGET YOUR ID?</h4>
-			          	<button type="button" class="close idFindClose" data-dismiss="modal">&times;</button>
-		        	</div>
-		        
-		        	<!-- Modal body -->
-		        	<div class="modal-body">
-			          	<div id="idFind" style="padding-top:50px;">
-			             	<iframe id="iframe_idFind" style="border: none; width: 100%; height: 250px;" src="<%= request.getContextPath()%>/login/idFind.moc">
-			             	</iframe>
-			          	</div>
-		        	</div>
-		        
-		        	<!-- Modal footer -->
-		        	<div class="modal-footer">
-		          		<button type="button" class="btn btn-secondary idFindClose" data-dismiss="modal">Close</button>
-		        	</div>
-		      	</div>
-	    	</div>
-	  	</div>
-    </c:if>
+<div class="container my-5 py-1 mx-auto bg-white">
+ 	<form name="loginFrm">
+		<table id="loginTbl">
+	    	<thead>
+	           <tr>
+	               <th id="th" style="margin-bottom: 50px;">LOGIN</th>
+	           </tr>
+	        </thead>
+	         
+	        <tbody>
+	           <tr>
+	               <td>
+		               <input type="text" id="loginUserid" name="userid" size="40" class="box " autocomplete="off" placeholder = "ID" />
+		           </td> 
+	           </tr>   
+	           <tr>
+	               <td>
+	               	   <input type="password" id="loginPwd" name="pwd" size="40" class="box" placeholder = "PASSWORD"/>
+	               </td>
+	           </tr>
+	           <tr>
+	               <td align="center" style="padding: 10px;">
+	               	   <input type="checkbox" id="saveid" name="saveid" /><label for="saveid"> &nbsp;id save </label><br>
+	                   <button style="font-weight:bold;" id="btnSubmit" class="btn btn-warning">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CONTINUE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+	           	   </td>
+	           </tr>
+	      
+	           <%-- === 아이디 찾기, 비밀번호 찾기 === --%>
+	           <tr>
+	               <td id="userid_pwd_find" class="p2" colspan="2" align="center">
+	                   <a id="p2" style="cursor: pointer; text-decoration: underline; color: black;"  data-toggle="modal" data-target="#userIdfind" data-dismiss="modal" data-backdrop="static">Forget your id?</a> 
+	                   <a id="p2" style="cursor: pointer; text-decoration: underline; color: black;"  data-toggle="modal" data-target="#userPwdfind" data-dismiss="modal" data-backdrop="static">Forget your passward?</a> 
+	                   <br>
+	               	   <a id="p2">"Don't have an account?"</a> 
+	               	   <a id="p2" style="cursor: pointer; text-decoration: underline; color: black;" href="<%= request.getContextPath()%>/login/memberRegister.moc">Register now.</a>
+	               </td>
+	           </tr>
+	        </tbody>
+	    </table>
+    </form>
+
+    <%-- ****** 아이디 찾기 Modal ****** --%>
+  	<div class="modal fade" id="userIdfind">
+    	<div class="modal-dialog">
+	      	<div class="modal-content">
+	      
+	        	<!-- Modal header -->
+	        	<div class="modal-header">
+		          	<h4 class="modal-title">FORGET YOUR ID?</h4>
+		          	<button type="button" class="close idFindClose" data-dismiss="modal">&times;</button>
+	        	</div>
+	        
+	        	<!-- Modal body -->
+	        	<div class="modal-body">
+		          	<div id="idFind" style="padding-top:50px;">
+		             	<iframe id="iframe_idFind" style="border: none; width: 100%; height: 300px;" src="<%= request.getContextPath()%>/login/idFind.moc">
+		             	</iframe>
+		          	</div>
+	        	</div>
+	        
+	        	<!-- Modal footer -->
+	        	<div class="modal-footer">
+	          		<button type="button" class="btn btn-secondary idFindClose" data-dismiss="modal">Close</button>
+	        	</div>
+	      	</div>
+    	</div>
+  	</div>
+  	
+  	<%-- ****** 비밀번호 찾기 Modal ****** --%>
+  	<div class="modal fade" id="userPwdfind">
+    	<div class="modal-dialog">
+	      	<div class="modal-content">
+	      
+	        	<!-- Modal header -->
+	        	<div class="modal-header">
+		          	<h4 class="modal-title">FORGET YOUR PASSWORD?</h4>
+		          	<button type="button" class="close pwdFindClose" data-dismiss="modal">&times;</button>
+	        	</div>
+	        
+	        	<!-- Modal body -->
+	        	<div class="modal-body">
+		        	<div id="pwdFind" style="padding-top:25px;">
+		             	<iframe id="iframe_pwdFind" style="border: none; width: 100%; height: 300px;" src="<%= request.getContextPath()%>/login/pwdFind.moc">
+		             	</iframe>
+		          	</div>
+	        	</div>
+	        
+	        	<!-- Modal footer -->
+	        	<div class="modal-footer">
+	          		<button type="button" class="btn btn-secondary pwdFindClose" data-dismiss="modal">Close</button>
+	        	</div>
+	      	</div>
+    	</div>
+  	</div>
+	  	
 </div>	 
 
 <jsp:include page="../../jaesik/footer.jsp"/>

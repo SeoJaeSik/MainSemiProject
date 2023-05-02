@@ -21,6 +21,10 @@ public interface InterMemberDAO {
 	// 4. 입력받은 paraMap 을 갖고 한명의 회원정보를 리턴시켜주는 메소드 (로그인처리) 
 	MemberVO selectOneMember(Map<String, String> paraMap) throws SQLException;
 
+	
+	// == 입력받은 paraMap 을 갖고 한명의 쿠폰정보를 리턴시켜주는 메소드 (로그인 할 때 동시에 되게 하자) == 
+	Map<String, String> selectMembercoupon(Map<String, String> paraMap) throws SQLException;
+	
 
 	// 5. 아이디찾기 : 입력받은 paraMap 으로 성명&이메일을 입력받아 해당 사용자의 아이디를 알려주는 메소드
 	String findUserid(Map<String, String> paraMap) throws SQLException;
@@ -29,6 +33,10 @@ public interface InterMemberDAO {
 	// 6. 비밀번호 찾기 : 입력한 paraMap 으로 아이디&이메일을 가진 회원이 존재하는지 알아보는 메소드
 	boolean isUserExist(Map<String, String> paraMap) throws SQLException;
 
+
+	// == 비밀번호 변경 이메일을 보내기 위해 Map 에 userid 와 Email 을 보내 해당 사용자의 이메일을 알려주는 메소드 == 
+	MemberVO selectmbrforpwdReset(Map<String, String> paraMap) throws SQLException;
+	
 	
 	// 7. 암호변경하기 : 입력한 paraMap 으로 들어온 아이디와 일치하는 회원의 암호를 변경해주는 메소드
 	int pwdUpdate(Map<String, String> paraMap) throws SQLException;
@@ -42,19 +50,9 @@ public interface InterMemberDAO {
 	int duplicatePwdCheck(Map<String, String> paraMap) throws SQLException;
 
 
-	// 11. *** 페이징 처리를 안한 모든 회원 또는 검색한 회원 목록 보여주기 메소드
-	List<MemberVO> selectMember(Map<String, String> paraMap) throws SQLException;
-
-
-	// 12. *** 페이징 처리를 한 모든 회원 또는 검색한 회원 목록 보여주기 메소드
-	List<MemberVO> selectPagingMember(Map<String, String> paraMap) throws SQLException;
-
-	
-	// 13. 페이징 처리를 위해 검색이 있거나 없는 전체 회원에 대한 총 페이지 수 알아오기 메소드
-	int getTotalPage(Map<String, String> paraMap) throws SQLException;
-
-
 	// 14. userid 값을 입력받아 회원 1명에 대한 상세정보를 알아오는 메소드 
 	MemberVO memberOneDetail(String userid) throws SQLException;
+
+	
 
 }

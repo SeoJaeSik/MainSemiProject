@@ -45,7 +45,13 @@ public class LoginAction extends AbstractController {
 		//	System.out.println("나와라 loginuser : " + loginuser);
 		//	나와라 loginuser : sujin.model.MemberVO@5c9f0728	
 			
+			
 			if(loginuser != null) { // DB 에 있는데, 
+				
+				Map<String, String> couponMap = mdao.selectMembercoupon(paraMap);
+				loginuser.setCouponCnt(Integer.parseInt(couponMap.get("couponCnt")));
+				loginuser.setCouponName(couponMap.get("couponName"));
+		
 				
 				// 1) 휴면계정이라면
 				if(loginuser.getIdle() == 1) {
@@ -70,11 +76,12 @@ public class LoginAction extends AbstractController {
 				HttpSession session = request.getSession();
 				
 				session.setAttribute("loginuser", loginuser); // session 에 로그인된 사용자를 "loginuser" 로 저장
-			
+				
 				InterProductDAO pdao = new ProductDAO();
 				int cartCount = pdao.cartCount(userid); // 로그인한 회원이 장바구니에 담은 상품수량
-				loginuser.setCartCount(cartCount); // 세션에 저장된 로그인회원의 상품수량 업데이트
+				loginuser.setCartCount(cartCount);      // 세션에 저장된 로그인회원의 상품수량 업데이트
 				
+			
 				if( loginuser.isRequirePwdChange() ) {
 					System.out.println();
 					String message = "비밀번호를 변경한지 3개월이 지났습니다. 암호를 변경하세요.";

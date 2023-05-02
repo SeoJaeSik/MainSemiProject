@@ -7,8 +7,23 @@
 
 <script type="text/javascript">
 
+	
 	$(document).ready(function(){
 		
+		// viewmyInfo, viewmyreview, viewmyorderList, viewmyqna
+		// 활성화된 탭 정보를 저장
+		$("a[data-toggle='pill']").on('shown.bs.tab', function(e) {
+		    localStorage.setItem('activeTab', $(e.target).attr('href'));
+		});
+		
+		// 페이지 로드 시 저장된 활성화된 탭 정보를 가져와 활성화
+		var activeTab = localStorage.getItem('activeTab');
+		if (activeTab) {
+		    $('.nav-pills a[href="' + activeTab + '"]').tab('show');
+		}
+		 
+		
+		// 다른 nav 탭 클릭하면 회원정보변경 숨기기
 		$("a.accout_nav").click(function(){ 
 			$("div#memberEdit").hide();		
 		});
@@ -41,16 +56,16 @@
 		        -->
 				<ul class="nav nav-pills justify-content-around" style="margin-bottom: 80px;">
 					<li class="nav-item">
-				    	<a class="accout_nav nav-link active" data-toggle="pill" href="#viewmyInfo" style="font-size:15pt; height: 40px; color:black;">MY INFORMATION</a>
+				    	<a class="accout_nav nav-link active" data-toggle="pill" href="#viewmy1" style="font-size:15pt; height: 40px; color:black;">MY INFORMATION</a>
 				  	</li>
 					<li class="nav-item">
-				    	<a class="accout_nav nav-link" data-toggle="pill" href="#viewmyreview" style="font-size:15pt; height: 40px; color:black;">MY REVIEW</a>
+				    	<a class="accout_nav nav-link" data-toggle="pill" href="#viewmy2" style="font-size:15pt; height: 40px; color:black;">MY REVIEW</a>
 				  	</li>
 				  	<li class="nav-item">
-				    	<a class="accout_nav nav-link" data-toggle="pill" href="#viewmyorderList" style="font-size:15pt; height: 40px; color:black;">MY ORDERLIST</a>
+				    	<a class="accout_nav nav-link" data-toggle="pill" href="#viewmy3" style="font-size:15pt; height: 40px; color:black;">MY ORDERLIST</a>
 				  	</li>
 				  	<li class="nav-item">
-				    	<a class="accout_nav nav-link" data-toggle="pill" href="#viewmyqna" style="font-size:15pt; height: 40px; color:black;">FAQs / QNA</a>
+				    	<a id="showSearch" class="accout_nav nav-link" data-toggle="pill" href="#viewmy4" style="font-size:15pt; height: 40px; color:black;">FAQs / QNA</a>
 				  	</li>
 				</ul>
 				

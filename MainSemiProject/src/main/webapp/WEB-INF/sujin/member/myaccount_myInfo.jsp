@@ -35,11 +35,13 @@
 		border-radius:50%;
 	}
 	
-	div#viewmyInfo {
+	div#viewmy1 {
 		background-color:#fefce7; 
 		padding-top:40px;
 		padding-bottom:40px;
 	}
+	
+	
 
 </style>
 
@@ -47,18 +49,25 @@
 
 	$(document).ready(function(){
 		$("div#memberEdit").hide();		
-	})
+		
+		// 쿠폰명 보이기
+		$('[data-toggle="tooltip"]').tooltip();
+		
+	});
 
 	// == 나의정보수정하기 == 
 	function goEditPersonal(userid) {
 		
 		$("div#memberEdit").show();
 		
+		<%-- const url = "<%= request.getContextPath()%>/member/memberEdit.moc?userid=" + userid;
+	    location.href = url; --%>
+		
 	}//end of goEditPersonal()--------------------------------- 
 
 </script>
 
-<div class="tab-pane container active" id="viewmyInfo"> <%-- fade 클래스를 넣으면 active 가 안먹는다 뺴야함! --%>
+<div class="tab-pane container active" id="viewmy1"> <%-- fade 클래스를 넣으면 active 가 안먹는다 뺴야함! --%>
 	
 	<div class="mypage-wrapper">
   		<div class="p_column col-3" id="profile_img">
@@ -75,7 +84,7 @@
  	 	
   		<div class="p_column col-3" id="profile_info">
     		<div class="coupon-wrapper">
-      			<p class="coupon-status">보유한 쿠폰 :&nbsp; ? &nbsp;개</p>
+      			<p class="coupon-status" data-toggle="tooltip" data-placement="top" title="${(sessionScope.loginuser).couponName}">보유한 쿠폰 :&nbsp; ${(sessionScope.loginuser).couponCnt} &nbsp;개</p>
     		</div>
 	    	<div class="point-wrapper">
 	      		<p class="point-status">보유한 포인트 :&nbsp; <fmt:formatNumber value="${(sessionScope.loginuser).point}" pattern="###,###" />&nbsp;p</p> 
@@ -84,6 +93,7 @@
 	  	</div>
 	</div>
 </div>  
+
 
 <div id="memberEdit">
 	<jsp:include page="memberEdit.jsp"/> 

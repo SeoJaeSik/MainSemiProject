@@ -9,37 +9,28 @@
 
 <style type="text/css">
 
-   #div_pwd {
-      width: 70%;
-      height: 15%;
-      margin-bottom: 5%;
-      margin-left: 10%;
-      position: relative;
-   }
+	table#pwdResetTbl {
+         width: 100%;
+         margin-top: 50px;
+         margin-bottom: 50px;
+         text-align: center;
+         border-collapse: separate;
+         border-spacing: 10px; 
+    }
    
-   #div_pwd2 {
-      width: 70%;
-      height: 15%;
-      margin-bottom: 5%;
-      margin-left: 10%;
-      position: relative;
-   }
+    table#pwdResetTbl #th {
+         font-weight: bold;
+         font-size: 20pt;
+         text-align: center;
+         height: 20px;
+         letter-spacing: 5px;
+         padding-bottom: 20px;
+    }
    
-   #div_updateResult {
-      width: 90%;
-      height: 15%;
-      margin-bottom: 5%;
-      margin-left: 10%;      
-      position: relative;
-   }
-   
-   #div_btnUpdate {
-      width: 70%;
-      height: 15%;
-      margin-bottom: 5%;
-      margin-left: 10%;
-      position: relative;
-   }
+    table#pwdResetTbl td {
+         line-height: 40px;
+         width: 250px; 
+    }
 
 </style>
 
@@ -76,41 +67,50 @@
 				frm.method = "POST";
 				frm.submit();
 			}
-			
 			 
-		});//end of ready----------------------------
+		});//end of $("button#btnUpdate").click(function(){})----------------------------
 		
 	});//end of ready()-------------------------
 	
 </script>
 
 
-<%-- ** 비밀번호 찾기 form ** --%>
-<form name="pwdUpdateEndFrm">
+<%-- ** 비밀번호 수정하기 form ** --%>
 
-	<div id="div_pwd" align="center">
-      	<span style="color: blue; font-size: 12pt;">새암호</span><br/> 
-      	<input type="password" name="pwd" id="pwd" size="25" placeholder="PASSWORD" required />
-   	</div>
-   
-   	<div id="div_pwd2" align="center">
-        <span style="color: blue; font-size: 12pt;">새암호확인</span><br/>
-      	<input type="password" id="pwd2" size="25" placeholder="PASSWORD" required />
-   	</div>
-   	
-   	<input type="hidden" name="userid" value="${requestScope.userid}" />
-   	
-   	<c:if test="${requestScope.method == 'GET'}">
-	   	<div id="div_btnUpdate" align="center">
-	    	<button type="button" class="btn btn-success" id="btnUpdate">암호변경하기</button>
-	    </div> 
-   	</c:if>
-</form>
+<div class="container my-5 py-2 mx-auto bg-white">
+	<form name="pwdUpdateEndFrm">
+		<table id="pwdResetTbl">
+         	<thead>
+            	<tr>
+               		<th id="th" style="margin-bottom: 70px;">RESET PASSWORD</th>
+            	</tr>
+         	</thead>
+         	<tbody>
+         		<tr id="div_pwd">
+               		<td>
+               			<input type="password" id="pwd" name="pwd" size="40" class="box" autocomplete="off" placeholder="NEW PASSWORD"/>
+               		</td>
+               	</tr>
+               	
+         		<tr id="div_pwd2">
+         			<td>
+	               	   	<input type="password" id="pwd2" name="pwd" size="40" class="box" autocomplete="off" placeholder = "CONFIRM NEW PASSWORD"/>
+	               	</td>
+         		</tr>
+         		
+         		<tr>
+	               	<td id="div_btnUpdate" align="center" style="padding: 10px;">
+	                   	<button type="button" id="btnUpdate" class="btn btn-warning btn-md" style="font-weight:bold;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C O N T I N U E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+	           	   	</td>
+	           	</tr>
+         	</tbody>
+        </table> 	
+		
+		<input type="hidden" name="userid" value="${requestScope.userid}"/> <!-- 여기 sudin 말고 메소드로 가져와야함!!! --> 
+		<input type="hidden" name="email" value="${requestScope.email}"/> <!-- 여기 암호화된 이메일 !!! --> 
+		
+	</form>
 
-	<c:if test="${requestScope.method == 'POST' && requestScope.n == 1}">
-	   	<div id="div_updateResult" align="center">
-	    	사용자 ID ${requestScope.userid} 님의 암호가 새로이 변경되었습니다.
-	    </div> 
-   	</c:if>
-   	
-   	<jsp:include page="../../jaesik/footer.jsp"/>
+</div>
+
+<jsp:include page="../../jaesik/footer.jsp"/>
