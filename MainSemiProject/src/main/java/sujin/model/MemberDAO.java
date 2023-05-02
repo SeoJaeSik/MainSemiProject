@@ -171,7 +171,7 @@ public class MemberDAO implements InterMemberDAO {
 			conn = ds.getConnection();
 			
 			String sql = " SELECT userid, name, email, mobile, postcode, address, detailaddress, extraaddress, gender, "
-					   + "        birthyyyy, birthmm, birthdd, point, registerday, pwdchange_daygap, "
+					   + "        birthyyyy, birthmm, birthdd, point, registerday, couponCnt, couponName, pwdchange_daygap, "
 					   + "		  pwdchangegap, "
 					   + "        NVL( latelogingap, trunc(months_between(sysdate,registerday)) ) AS latelogingap "
 					   + " FROM "
@@ -191,13 +191,21 @@ public class MemberDAO implements InterMemberDAO {
 					   + "     select trunc(months_between(sysdate,max(login_history))) AS latelogingap "
 					   + "     from tbl_login_history "
 					   + "     where fk_userid = ? "
-					   + " ) H ";
+					   + " ) H "
+					   + " CROSS JOIN "
+					   + " ( "
+					   + " 	   select count(*) AS couponCnt, COUPON_NAME AS couponName "
+					   + "     from tbl_user_coupon "
+					   + "     where fk_userid = ? "
+					   + "	   GROUP BY COUPON_NAME "
+					   + " ) C";
 			
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, paraMap.get("userid"));
 			pstmt.setString(2, Sha256.encrypt(paraMap.get("pwd")));    // 단방향 암호화된 값을 넣어줘야한다
 			pstmt.setString(3, paraMap.get("userid"));
+			pstmt.setString(4, paraMap.get("userid"));
 			
 			rs = pstmt.executeQuery(); // 존재한다면 딱 하나의 값이 나올 것이다.
 			
@@ -217,6 +225,8 @@ public class MemberDAO implements InterMemberDAO {
 				member.setBirthday(rs.getString(10) + rs.getString(11) + rs.getString(12));
 				member.setPoint(rs.getInt(13));
 				member.setRegisterday(rs.getString(14));
+				member.setCouponCnt(rs.getInt("couponCnt"));
+				member.setCouponName(rs.getString("couponName"));
 				member.setPwdchange_daygap(rs.getString("PWDCHANGE_DAYGAP"));
 				
 				if(rs.getInt("PWDCHANGEGAP") >= 3) { // -> rs.getInt(15) : 순서가 헷갈릴 때는 그냥 변수명으로 넣어줘도 된다
@@ -377,7 +387,7 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of == 비밀번호 변경 이메일을 보내기 위해 Map 에 userid 와 Email 을 보내 해당 사용자의 이메일을 알려주는 메소드--------- 
 	
 
-	// 7. 암호변경하기 : 입력한 paraMap 으로 들어온 아이디와 일치하는 회원의 암호를 변경해주는 메소드 구현하기
+	// 7. (사용) 암호변경하기 : 입력한 paraMap 으로 들어온 아이디와 일치하는 회원의 암호를 변경해주는 메소드 구현하기
 	@Override
 	public int pwdUpdate(Map<String, String> paraMap) throws SQLException {
 

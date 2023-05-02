@@ -32,14 +32,12 @@
          width: 250px; 
     }
 
-
 </style>
 
 
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		
 		
 		$("button#btnUpdate").click(function(){
 			
@@ -102,13 +100,13 @@
          		
          		<tr>
 	               	<td id="div_btnUpdate" align="center" style="padding: 10px;">
-	                   	<button type="button" id="btnUpdate" class="btn btn-warning btn-md" style="font-weight:bold;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C O N T I N U E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+	                   	<button type="button" id="btnUpdate" class="btn btn-warning btn-md" style="font-weight:bold;" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C O N T I N U E&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
 	           	   	</td>
 	           	</tr>
          	</tbody>
         </table> 	
 		
-		<input type="hidden" name="userid" value="${sessionScope.gouserIdURL}"/>
+		<input type="text" name="userid" value="sudin"/> 
 		
 	</form>
 

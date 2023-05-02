@@ -10,9 +10,9 @@
 	
 		window.onload = function() { /* 아래 body 에 있는 문서로딩이 끝나면 여기를 바로 실행한다 */
 			
-			const userid = ${requestScope.gouserIdURL};
+			const userid = ${};
 			
-			alert("사용자 ID [ " + userid + " ] 님의 비밀번호가 변경되었습니다.");
+			alert(userid + " 님의 비밀번호가 변경되었습니다.");
 			
 			const frm = document.loginFrm;
 			frm.action = "<%= request.getContextPath()%>/login/login.moc";

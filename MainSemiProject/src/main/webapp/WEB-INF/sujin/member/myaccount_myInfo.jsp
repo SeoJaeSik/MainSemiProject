@@ -47,6 +47,10 @@
 
 	$(document).ready(function(){
 		$("div#memberEdit").hide();		
+		
+		$('[data-toggle="tooltip"]').tooltip();
+		
+		
 	})
 
 	// == 나의정보수정하기 == 
@@ -75,7 +79,7 @@
  	 	
   		<div class="p_column col-3" id="profile_info">
     		<div class="coupon-wrapper">
-      			<p class="coupon-status">보유한 쿠폰 :&nbsp; ? &nbsp;개</p>
+      			<p class="coupon-status" data-toggle="tooltip" data-placement="top" title="${(sessionScope.loginuser).couponName}">보유한 쿠폰 :&nbsp; ${(sessionScope.loginuser).couponCnt} &nbsp;개</p>
     		</div>
 	    	<div class="point-wrapper">
 	      		<p class="point-status">보유한 포인트 :&nbsp; <fmt:formatNumber value="${(sessionScope.loginuser).point}" pattern="###,###" />&nbsp;p</p> 

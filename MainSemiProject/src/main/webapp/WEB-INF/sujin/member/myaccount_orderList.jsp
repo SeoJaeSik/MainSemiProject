@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<% String ctxPath = request.getContextPath(); %>
+
 <style type="text/css">
 
 	div#viewmyorderList {
@@ -10,6 +12,15 @@
 	}
 
 </style>
+
+<script type="text/javascript">
+
+	function goshopping() { // 쇼핑하기 누르면 전체 제품페이지로 이동
+	
+		location.href = "<%= ctxPath%>/shop/allproduct.moc";
+	}
+
+</script>
 
 
 <div class="tab-pane container fade" id="viewmyorderList" style="background-color:#fefce7;">
@@ -25,7 +36,7 @@
 	<div class="text-center">주문 내역이 없습니다.</div>
 	<br><br>
 	<div class="text-center">
-		<button class="btn btn-lg col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#ffeb99; " id="btnUpdate" onclick="goEdit()">지금 쇼핑하기</button>
+		<button class="btn btn-lg col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#ffeb99; " id="btnUpdate" onclick="goshopping()">지금 쇼핑하기</button>
 	</div>
 	<br><br><br><br><br>
 </div>
