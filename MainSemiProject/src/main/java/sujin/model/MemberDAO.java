@@ -308,6 +308,38 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of == 쿠폰 정보 불러오기 ==-------------------------------------------
 
 	
+	// == 입력받은 paraMap 을 갖고 한명의 주문번호를 리턴시켜주는 메소드 (로그인 할 때 동시에 되게 하자) ==
+	@Override
+	public List<String> selectMemberOrderNo(Map<String, String> paraMap) throws SQLException {
+		
+		List<String> order_no_List = new ArrayList<>();
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " select order_no "
+	                    + " from tbl_order "
+	                    + " where fk_userid = ? "
+	                    + " order by orderdate desc " ;
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         pstmt.setString(1, paraMap.get("userid"));
+	         
+	         rs = pstmt.executeQuery();
+	         
+	         while(rs.next()) {
+	            String order_no = rs.getString(1); // 주문번호
+	            order_no_List.add(order_no); 
+	         }
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return order_no_List;
+
+	}//end of == 주문번호 가져오기 메소드 ==---------------------------------------
+	
 
 	// 5. (사용) 아이디 찾기 : 입력받은 paraMap 으로 성명&이메일을 입력받아 해당 사용자의 아이디를 알려주는 메소드 구현하기
 	@Override
@@ -584,8 +616,5 @@ public class MemberDAO implements InterMemberDAO {
 		return mvo;
 		
 	}//end of 14. userid 값을 입력받아 회원 1명에 대한 상세정보를 알아오는 메소드---------- 
-
-
-	
 
 }
