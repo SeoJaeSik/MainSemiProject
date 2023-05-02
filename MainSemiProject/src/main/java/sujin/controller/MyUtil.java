@@ -39,30 +39,5 @@ public class MyUtil {
 		return currentURL;
 	}
 	
-	
-	// *** 비밀번호 변경을 위해 전송된 URL 에서 이메일 알아내기 *** //
-	public static String getCurrentURLuserid(HttpServletRequest request) {
-		
-		String currentURLuserid = request.getRequestURL().toString();
-		
-		String queryString = request.getQueryString(); 
-		
-		if(queryString != null) { // GET 방식인 경우
-			currentURLuserid += "?" + queryString;
-		}
-		
-		int beginIndex = currentURLuserid.indexOf("?") + "userid=".length();
-		
-		int endIndex = currentURLuserid.indexOf("&", beginIndex);
-		
-		currentURLuserid = currentURLuserid.substring(beginIndex, endIndex-beginIndex);
-		// http://localhost:9090/SemiProject_MOSACOYA/login/pwdUpdateEnd.moc?userid=sudin&email=jin970510@naver.com 중
-		// --> sudin 만을 얻어왔다
-		
-		System.out.println("currentURLuserid 확인 : " + currentURLuserid);
-		
-		return currentURLuserid;
-	}
-	
 
 }

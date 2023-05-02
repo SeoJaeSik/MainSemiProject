@@ -40,7 +40,7 @@ public class PwdFindAction extends AbstractController {
 				
 				// -- 이메일에 보낼 링크에 필요한 사용자의 정보얻어오는 것 --
 				MemberVO mbrforpwdReset = mdao.selectmbrforpwdReset(paraMap);
-				System.out.println("mbrforpwdReset 확인 : " + mbrforpwdReset);
+			//	System.out.println("mbrforpwdReset 확인 : " + mbrforpwdReset);
 				
 				try {
 					
@@ -74,7 +74,8 @@ public class PwdFindAction extends AbstractController {
 					
 					sb.append("</table>");
 					sb.append("</div>");
-										
+					
+					
 					String emailContents = sb.toString();
 				//	System.out.println("emailContents 확인 : " + emailContents);
 					

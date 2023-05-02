@@ -77,8 +77,8 @@ public class MemberEditEndAction extends AbstractController {
 			message = "비정상적인 경로를 통해 들어왔습니다.";
 		}
 
-		loc = "javascript:history.back()"; // 자바스크립트를 이용한 이전 페이지로 이동
-		
+		loc = "javascript:history.back()"; 			// 자바스크립트를 이용한 이전 페이지로 이동
+	
 		request.setAttribute("message", message);
 		request.setAttribute("loc", loc);
 		
