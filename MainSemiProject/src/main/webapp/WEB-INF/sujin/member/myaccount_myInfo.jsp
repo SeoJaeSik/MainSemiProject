@@ -35,11 +35,11 @@
 		border-radius:50%;
 	}
 	
-	div#viewmyInfo {
+	/* div#viewmyInfo {
 		background-color:#fefce7; 
 		padding-top:40px;
 		padding-bottom:40px;
-	}
+	} */
 
 </style>
 
@@ -49,7 +49,6 @@
 		$("div#memberEdit").hide();		
 		
 		$('[data-toggle="tooltip"]').tooltip();
-		
 		
 	})
 
