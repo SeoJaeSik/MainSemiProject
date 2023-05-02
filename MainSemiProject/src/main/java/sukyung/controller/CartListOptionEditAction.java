@@ -1,8 +1,6 @@
 package sukyung.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,13 +17,13 @@ public class CartListOptionEditAction extends AbstractController {
 
 		if(super.checkLogin(request)) { // 로그인한 경우
 			
+			HttpSession session = request.getSession();
+			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
+			String userid = loginuser.getUserid(); // 로그인한 회원아이디
+
 			String method = request.getMethod();
 			
 			if(!"POST".equalsIgnoreCase(method)) { // GET방식 ==> "옵션변경" 하는 페이지로 이동
-
-				HttpSession session = request.getSession();
-				MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-				String userid = loginuser.getUserid(); // 로그인한 회원아이디
 
 				String cart_no = request.getParameter("cart_no");
 				
@@ -81,6 +79,7 @@ public class CartListOptionEditAction extends AbstractController {
 				String product_size = request.getParameter("product_size");
 				
 				Map<String, String> paraMap = new HashMap<>();
+				paraMap.put("userid", userid); 			 	 // 로그인한 회원아이디
 				paraMap.put("cart_no", cart_no); 			 // 장바구니번호
 				paraMap.put("product_name", product_name);	 // 제품명
 				paraMap.put("product_color", product_color); // 제품색상

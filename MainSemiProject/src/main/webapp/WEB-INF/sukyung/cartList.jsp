@@ -70,6 +70,8 @@
 		$("div#error").hide();
 		$("img#add_product_image").hide();
 		
+		calc_totalPrice();
+		
 	// *** 1. 수량 관련 이벤트
 		// 수량에서 "+" 또는 "-" 를 클릭하면 발생하는 이벤트
 		$("button.changeCount").click(function(){
@@ -104,13 +106,10 @@
 			$(this).parent().parent().find("div#error").show(); // 에러메시지 보여주기
 			
 			b_flag_click_btnUpdate = true; // "변경" 버튼 클릭해야 한다.
-		
+			
 		}); // end of $("input#cart_product_count").bind("change", function(){})
 		
 	//////////////////////////////////////////////////////////////////////////////////////////
-		
-		$("input#CheckAll_product").prop("checked", true);
-		$("input#CheckOne_product").prop("checked", true);
 		
 	// *** 2. 제품 체크박스 관련 이벤트
 		// "전체상품선택" 체크박스를 클릭하면
@@ -123,6 +122,7 @@
 				$("input#CheckOne_product").prop("checked", false);
 				b_flag_goDelivery = false;
 			}
+			calc_totalPrice();
 		}); // end of $("input#CheckAll_product").click((e)=>{})
 
 		// 제품한개 체크박스를 클릭하면
@@ -142,6 +142,7 @@
 					$("input#CheckAll_product").prop("checked", true); // "전체상품선택" 체크
 				}
 			}
+			calc_totalPrice();
 		}); // end of $("input#CheckOne_product").click((e)=>{})
 
 	
@@ -154,7 +155,6 @@
 	     			  "cart_product_count":$(this).parent().prev().children("input").val()}, // 수량
 	     		type:"post",
 	     		dataType:"json",
-	     		async:false,
 	     		success:function(json) {
 					if(json.result == 1){ // update sql 성공
 						$(e.target).parent().hide(); // "변경" 버튼을 클릭하라는 에러메시지 숨기기
@@ -181,7 +181,6 @@
 		     		data:{"cart_no":$(this).parent().parent().find("td:eq(0)").find("input:checkbox[name='cart_no']").val()}, // 장바구니번호
 		     		type:"post",
 		     		dataType:"json",
-		     		async:false,
 		     		success:function(json) {
 						if(json.result == 1){ // delete sql 성공
 							location.href="javascript:history.go(0);"; // 새로고침
@@ -233,6 +232,7 @@
 			}
 		}); // end of $("input:radio[name='add_product_color']").click(function(){})
 
+		
 		// 4) "추가하기" 버튼 클릭 - tbl_cart 테이블에 insert
 		$("button#btnAdd").click(function(){
 			
@@ -249,7 +249,6 @@
 			     			  "product_size":$("select#add_product_size").val()}, // 제품사이즈
 			     		type:"post",
 			     		dataType:"json",
-			     		async:false,
 			     		success:function(json) {
 							if(json.result == 1){ // insert sql 성공
 								location.href="javascript:history.go(0);"; // 새로고침
@@ -274,30 +273,11 @@
 			window.open(url, "옵션변경", "left=350px, top=100px, width=600px, height=500px");
 			
 		}); // end of $("button#btnOptionChange").click(function(){})
-
 		
-	// *** 4. 주문총액 계산하기
-		let total_price = 0;
-		$("td#order_price").each(function(index, elmt){
-			var order_price = Number($(elmt).find("span").text().split(",").join(""));
-			total_price += order_price;
-		}); // end of $("td#order_price").each(function(index, elmt){})
-		$("input#total_price").val(total_price);
-		$("span#total_price").text(total_price.toLocaleString('en')+"원");
 		
-	// *** 5. 주문총액에 따른 배송비 계산하기
-		if(total_price >= 50000){ // 주문총액 5만원 이상이면 배송비 무료
-			$("input#delivery_fee").val(0);
-			$("span#delivery_fee").text("무료배송");
-		}
-		else {
-			$("input#delivery_fee").val(3000);
-			$("span#delivery_fee").text("3,000원");
-		}
-		
-	// *** 6. "주문하기" 버튼 클릭하면 발생하는 이벤트
+	// *** 4. "주문하기" 버튼 클릭하면 발생하는 이벤트
 		$("button#btnOrder").click(function(){ // "주문하기" 노란 버튼 클릭
-			if(!b_flag_goDelivery){ // 체크된 제품이 하나도 없을경우
+			if(!b_flag_goDelivery || $("input#total_price").val() == 0){ // 체크된 제품이 하나도 없을경우
 				alert("선택한 상품이 없습니다.");
 			}
 			else { // 한개이상의 제품이 체크된 경우
@@ -306,7 +286,7 @@
 		}); // end of $("button#btnOrder").click(function(){})
 	
 		$("a#btnOrder").click(function(){ // 상단바의 "배송정보" 노란 동그라미 링크 클릭
-			if(!b_flag_goDelivery){ // 체크된 제품이 하나도 없을경우
+			if(!b_flag_goDelivery || $("input#total_price").val() == 0){ // 체크된 제품이 하나도 없을경우
 				alert("선택한 상품이 없습니다.");
 			}
 			else { // 한개이상의 제품이 체크된 경우
@@ -330,6 +310,29 @@
 			alert("최대 10개까지만 구매가능합니다.");
 		}
 	} // end of function checkChangeCount()
+
+	
+	// 주문총액 및 배송비 계산하는 함수 (체크된 상품들의 주문총액)
+	function calc_totalPrice(){
+		let total_price = 0;
+		$("input:checkbox[name='cart_no']:checked").each(function(index, elmt){
+			var order_price = Number($(elmt).parent().parent().find("td:eq(5)").find("input#order_price").val());
+			total_price += order_price;
+		}); // end of $("td#order_price").each(function(index, elmt){})
+		$("input#total_price").val(total_price);
+		$("span#total_price").text(total_price.toLocaleString('en')+"원");
+		
+		// 총 주문금액에 따른 배송비 계산하기
+		if(total_price >= 50000){ // 총 주문금액 5만원 이상이면 배송비 무료
+			$("input#delivery_fee").val(0);
+			$("span#delivery_fee").text("무료배송");
+		}
+		else {
+			$("input#delivery_fee").val(3000);
+			$("span#delivery_fee").text("3,000원");
+		}
+	} // end of function calc_totalPrice()
+
 	
 <%--
 	if(!b_flag_goDelivery){ // 체크된 제품이 하나도 없을경우
@@ -349,31 +352,39 @@
 	// "주문하기" 를 클릭하면 호출되는 함수
 	function goOrder(){
 
-		// 주문하고자 하는 제품정보 및 장바구니번호를 배열에 담아서 "배송정보" 로 전달하기
+		// 주문하고자 하는 제품정보 및 장바구니번호를 배열에 담기
 		const arr_product_no = [];
-		const arr_cart_product_count = [];
-		const arr_order_price = [];
+		const arr_order_count = [];
 		const arr_cart_no = [];
 	
 		$("input:checkbox[name='cart_no']:checked").each(function(index, elmt){ // 체크된 제품번호
 			arr_product_no.push( $(elmt).parent().parent().find("td:eq(2)").find("input#product_no").val() );
-			arr_cart_product_count.push( $(elmt).parent().parent().find("td:eq(4)").children().find("input#cart_product_count").val() );
-			arr_order_price.push( $(elmt).parent().parent().find("td:eq(5)").find("input#order_price").val() );
+			arr_order_count.push( $(elmt).parent().parent().find("td:eq(4)").children().find("input#cart_product_count").val() );
 			arr_cart_no.push( $(elmt).val() );
 		});
 
-     	const frm = document.CartListFrm;
-		frm.action = "<%= request.getContextPath()%>/shop/delivery.moc";
-
-		frm.product_no.value = arr_product_no; 				  // 제품번호(배열)
-		frm.cart_product_count.value = arr_cart_product_count; // 주문수량(배열)
-		frm.order_price.value = arr_order_price; 			  // 제품별 주문금액(배열)
-		frm.cart_no.value = arr_cart_no; 					  // 장바구니번호(배열)
-		
-		frm.method = "post";
-		frm.submit();
-
-		} // end of function goOrder()
+		// 배열을 조인한 문자열을 담아서 AJAX 로 전송하기
+		$.ajax({
+			url:"<%= ctxPath%>/shop/orderAdd.moc",
+     		data:{"join_product_no":arr_product_no.join(),   	 // 제품번호(문자열)
+     			  "join_order_count":arr_order_count.join(), 	 // 주문수량(문자열)
+     			  "join_cart_no":arr_cart_no.join()}, 		 	 // 장바구니번호(문자열)
+      		type:"post",
+     		dataType:"json",
+     		async:false,
+     		success:function(json) {
+		    	if(json.isSuccess == 1) {
+			    	location.href="<%= ctxPath%>/shop/delivery.moc";
+			    }
+			    else {
+					location.href="javascript:history.go(0);"; // 새로고침
+			    }
+     		},
+     		error: function(request, status, error) {
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+     	});
+	} // end of function goOrder()
 	
 </script>
 
@@ -384,7 +395,7 @@
 		<c:if test="${not empty requestScope.cartList}">
 		<div class="row pb-3 mx-1">
 			<div class="col-md-10 align-self-end">
-				<label for="CheckAll_product"><input type="checkbox" name="CheckAll_product" id="CheckAll_product" /> 전체 상품 선택/해제</label>
+				<label for="CheckAll_product"><input type="checkbox" name="CheckAll_product" id="CheckAll_product" checked/> 전체선택/해제</label>
 			</div>
 			<div class="col-md-2">
 				<button type="button" id="btnOrder" class="btn btn-lg px-4">주문하기</button>
@@ -406,7 +417,15 @@
 			  <c:forEach var="cvo" items="${requestScope.cartList}">
 			    <tr class="pt-2">
 			    	<td>
-			    		<input type="checkbox" name="cart_no" id="CheckOne_product" value="${cvo.cart_no}"/>
+					    <%-- 주문수량 > 잔고수량 --%>
+						<c:if test="${cvo.cart_product_count > cvo.pvo.stock_count}"> 
+			    		  <input type="checkbox" name="cart_no" value="${cvo.cart_no}" unchecked disabled/>
+						</c:if>
+					    <%-- 주문수량 <= 잔고수량 --%>
+						<c:if test="${cvo.cart_product_count <= cvo.pvo.stock_count}"> 
+			    		  <input type="checkbox" name="cart_no" id="CheckOne_product" value="${cvo.cart_no}" checked/>
+						</c:if>
+			    	
 			    	</td>
 			      	<td><img src="${cvo.pvo.product_image}" id="product_image" name="product_image" width="150" class="img-thumbnail"/></td>
 			      	<td class="text-left">
@@ -426,6 +445,11 @@
 					    <div id="error" style="font-size: 10pt; margin: 5px auto;">
 					    	<button type="button" id="btnCartUpdate" class="btn btn-sm px-0" style="font-weight: bold; text-decoration: underline; margin-bottom: 3px;">변경</button> 을 눌러주세요
 					    </div>
+					    <%-- 주문수량 > 잔고수량 --%>
+						<c:if test="${cvo.cart_product_count > cvo.pvo.stock_count}"> 
+				      	  <div id="cart_product_count" name="cart_product_count" style="color:red;font-size: 10pt; margin: 5px auto;">품절(현재 주문불가)</div>
+						</c:if>
+					    
 				    </td>
 			      	<td id="order_price" name="order_price" style="font-size: 14pt; font-weight: bold;">
 			      		<span><fmt:formatNumber value="${cvo.pvo.order_price}" pattern="###,###" /></span>원
@@ -447,7 +471,7 @@
 	      		</c:forEach>
 			
 			</div>
-			<div class="col-md-3 align-self-center">
+			<div class="col-md-4 align-self-center">
 				<div class="my-1 ml-2">
 					<span id="add_product_name" name="add_product_name" style="font-weight: bold;">${requestScope.rndpvo.product_name}</span>&nbsp;&nbsp;
 					<span id="add_product_price" name="add_product_price"><fmt:formatNumber value="${requestScope.rndpvo.product_price}" pattern="###,###" />원</span>
@@ -470,7 +494,7 @@
 		      		</select>
 				</div>
 	      	</div>
-			<div class="col-md-4 align-self-center text-center">
+			<div class="col-md-3 align-self-center text-center">
 				<button type="button" id="btnAdd" class="btn btn-lg px-5 py-3">추가하기</button>
 			</div>
 		</div>
@@ -483,7 +507,7 @@
 			      	<td class="col-md-2 p-1 text-right">총 주문금액</td>
 			      	<td class="col-md-2 p-1">
       				  <span id="total_price" name="total_price" class="text-right h6"></span>
-      				  <input type="hidden" id="total_price" name="total_price" value=""/>
+      				  <input type="hidden" id="total_price" name="total_price" value="0"/>
 			      	</td>
 			    </tr>
 			    <tr>
@@ -491,7 +515,7 @@
 			      	<td class="col-md-2 p-1 text-right">배송비</td>
 			      	<td class="col-md-2 p-1">
       				  <span id="delivery_fee" name="delivery_fee" class="text-right h6"></span>
-	  				  <input type="hidden" id="delivery_fee" name="delivery_fee" value=""/>
+	  				  <input type="hidden" id="delivery_fee" name="delivery_fee" value="3000"/>
     		      	</td>
 			    </tr>
 			    <tr>
@@ -508,12 +532,6 @@
 </c:if>
 		
 <c:if test="${empty requestScope.cartList}">
-	<div class="row pb-3 mx-1">
-		<div class="col-md-10 align-self-end"></div>
-		<div class="col-md-2">
-			<a class="btn btn-lg px-4" style="background-color: #fdd007;" href="#">쇼핑하기</a>
-		</div>
-	</div>
 
 	<div class="table-responsive mx-auto">
 		<table class="table text-center" id="tbl_cart">
@@ -528,8 +546,9 @@
 		  <tbody>
 		 	<tr>
 		 		<td colspan="6">
-		 			<div id="div_cart_empty">
+		 			<div id="div_cart_empty" style="height: 150px;">
 		 				<p>장바구니에 담은 상품이 없습니다.</p>
+						<a class="btn btn-lg px-4 my-3" style="background-color: #fdd007;" href="#">쇼핑하기</a>
 		 			</div>
 		 		</td>
 		 	</tr>
@@ -546,7 +565,7 @@
 	      		</c:forEach>
 			
 			</div>
-			<div class="col-md-3 align-self-center">
+			<div class="col-md-4 align-self-center">
 				<div class="my-1 ml-2">
 					<span id="add_product_name" name="add_product_name" style="font-weight: bold;">${requestScope.rndpvo.product_name}</span>&nbsp;&nbsp;
 					<span id="add_product_price" name="add_product_price"><fmt:formatNumber value="${requestScope.rndpvo.product_price}" pattern="###,###" />원</span>
@@ -569,11 +588,10 @@
 		      		</select>
 				</div>
 	      	</div>
-			<div class="col-md-4 align-self-center text-center">
+			<div class="col-md-3 align-self-center text-center">
 				<button type="button" id="btnAdd" class="btn btn-lg px-5 py-3">추가하기</button>
 			</div>
 		</div>
-	<div style="height: 100px;"></div>
 	
 </c:if>
 </div>

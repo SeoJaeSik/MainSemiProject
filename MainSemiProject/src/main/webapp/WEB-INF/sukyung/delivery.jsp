@@ -8,7 +8,7 @@
 
 <style type="text/css">
 
-	button#btnPay, button#btnPostcode {
+	button#btnNext, button#btnPostcode {
 		background-color: #fdd007;
 		border: none;
 		box-shadow: 1px 1px 1px 1px #e6e6e6;
@@ -28,33 +28,36 @@
 		$("div#div_container").hide();
 		$("div#div_container").fadeIn(2000);
 		$("span.error").hide();
+		$("div#navbar_page_delivery").find("span").css('background-color', '#fdd007');
 
-		let b_flag_goPay = false; // goPay() 함수에서 b_flag_goPay 가 true 이면 "결제정보"로 이동가능
+		let b_flag_goNext = false; // goNext() 함수에서 b_flag_goNext 가 true 이면 "결제정보"로 이동가능
 
 	// *** 1. "고객정보동일" 체크박스를 클릭하면 발생하는 이벤트
 		$("input:checkbox[id='checkbox_same']").click((e)=>{
 			if($(e.target).prop("checked")){ // "고객정보동일" 체크박스가 체크되어있으면
-				$("input#name").val($("div[name='name']").text()); 		 			 // 수령자성명
+				$("input#delivery_name").val($("div[name='name']").text()); 		 // 수령자성명
 				$("input#hp1").val($("div[name='mobile']").text().substring(0,3)); 	 // 수령자연락처
 				$("input#hp2").val($("div[name='mobile']").text().substring(3,7));
 				$("input#hp3").val($("div[name='mobile']").text().substring(7));
-				$("input#mobile").val($("div[name='mobile']").text());
 				$("input#postcode").val($("div[name='postcode']").text()); 			 // 우편번호
 				$("input#address").val($("div[name='address']").text()); 			 // 주소
 				$("input#detailAddress").val($("div[name='detailAddress']").text()); // 상세주소
 				$("input#extraAddress").val($("div[name='extraAddress']").text());   // 참고주소
 
 				$("span.error").hide();
-				b_flag_goPay = true;
+				b_flag_goNext = true;
 			}
 		}); // end of $("input:checkbox[id='checkbox_same']").click((e)=>{})
 
 		
 	// *** 2. "수령자" 유효성검사
-		$("input#name").blur((e)=>{
+		$("input#delivery_name").blur((e)=>{
 			if($(e.target).val() == ""){
 				$(e.target).val("");
 				$(e.target).parent().find("span.error").show(); // 에러메시지 보여주기
+			}
+			else{
+				$(e.target).parent().find("span.error").hide(); 
 			}
 		}); // end of $("input#name").blur((e)=>{})
 	
@@ -66,6 +69,9 @@
 				$(e.target).val("");
 				$(e.target).parent().find("span.error").show(); // 에러메시지 보여주기
 			}
+			else if(regExp.test($(e.target).val()) && regExp.test($("input#hp3"))){
+				$(e.target).parent().find("span.error").hide(); 
+			}
 		}); // end of $("input#hp2").blur((e)=>{})
 
 		$("input#hp3").blur((e)=>{
@@ -74,17 +80,33 @@
 				$(e.target).val("");
 				$(e.target).parent().find("span.error").show(); // 에러메시지 보여주기
 			}
+			else if(regExp.test($(e.target).val()) && regExp.test($("input#hp2"))){
+				$(e.target).parent().find("span.error").hide(); 
+			}
 		}); // end of $("input#hp3").blur((e)=>{})
 		
 		
 	// *** 4. "우편번호찾기"
 		$("button#btnPostcode").click(function(){
 			searchPostcode(); // 다음 openAPI 실행
+			
+			if($("input#postcode").val() == ""){ // "우편번호찾기" 클릭만 한 경우
+				$(this).parent().find("span.error").show(); // 에러메시지 보여주기
+			}
+			else{
+				$(this).parent().find("span.error").hide(); 
+			}
 		}); // end of $("button#btnPostcode").click(function(){})
 		
 		// "우편번호찾기"를 클릭하지 않고 주소를 입력하려고 할 경우
 		$("input#postcode").focus(function(){
 			searchPostcode(); // 다음 openAPI 실행
+			if($("input#postcode").val() == ""){ // "우편번호찾기" 클릭만 한 경우
+				$(this).parent().find("span.error").show(); // 에러메시지 보여주기
+			}
+			else{
+				$(this).parent().find("span.error").hide(); 
+			}
 			$("input#delivery_comment").focus();
 		}); // end of $("input#postcode").change(function(){})
 
@@ -95,32 +117,34 @@
 		}); // end of $("input.required").change(function(){})
 
 		
-	// *** 6. "결제하기" 버튼 클릭하면 발생하는 이벤트
-		$("button#btnPay").click(function(){ // "결제하기" 노란 버튼 클릭
+	// *** 6. "다음으로" 버튼 클릭하면 발생하는 이벤트
+		$("button#btnNext").click(function(){ // "결제하기" 노란 버튼 클릭
 			// 필수입력사항 전부 입력했는지 체크하기
 			$("input.required").each(function(index, elmt){
 				if($(elmt).val() == ""){ // 필수입력사항을 입력하지 않은 경우
-					b_flag_goPay = false;
+					b_flag_goNext = false;
+					$(this).parent().find("span.error").show(); // 에러메시지 보여주기
 					return false;
 				}
 			}); // end of $("input.required").each(function(index, elmt){})
 			
-			if(b_flag_goPay){ // 필수입력사항을 모두 입력한 경우
-				goPay();
+			if(b_flag_goNext){ // 필수입력사항을 모두 입력한 경우
+				goNext();
 			}
-		}); // end of $("button#btnPay").click(function(){})
+		}); // end of $("button#btnNext").click(function(){})
 		
 		$("a#btnPay").click(function(){ // 상단바의 "결제정보" 노란 동그라미 링크 클릭
 			// 필수입력사항 전부 입력했는지 체크하기
 			$("input.required").each(function(index, elmt){
 				if($(elmt).val() == ""){ // 필수입력사항을 입력하지 않은 경우
-					b_flag_goPay = false;
+					b_flag_goNext = false;
+					$(this).parent().find("span.error").show(); // 에러메시지 보여주기
 					return false;
 				}
 			}); // end of $("input.required").each(function(index, elmt){})
 			
-			if(b_flag_goPay){ // 필수입력사항을 모두 입력한 경우
-				goPay();
+			if(b_flag_goNext){ // 필수입력사항을 모두 입력한 경우
+				goNext();
 			}
 		}); // end of $("a#btnPay").click(function(){})
 
@@ -132,8 +156,8 @@
 	function searchPostcode(){
 		$("input#postcode").val("");      // 우편번호
 		$("input#address").val(""); 	  // 주소
-		$("input#detailAddress").val(""); // 상세주소
 		$("input#extraAddress").val("");  // 참고주소
+		$("input#detailAddress").val(""); // 상세주소
 		
 		
 		new daum.Postcode({
@@ -189,13 +213,15 @@
 	} // end of function searchPostcode()
 	
 	
-	// "결제하기" 클릭하면 호출되는 함수
-	function goPay(){
+	// "다음으로" 클릭하면 호출되는 함수
+	function goNext(){
 		const frm = document.deliveryFrm;
 		frm.action = "<%= request.getContextPath()%>/shop/payment.moc";
+		frm.delivery_mobile.value = '010' + $("input#hp2").val() + $("input#hp3").val();
+		frm.delivery_address.value = $("input#postcode").val()+" "+$("input#address").val()+" "+ $("input#extraAddress").val()+" "+ $("input#detailAddress").val();
 		frm.method = "post";
 		frm.submit();
-	} // end of function goPay()
+	} // end of function goNext()
 	
 </script>
 
@@ -254,20 +280,21 @@
 		  			  
 		  <div class="form-group row col-md-10 mx-auto">
 		    <label for="name" class="col-md-3 col-form-label">수령자<span style="color:red;">&nbsp;*</span><span class="error" style="color:red;">&nbsp;필수입력</span></label>
-		    <input type="text" class="required col-md-8 form-control" id="name" name="name" placeholder="수령자 성명" />
+		    <input type="text" class="required col-md-8 form-control" id="delivery_name" name="delivery_name" placeholder="수령자 성명" />
 		  </div>
 		  
 		  <div class="form-group row col-md-10 mx-auto">
 		    <label for="mobile" class="col-md-3 col-form-label">연락처<span style="color:red;">&nbsp;*</span><span class="error" style="color:red;">&nbsp;필수입력</span></label>
 		      <input type="text" class="col-md-2 form-control" id="hp1" placeholder="010" readonly />
 		    <span class="pt-1 col-md-1 text-center">&nbsp;-&nbsp;</span>
-		      <input type="text" class="required col-md-2 form-control" id="hp2" minlength="4" maxlength="4" />
+		      <input type="text" class="required col-md-2 form-control" id="hp2" maxlength="4" />
 		    <span class="pt-1 col-md-1 text-center">&nbsp;-&nbsp;</span>
-		      <input type="text" class="required col-md-2 form-control" id="hp3" minlength="4" maxlength="4" />
-		      <input type="hidden" id="mobile" name="mobile" />
+		      <input type="text" class="required col-md-2 form-control" id="hp3" maxlength="4" />
+		      <input type="hidden" id="delivery_mobile" name="delivery_mobile" />
 		  </div>
 		  
 		  <div class="form-group row col-md-10 mx-auto">
+		    <input type="hidden" id="delivery_address" name="delivery_address" />
 		    <label for="address" class="col-md-3 col-form-label">주소<span style="color:red;">&nbsp;*</span><span class="error" style="color:red;">&nbsp;필수입력</span></label>
 		    <input type="text" class="required col-md-5 form-control" id="postcode" name="postcode" placeholder="우편번호" />
 			<div class="col-md-1"></div>
@@ -288,12 +315,12 @@
 
 		  <div class="form-group row col-md-10 mx-auto mb-3">
 		    <label for="delivery_comment" class="col-md-3 col-form-label">요청사항</label>
-		    <input type="text" class="col-md-8 form-control" id="delivery_comment" name="delivery_comment" placeholder="택배 기사님께 전달하는 내용입니다. (0/50자)" />
+		    <input type="text" class="col-md-8 form-control" id="delivery_comment" name="delivery_comment" placeholder="택배 기사님께 전달하는 내용입니다. (0/30자)" maxlength="30" />
 		  </div>
 
 		  <div class="row col-md-10 mx-auto my-5">
 			<div class="col-md-8"></div>
-			<div class="col text-center"><button type="button" id="btnPay" class="btn btn-lg">계속하기</button></div>
+			<div class="col text-center"><button type="button" id="btnNext" class="btn btn-lg">다음으로</button></div>
 		  </div>
 		</form>
 	</div>
