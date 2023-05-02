@@ -286,7 +286,7 @@ public class MemberDAO implements InterMemberDAO {
 			
 			pstmt.setString(1, paraMap.get("userid"));
 			
-			rs = pstmt.executeQuery(); // 존재한다면 딱 하나의 값이 나올 것이다.
+			rs = pstmt.executeQuery();
 			
 			int cnt = 0;
 			
