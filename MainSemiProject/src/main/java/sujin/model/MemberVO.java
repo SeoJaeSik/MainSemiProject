@@ -258,10 +258,8 @@ public class MemberVO {
 
 	//////////////////////////////////////////////////
 	
-
 	// 마이페이지에서 비밀번호 변경한지 며칠이 지났는지 나타내는데 사용함
 	
-
 	private String pwdchange_daygap;
 
 	public String getPwdchange_daygap() {
@@ -271,5 +269,35 @@ public class MemberVO {
 	public void setPwdchange_daygap(String pwdchange_daygap) {
 		this.pwdchange_daygap = pwdchange_daygap;
 	}
+	
+	//////////////////////////////////////////////////
+	
+	// 마이페이지에서 보일 쿠폰개수
+
+	private int couponCnt;
+	
+	public int getCouponCnt() {
+		return couponCnt;
+	}
+
+	public void setCouponCnt(int couponCnt) {
+		this.couponCnt = couponCnt;
+	}
+	
+	// 마이페이지에서 보일 쿠폰이름
+	
+	private String couponName;
+	
+	public String getCouponName() {
+		return couponName;
+	}
+
+	public void setCouponName(String couponName) {
+		this.couponName = couponName;
+	}
+
+	
+	
+	
 	
 }

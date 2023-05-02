@@ -7,7 +7,39 @@
 
 <script type="text/javascript">
 
+	
 	$(document).ready(function(){
+		
+		if ( ${requestScope.checkSearch} == true){
+			
+			$("a#showSearch").trigger("click");
+		} 
+		
+		// 새로고침 하면 그 페이지 그대로 남아있기 (gobackURL 개념 생각해보)
+		
+		
+		// 페이지 로드 시, localStorage에서 각 토글의 상태를 가져와 적용
+		/* for (let i = 1; i <= 4; i++) {
+		    const isOpen = localStorage.getItem(`toggle-${i}-open`);
+		    if (isOpen === 'true') {
+		      document.getElementById(`toggle-${i}-content`).style.display = 'block';
+		    }
+		  }
+
+		  // 토글 클릭 시, 토글 상태를 localStorage에 저장하고 열림/닫힘 상태를 토글의 클래스로 설정
+		  function toggle(toggleNum) {
+		    const toggleContent = document.getElementById(`toggle-${toggleNum}-content`);
+		    if (toggleContent.style.display === 'block') {
+		      toggleContent.style.display = 'none';
+		      localStorage.setItem(`toggle-${toggleNum}-open`, 'false');
+		      toggleContent.classList.remove('active');
+		    } else {
+		      toggleContent.style.display = 'block';
+		      localStorage.setItem(`toggle-${toggleNum}-open`, 'true');
+		      toggleContent.classList.add('active');
+		    }
+		  } */
+		
 		
 		$("a.accout_nav").click(function(){ 
 			$("div#memberEdit").hide();		
@@ -50,7 +82,7 @@
 				    	<a class="accout_nav nav-link" data-toggle="pill" href="#viewmyorderList" style="font-size:15pt; height: 40px; color:black;">MY ORDERLIST</a>
 				  	</li>
 				  	<li class="nav-item">
-				    	<a class="accout_nav nav-link" data-toggle="pill" href="#viewmyqna" style="font-size:15pt; height: 40px; color:black;">FAQs / QNA</a>
+				    	<a id="showSearch" class="accout_nav nav-link" data-toggle="pill" href="#viewmyqna" style="font-size:15pt; height: 40px; color:black;">FAQs / QNA</a>
 				  	</li>
 				</ul>
 				
