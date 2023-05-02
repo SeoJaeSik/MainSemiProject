@@ -55,16 +55,17 @@ public class ProductDAO implements InterProductDAO {
 		try {
 			conn = ds.getConnection(); // 본인의 오라클DB와 연동
 			
-			String sql = " select product_name, fk_shoes_category_no, product_color, product_size, product_image, product_content "
-					   + "      , stock_count, sale_count, product_price "
-				       + " from "
-					   + " ( "
-					   + "  select row_number() over(order by product_no desc) AS RNO "
-					   + "       , product_name, fk_shoes_category_no, product_color, product_size, product_image, product_content " 
-					   + "       , stock_count, sale_count, product_price "
-					   + "  from tbl_product "
-					   + " ) V "
-					   + " where RNO between ? and ? ";
+			String sql = " SELECT product_name, product_color, product_price, fk_shoes_category_no, product_image, MAX(product_size) AS product_size "
+					   + " FROM ( "
+					   + "  SELECT V.*, ROWNUM AS RNO "
+					   + "  FROM ( "
+					   + "    SELECT DISTINCT product_name, product_price, product_color, product_size, fk_shoes_category_no, product_image, sale_count "
+					   + "    FROM tbl_product "
+					   + ") V "
+					   + " WHERE ROWNUM BETWEEN ? AND ? "
+					   + ") "
+					   + " GROUP BY product_name, product_color, product_price, fk_shoes_category_no, product_image "
+					   + " ORDER BY fk_shoes_category_no ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, param.get("start"));
@@ -76,16 +77,12 @@ public class ProductDAO implements InterProductDAO {
 				
 				ProductVO pvo = new ProductVO();
 
-			    pvo.setProduct_name(rs.getString("product_name"));  
-				pvo.setFk_shoes_category_no(rs.getInt("fk_shoes_category_no"));
+				pvo.setProduct_name(rs.getString("product_name"));  
 			    pvo.setProduct_color(rs.getString("product_color"));
-				pvo.setProduct_size(rs.getInt("product_size"));
-				pvo.setProduct_color(rs.getString("product_color"));
+			    pvo.setProduct_price(rs.getInt("product_price"));
+				pvo.setFk_shoes_category_no(rs.getInt("fk_shoes_category_no"));
 				pvo.setProduct_image(rs.getString("product_image"));
-				pvo.setProduct_content(rs.getString("product_content"));
-				pvo.setStock_count(rs.getInt("stock_count"));
-				pvo.setSale_count(rs.getInt("sale_count"));
-				pvo.setProduct_price(rs.getInt("product_price"));
+				pvo.setProduct_size(rs.getInt("product_size"));
 				
 				prodList.add(pvo);
 				
@@ -101,75 +98,28 @@ public class ProductDAO implements InterProductDAO {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// ShoesCategory를 DB에서 가져오기
-	@Override
-	public List<HashMap<String, String>> getShoesCategoryList() throws SQLException {
-		
-		List<HashMap<String, String>> shoesCategoryList = new ArrayList<>();
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " select shoes_category_no, shoes_category_name, fk_buyer_type_no"
-					   + " from tbl_sheos_category ";
-			
-			pstmt = conn.prepareStatement(sql);
-			
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()) {
-				
-				HashMap<String, String> map = new HashMap<>();
-				map.put("shoes_category_no",  rs.getString("shoes_category_no"));
-				map.put("shoes_category_name",  rs.getString("shoes_category_name"));
-				map.put("fk_buyer_type_no",  rs.getString("fk_buyer_type_no"));
-				
-				shoesCategoryList.add(map); //shoesCategoryList 에 값을 넣어 보관
-				
-			}// end of while (rs.next())--------------------------
-			 
-		} finally {
-			close();
-		}
-		
-		return shoesCategoryList;
-		
-	} // end of public List<HashMap<String, String>> getShoesCategoryList() throws SQLException---------------
-
-	
-	
-	
-	
-	
 	// 전체제품 중 러닝화만 가져와 페이징 처리하기
 	@Override
 	public List<ProductVO> selectAllRunningProduct(Map<String, String> paraMap) throws SQLException {
+		
 		List<ProductVO> AllRunningProdList = new ArrayList<>();
 		
 		try {
 			conn = ds.getConnection(); // 본인의 오라클DB와 연동
 			
-			String sql = " select product_name, fk_shoes_category_no, product_color, product_size, product_image, product_content "
-					   + "      , stock_count, sale_count, product_price "
-				       + " from "
-					   + " ( "
-					   + "  select row_number() over(order by product_no desc) AS RNO "
-					   + "       , product_name, fk_shoes_category_no, product_color, product_size, product_image, product_content " 
-					   + "       , stock_count, sale_count, product_price "
-					   + "  from tbl_product "
-					   + " ) V "
-					   + " where RNO between ? and ? ";
+			String sql = " SELECT product_name, product_color, product_price, fk_shoes_category_no, product_image, MAX(product_size) AS product_size "
+				   	   + " FROM ( "
+					   + "  SELECT V.*, ROWNUM AS RNO "
+					   + "  FROM ( "
+					   + "    SELECT DISTINCT product_name, product_price, product_color, product_size, fk_shoes_category_no, product_image, sale_count "
+					   + "    FROM tbl_product "
+					   + "    WHERE fk_shoes_category_no IN ('3001', '1001', '2001') "
+					   + "    ORDER BY fk_shoes_category_no "
+					   + "  ) V "
+					   + " ) T "
+					   + " WHERE T.RNO BETWEEN ? AND ? "
+					   + " GROUP BY product_name, product_color, product_price, fk_shoes_category_no, product_image "
+					   + " ORDER BY product_name ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("start"));
@@ -182,20 +132,15 @@ public class ProductDAO implements InterProductDAO {
 				ProductVO pvo = new ProductVO();
 
 			    pvo.setProduct_name(rs.getString("product_name"));  
-				pvo.setFk_shoes_category_no(rs.getInt("fk_shoes_category_no"));
 			    pvo.setProduct_color(rs.getString("product_color"));
-				pvo.setProduct_size(rs.getInt("product_size"));
-				pvo.setProduct_color(rs.getString("product_color"));
+			    pvo.setProduct_price(rs.getInt("product_price"));
+				pvo.setFk_shoes_category_no(rs.getInt("fk_shoes_category_no"));
 				pvo.setProduct_image(rs.getString("product_image"));
-				pvo.setProduct_content(rs.getString("product_content"));
-				pvo.setStock_count(rs.getInt("stock_count"));
-				pvo.setSale_count(rs.getInt("sale_count"));
-				pvo.setProduct_price(rs.getInt("product_price"));
+				pvo.setProduct_size(rs.getInt("product_size"));
 				
 				AllRunningProdList.add(pvo);
 				
 			}// end of while (rs.next())
-			
 		
 		} finally {
 			close();
@@ -203,8 +148,118 @@ public class ProductDAO implements InterProductDAO {
 		return AllRunningProdList;
 	}
 
+	@Override
+	public List<ProductVO> selectAllWalking(Map<String, String> paraMap) throws SQLException {
+
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectAllGolf(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectAllSandal(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectMenAll(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectMenRunning(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectMenWalking(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectMenGolf(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectMenSandal(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectWomenAll(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectWomenRunning(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectWomenWalking(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectWomenGolf(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectWomenSandal(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectKidAll(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectKidRunning(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectKidsAqua(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ProductVO> selectKidSandals(Map<String, String> paraMap) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
+	
+
+	
+	
+	
+	
+	
+	
 
 	
 

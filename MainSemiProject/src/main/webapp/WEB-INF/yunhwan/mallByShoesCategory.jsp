@@ -177,23 +177,30 @@
 			<!-- 제품목록 섹션 -->
 				<section class="section-products">
 					<div class="container">
-						<div class="row">
-							<!-- Single Product -->
-							<div class="col-md-6 col-lg-4 col-xl-4">
-								<div id="product-1" class="single-product">
-									<div class="part-1">
-										<img alt="제품" src="https://cdn.shopify.com/s/files/1/2403/8187/products/lemtosh-color-tortoise-pos-2_600x.jpg?v=1679595410%22moscot.com/collections/optical">
-									</div>
-									<div class="part-2">
-										<h3 class="product-title">Here Product Title</h3>
-										<h4 class="product-price">$49.99</h4>
-									</div>
-								</div>
-							</div>
-							<!-- Single Product -->
-							
-						</div>
-					</div>
+					  <div class="row">
+					    <div class="col-md-4">
+					      <div class="card">
+					        <img src="product1.jpg" class="card-img-top" alt="Product 1">
+					        <div class="card-body">
+					          <h5 class="card-title">Product 1</h5>
+					          <p class="card-text">Product description goes here.</p>
+					          <a href="#" class="btn btn-primary">Buy Now</a>
+					        </div>
+					      </div>
+					    </div>
+					    <div class="col-md-4">
+					      <div class="card">
+					        <img src="product2.jpg" class="card-img-top" alt="Product 2">
+					        <div class="card-body">
+					          <h5 class="card-title">Product 2</h5>
+					          <p class="card-text">Product description goes here.</p>
+					          <a href="#" class="btn btn-primary">Buy Now</a>
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+	      		  </div>
+					    
 				</section>
 				
 			<!-- 제품목록 섹션 끝 -->
