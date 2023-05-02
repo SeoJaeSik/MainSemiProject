@@ -25,7 +25,7 @@
 
 <div class="tab-pane container fade" id="viewmyorderList" style="background-color:#fefce7;">
 	<h4 class="my-3" style="font-weight: bold; text-align: center;">주문내역 및 배송현황</h4>
-		<div class="row justify-content-around my-4 pb-2 border-bottom ">
+	<div class="row justify-content-around my-4 pb-2 border-bottom ">
 	    <div class="col-2 text-center">주문번호</div>
 	    <div class="col-2 text-center">주문날짜</div>
 	    <div class="col-2 text-center">주문금액</div>

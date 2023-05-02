@@ -106,7 +106,7 @@
          	</tbody>
         </table> 	
 		
-		<input type="text" name="userid" value="sudin"/> 
+		<input type="text" name="userid" value="sudin"/> <!-- 여기 sudin 말고 메소드로 가져와야함!!! --> 
 		
 	</form>
 

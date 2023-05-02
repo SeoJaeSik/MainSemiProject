@@ -20,6 +20,9 @@
 
 <script type="text/javascript">
    
+	let searchCheck = false;
+
+
 	$(document).ready(function(){
       
       	<%-- if ( "${fn:trim(requestScope.searchWord)}" != "" ) --%> 
@@ -45,11 +48,12 @@
       
    	});//end of $(document).ready------------------------------------
    
-   	
    	function goSearch(){
       
+   		searchCheck = true;
+   		
       	const frm = document.searchFrm;
-      	frm.action = "<%= ctxPath%>/member/myaccountboard.moc";
+      	frm.action = "<%= ctxPath%>/member/myaccount.moc"; 
       	frm.method = "get";
       	frm.submit();
 
@@ -78,7 +82,7 @@
 	            그런데 실제 화면에 보여질 input 태그는 1개이어야 한다.
 	            이럴 경우 (--!무작성 hidden 넣으면 안되고!--) 아래와 같이 display 를 none 으로 해주면 된다. 
 	        --%>
-	        <input type="text" style="display:none;"/>
+	        <input type="text" name="checkSearch" value="false" style="display:none;"/>
 	      
 	        <button type="button" class="btn btn-secondary col-2" style="margin-left: 30px; margin-right: 30px;" onclick="goSearch();">검색</button>
   		</div>
