@@ -74,8 +74,7 @@ public class PwdFindAction extends AbstractController {
 					
 					sb.append("</table>");
 					sb.append("</div>");
-					
-					
+										
 					String emailContents = sb.toString();
 				//	System.out.println("emailContents 확인 : " + emailContents);
 					

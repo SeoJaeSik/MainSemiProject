@@ -16,25 +16,24 @@ public class PwdUpdateEndAction extends AbstractController {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 	
-	
 		
 		String method = request.getMethod();  // "GET" 또는 "POST"
 		
 		String userid = request.getParameter("userid"); /* 넘어온 userid */
+		String email = request.getParameter("email"); /* 암호화된 넘어온 email */
+		
+	//	System.out.println("~~~~~~ 요기요1 userid : " + userid);
+	//	System.out.println("~~~~~~ 요기요1 email : " + email);
 		
 	//	HttpSession session = request.getSession();
 	//	String userid = (String) session.getAttribute("gouserIdURL");
-		
-		System.out.println("userid 확인 뿡 그냥 sudin 넣어버림: " + userid);
-		// 여기에 sudin 나온다!!!
-		
-		
+				
 		//*** [GET방식일때 form 만 보이다가 버튼을 클릭해 POST 방식으로 암호를 변경하면 변경된게 DB 에도 적용되게 하고 메인으로 로그인창으로 간다 ]
-		
 		if("GET".equals(method)) {
 			
 			request.setAttribute("method", method);
 			request.setAttribute("userid", userid);
+			request.setAttribute("email", email);
 			
 			super.setRedirect(false); /* 꼭 써서 비밀번호변경 끝나고 true 로 바뀐것을 다시 false 로 바꿔줌 */
 			super.setViewPage("/WEB-INF/sujin/login/pwdUpdateEnd.jsp");	
@@ -46,6 +45,7 @@ public class PwdUpdateEndAction extends AbstractController {
 			Map<String, String> paraMap = new HashMap<>();
 			paraMap.put("pwd", pwd);
 			paraMap.put("userid", userid);
+			paraMap.put("email", email);
 			
 			// #### 비밀번호 변경이 성공되면 자동으로 로그인 되도록 하겠다 ####
 			try {
@@ -56,6 +56,9 @@ public class PwdUpdateEndAction extends AbstractController {
 				System.out.println("비밀번호 변경 성공하면 n=1 : " + n);
 				
 				if(n==1) { // 비밀번호 변경이 성공되면,
+					
+					System.out.println("~~~ 요기요3 userid : " + userid);
+					System.out.println("~~~ 요기요3 pwd : " + pwd);
 					
 					request.setAttribute("userid", userid);
 					request.setAttribute("pwd", pwd);
