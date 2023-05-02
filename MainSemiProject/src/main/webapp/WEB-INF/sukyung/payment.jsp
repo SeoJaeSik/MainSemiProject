@@ -9,9 +9,21 @@
 <jsp:include page="../jaesik/header.jsp" />
 <jsp:include page="navbar_order_pay.jsp" />
 
-<style type="text/css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+</style>
 
+<style type="text/css">
+ 	div#div_container{
+		font-family: 'Noto Sans KR', serif;	
+		font-weight: 300;
+	}
+	table > thead > tr > th {
+		font-family: 'Noto Sans KR', serif;
+		font-weight: 500;
+	}
 	button#btnCoupon, button#btnPointAll, button#btnPay, span#order_count {
+		font-family: 'Noto Sans KR', serif;	
 		background-color: #fdd007;
 		border: none;
 		box-shadow: 1px 1px 1px 1px #e6e6e6;
@@ -30,6 +42,9 @@
 		$("div#div_container").fadeIn(2000);
 		$("div#navbar_page_delivery").find("span").css('background-color', '#fdd007');
 		$("div#navbar_page_payment").find("span").css('background-color', '#fdd007');
+		$("a#btnCart").find("i").css('color', '#fdd007');
+		$("a#btnOrder").find("i").css('color', '#fdd007');
+		$("a#btnPay").find("i").css('color', '#fdd007');
 		
 		calc_totalPrice(); // 결제금액 계산하는 함수 호출
 		
@@ -146,14 +161,8 @@
 
 <div id="div_container" class="container py-4 mx-auto my-3" style="background-color: #fefce7; border-radius: 1%;">
 		
-		<h2 class="text-center py-2">결제하기</h2>
-		<div class="row pb-3 mx-1">
-			<div class="col-md-9"></div>
-			<div class="col-md-2">
-				<button type="button" id="btnPay" class="btn btn-lg">결제하기</button>
-			</div>
-		</div>
-		
+		<h2 class="text-center py-4">PAYMENT INFO</h2>
+
 		<div class="table-responsive mx-auto col-md-10 border-bottom">
 			<table class="table text-center" id="tbl_orderList">
 			  <thead>
@@ -183,7 +192,7 @@
 					  </div>
 				    </td>
 			        <td class="text-left">
-			      	  <div id="product_name" name="product_name">${cvo.pvo.product_name}</div>
+			      	  <div id="product_name" name="product_name" style="font-weight: bold;">${cvo.pvo.product_name}</div>
 			      	  <div id="product_color" name="product_color">${cvo.pvo.product_color}<span>&nbsp;</span><span id="product_size" name="product_size">${cvo.pvo.product_size}</span></div>
 			      	  <div id="product_price" name="product_price"><fmt:formatNumber value="${cvo.pvo.product_price}" pattern="###,###" />원</div>
 
@@ -276,7 +285,7 @@
 			    	<td class="col-md-7 pb-2"></td>
 			      	<td class="col-md-3 p-1 pb-2">쿠폰 할인금액</td>
 			      	<td class="col-md-2 p-1 pb-2">
-      				  <span id="coupon_dis_price" name="coupon_dis_price">적용된 쿠폰없음</span>
+      				  <span id="coupon_dis_price" name="coupon_dis_price" style="font-size: 11pt; font-weight:bold;">적용된 쿠폰없음</span>
 			      	</td>
 			    </tr>
 			    <tr>
@@ -313,7 +322,7 @@
 			    <tr>
 			    	<td class="col-md-7 py-4"></td>
 			      	<td colspan="2" class="col-md-5 py-4">
-					  <button type="button" id="btnPay" class="btn btn-lg">결제하기</button>
+					  <button type="button" id="btnPay" class="btn btn-lg px-4">결제하기</button>
 			      	</td>
 			    </tr>
 			  </tbody>

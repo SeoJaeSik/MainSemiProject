@@ -9,8 +9,20 @@
 <jsp:include page="../jaesik/header.jsp" />
 <jsp:include page="navbar_order_pay.jsp" />
 
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+</style>
+
 <style type="text/css">
 
+ 	div#div_container{
+		font-family: 'Noto Sans KR', serif;	
+		font-weight: 300;
+	}
+	table > thead > tr > th {
+		font-family: 'Noto Sans KR', serif;
+		font-weight: 500;
+	}
 	span#add_product_color {
 		display: inline-block;
 		width: 20px;
@@ -62,6 +74,7 @@
 
 		$("div#div_container").hide();
 		$("div#div_container").fadeIn(1500);
+		$("a#btnCart").find("i").css('color', '#fdd007');
 		
 		let cart_product_count;
 		let b_flag_goDelivery = true; // goOrder() 함수에서 b_flag_goDelivery 가 true 이면 "배송정보"로 이동가능
@@ -244,9 +257,9 @@
 				if(confirm("${requestScope.rndpvo.product_name}"+" 을 장바구니에 추가하시겠습니까?")){
 					$.ajax({
 						url:"<%= ctxPath%>/shop/cartListAdd.moc",
-			     		data:{"product_name":$("span#add_product_name").text(),   // 제품명
+			     		data:{"product_name":$("span#add_product_name").text(),   				  // 제품명
 			     			  "product_color":$("input[name='add_product_color']:checked").val(), // 제품색상
-			     			  "product_size":$("select#add_product_size").val()}, // 제품사이즈
+			     			  "product_size":$("select#add_product_size").val()}, 				  // 제품사이즈
 			     		type:"post",
 			     		dataType:"json",
 			     		success:function(json) {
@@ -277,23 +290,78 @@
 		
 	// *** 4. "주문하기" 버튼 클릭하면 발생하는 이벤트
 		$("button#btnOrder").click(function(){ // "주문하기" 노란 버튼 클릭
-			if(!b_flag_goDelivery || $("input#total_price").val() == 0){ // 체크된 제품이 하나도 없을경우
-				alert("선택한 상품이 없습니다.");
+			if(${not empty requestScope.cartList}){
+				if(!b_flag_goDelivery || $("input#total_price").val() == 0){ // 체크된 제품이 하나도 없을경우
+					alert("선택한 상품이 없습니다.");
+				}
+				else { // 한개이상의 제품이 체크된 경우
+					goOrder();
+				}
 			}
-			else { // 한개이상의 제품이 체크된 경우
-				goOrder();
+			else{
+				alert("장바구니에 담긴 상품이 없습니다.");
 			}
 		}); // end of $("button#btnOrder").click(function(){})
 	
 		$("a#btnOrder").click(function(){ // 상단바의 "배송정보" 노란 동그라미 링크 클릭
-			if(!b_flag_goDelivery || $("input#total_price").val() == 0){ // 체크된 제품이 하나도 없을경우
-				alert("선택한 상품이 없습니다.");
+			if(${not empty requestScope.cartList}){
+				if(!b_flag_goDelivery || $("input#total_price").val() == 0){ // 체크된 제품이 하나도 없을경우
+					alert("선택한 상품이 없습니다.");
+				}
+				else { // 한개이상의 제품이 체크된 경우
+					goOrder();
+				}
 			}
-			else { // 한개이상의 제품이 체크된 경우
-				goOrder();
+			else{
+				alert("장바구니에 담긴 상품이 없습니다.");
 			}
 		}); // end of $("a#btnOrder").click(function(){})
-		
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
+	<%--	
+		// 제품상세에서 장바구니에 추가
+		$.ajax({
+			url:"<%= ctxPath%>/shop/cartListAdd.moc",
+     		data:{"product_name":,  // 제품명
+     			  "product_color":, // 제품색상
+     			  "product_size":, // 제품사이즈
+     			  "cart_product_count":}, // 주문수량
+     		type:"post",
+     		dataType:"json",
+     		success:function(json) {
+				if(json.result == 1){ // insert sql 성공 ==> 장바구니로 이동
+					location.href = "<%= request.getContextPath()%>/shop/cartList.moc"; 
+				}
+     		},
+     		error: function(request, status, error) {
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+     	});
+
+		// 제품상세에서 바로결제
+		$.ajax({
+			url:"<%= ctxPath%>/shop/orderAdd.moc",
+     		data:{"product_name":,  // 제품명
+	   			  "product_color":, // 제품색상
+	   			  "product_size":, // 제품사이즈
+	   			  "cart_product_count":}, // 주문수량
+	  		type:"post",
+	 		dataType:"json",
+	 		async:false,
+	 		success:function(json) {
+		    	if(json.isSuccess == 1) { // 배송정보로 이동
+			    	location.href="<%= ctxPath%>/shop/delivery.moc";
+			    }
+			    else {
+					location.href="javascript:history.go(0);"; // 새로고침
+			    }
+	 		},
+	 		error: function(request, status, error) {
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+	 	});
+	 --%>
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	}); // end of $(document).ready(function(){})
 
@@ -345,9 +413,9 @@
 		frm.submit();
 	}
 	
-	함수에서는 유효성검사 후 실행이 불가능하다!!!
+	함수에서는 앞에서 선언한 변수를 이용한 유효성검사가 잘 안된다.
 	따라서 스크립트 내에 이벤트처리를 하여 유효성검사한 다음 바로 form 태그를 제출하는 방법
-	또는 form 태그를 제출하는 함수를 따로 생성하여 유효성검사 후 함수를 호출하도록 해야한다!!!
+	또는 form 태그를 제출하는 함수를 따로 생성하여 유효성검사 후 함수를 호출하도록 해야한다.
 --%>
 	// "주문하기" 를 클릭하면 호출되는 함수
 	function goOrder(){
@@ -390,15 +458,12 @@
 
 <div id="div_container" class="container py-4 mx-auto my-3" style="background-color: #fefce7; border-radius: 1%;">
 		
-		<h2 class="text-center py-3">장바구니</h2>
+		<h2 class="text-center py-4">YOUR CART</h2>
 		
 		<c:if test="${not empty requestScope.cartList}">
 		<div class="row pb-3 mx-1">
 			<div class="col-md-10 align-self-end">
 				<label for="CheckAll_product"><input type="checkbox" name="CheckAll_product" id="CheckAll_product" checked/> 전체선택/해제</label>
-			</div>
-			<div class="col-md-2">
-				<button type="button" id="btnOrder" class="btn btn-lg px-4">주문하기</button>
 			</div>
 		</div>
 		
@@ -430,7 +495,7 @@
 			      	<td><img src="${cvo.pvo.product_image}" id="product_image" name="product_image" width="150" class="img-thumbnail"/></td>
 			      	<td class="text-left">
 			    		<input type="hidden" id="product_no" name="product_no" value="${cvo.pvo.product_no}" />
-			      		<div id="product_name" name="product_name">${cvo.pvo.product_name}</div>
+			      		<div id="product_name" name="product_name" style="font-weight: 400;">${cvo.pvo.product_name}</div>
 			      		<div id="product_color" name="product_color">${cvo.pvo.product_color}<span>&nbsp;</span><span id="product_size" name="product_size">${cvo.pvo.product_size}</span></div>
 			      		<button type="button" id="btnOptionEdit" class="btn btn-sm my-2">옵션변경</button>
 			      		<button type="button" id="btnDelete" class="btn btn-sm my-2" style="color: gray;">삭제</button>
@@ -462,7 +527,7 @@
 		</div>
 		
 		<div id="div_extra" class="row my-5 py-3 mx-1">
-			<div class="col-md-3 text-right align-self-center">함께 구매하면 좋은 상품</div>
+			<div class="col-md-3 text-right align-self-center" style="font-weight: bold;">함께 구매하면 좋은 상품</div>
 			<div class="col-md-2 text-center">
 				<c:forEach var="colorpvo" items="${requestScope.colorList}">
    				  <span id="${colorpvo.product_color}">
@@ -495,7 +560,7 @@
 				</div>
 	      	</div>
 			<div class="col-md-3 align-self-center text-center">
-				<button type="button" id="btnAdd" class="btn btn-lg px-5 py-3">추가하기</button>
+				<button type="button" id="btnAdd" class="btn btn-lg px-5 py-3"><i class="fa-sharp fa-solid fa-cart-plus"></i>&nbsp;&nbsp;추가하기</button>
 			</div>
 		</div>
 
@@ -548,7 +613,7 @@
 		 		<td colspan="6">
 		 			<div id="div_cart_empty" style="height: 150px;">
 		 				<p>장바구니에 담은 상품이 없습니다.</p>
-						<a class="btn btn-lg px-4 my-3" style="background-color: #fdd007;" href="#">쇼핑하기</a>
+						<a class="btn btn-lg px-4 my-3" style="background-color: #fdd007;" href="#">지금 쇼핑하기</a>
 		 			</div>
 		 		</td>
 		 	</tr>
@@ -556,7 +621,7 @@
 		</table>
 	</div>
 		<div id="div_extra" class="row mb-5 py-3 mx-1">
-			<div class="col-md-3 text-right align-self-center">고객님께 추천하는 상품</div>
+			<div class="col-md-3 text-right align-self-center" style="font-weight: bold;">고객님께 추천하는 상품</div>
 			<div class="col-md-2 text-center">
 				<c:forEach var="colorpvo" items="${requestScope.colorList}">
    				  <span id="${colorpvo.product_color}">
@@ -589,7 +654,7 @@
 				</div>
 	      	</div>
 			<div class="col-md-3 align-self-center text-center">
-				<button type="button" id="btnAdd" class="btn btn-lg px-5 py-3">추가하기</button>
+				<button type="button" id="btnAdd" class="btn btn-lg px-5 py-3"><i class="fa-sharp fa-solid fa-cart-plus"></i>&nbsp;&nbsp;ADD TO CART</button>
 			</div>
 		</div>
 	

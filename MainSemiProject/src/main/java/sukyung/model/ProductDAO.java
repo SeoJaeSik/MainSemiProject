@@ -463,6 +463,36 @@ public class ProductDAO implements InterProductDAO {
 		return cvo;
 	} // end of public ProductVO showProdInfo(String product_no) throws Exception
 
+	
+	// tbl_product 테이블에서 제품명, 제품색상, 제품사이즈를 이용하여 product_no 를 조회(select)
+	@Override
+	public String selectProduct_no(Map<String, String> paraMap) throws Exception {
+		
+		String product_no = "";
+		
+		try {
+			conn = ds.getConnection();
+			String sql = " select product_no "
+					   + " from tbl_product "
+					   + " where product_name = ? and product_color = ? and product_size = ? "; 
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("product_name"));
+			pstmt.setString(2, paraMap.get("product_color"));
+			pstmt.setInt(3, Integer.parseInt(paraMap.get("product_size")));
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+
+			product_no = rs.getString(1);
+				
+		} finally {
+			close();
+		}
+
+		return product_no;
+	} // end of public String selectProduct_no(Map<String, String> paraMap) throws Exception
+
 
 	// 로그인한회원의 쿠폰 조회(select)
 	@Override
@@ -832,6 +862,5 @@ public class ProductDAO implements InterProductDAO {
 		
 		return orderDetailList;
 	} // end of public List<OrderDetailVO> showOrderDetailList(String order_no) throws Exception
-
 
 }

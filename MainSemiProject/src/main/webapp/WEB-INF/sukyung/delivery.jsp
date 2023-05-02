@@ -6,8 +6,20 @@
 <jsp:include page="../jaesik/header.jsp" />
 <jsp:include page="navbar_order_pay.jsp" />
 
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+</style>
+
 <style type="text/css">
 
+ 	div#div_container{
+		font-family: 'Noto Sans KR', serif;	
+		font-weight: 300;
+	}
+	table > thead > tr > th {
+		font-family: 'Noto Sans KR', serif;
+		font-weight: 500;
+	}
 	button#btnNext, button#btnPostcode {
 		background-color: #fdd007;
 		border: none;
@@ -29,6 +41,8 @@
 		$("div#div_container").fadeIn(2000);
 		$("span.error").hide();
 		$("div#navbar_page_delivery").find("span").css('background-color', '#fdd007');
+		$("a#btnCart").find("i").css('color', '#fdd007');
+		$("a#btnOrder").find("i").css('color', '#fdd007');
 
 		let b_flag_goNext = false; // goNext() 함수에서 b_flag_goNext 가 true 이면 "결제정보"로 이동가능
 
@@ -227,10 +241,10 @@
 
 <div id="div_container" class="container py-4 mx-auto my-3" style="background-color: #fefce7; border-radius: 1%;">
 		
-		<h2 class="text-center py-2">배송정보</h2>
+		<h2 class="text-center py-4">DELIVERY INFO</h2>
 		
 		<div class="col-md-10 py-5 mx-auto">
-		  <h5 class="pb-3 row col-md-10 mx-auto">고객정보</h5>
+		  <h5 class="pb-3 row col-md-10 mx-auto px-4">고객정보</h5>
 		  
 		  <div class="form-group row col-md-10 mx-auto">
 		    <label for="name" class="col-md-3 col-form-label">성명</label>
@@ -320,7 +334,7 @@
 
 		  <div class="row col-md-10 mx-auto my-5">
 			<div class="col-md-8"></div>
-			<div class="col text-center"><button type="button" id="btnNext" class="btn btn-lg">다음으로</button></div>
+			<div class="col text-center"><button type="button" id="btnNext" class="btn btn-lg px-4">다음으로</button></div>
 		  </div>
 		</form>
 	</div>

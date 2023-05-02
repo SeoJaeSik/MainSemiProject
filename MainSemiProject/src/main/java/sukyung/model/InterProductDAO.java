@@ -35,6 +35,9 @@ public interface InterProductDAO {
 	// product_no 로 제품명, 제품색상, 제품사이즈, 제품이미지, 제품가격 조회(select)
 	CartVO showProdInfo(Map<String, String> paraMap) throws Exception;
 
+	// tbl_product 테이블에서 제품명, 제품색상, 제품사이즈를 이용하여 product_no 를 조회(select)
+	String selectProduct_no(Map<String, String> paraMap) throws Exception;
+
 	// 로그인한회원의 쿠폰 조회(select)
 	List<Map<String, String>> showUserCoupon(String userid) throws Exception;
 
@@ -57,7 +60,4 @@ public interface InterProductDAO {
 	// 주문번호(order_no) 를 이용하여 주문상세내역 정보(주문상세테이블, 상품테이블) 조회(select)
 	List<OrderDetailVO> showOrderDetailList(String order_no) throws Exception;
 
-
-
-	
 }

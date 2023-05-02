@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 import common.controller.AbstractController;
+import sukyung.model.InterProductDAO;
+import sukyung.model.ProductDAO;
 
 public class OrderAddAction extends AbstractController {
 
@@ -38,11 +40,22 @@ public class OrderAddAction extends AbstractController {
 
 			// *** 2. 제품상세에서 바로결제
 				else { // join_cart_no 이 null 이면
-					String product_no = request.getParameter("product_no");   // 제품번호
-		     		String order_count = request.getParameter("order_count"); // 주문수량
+					String product_name = request.getParameter("product_name"); 			// 제품명
+					String product_color = request.getParameter("product_color"); 			// 제품색상
+					String product_size = request.getParameter("product_size"); 			// 제품사이즈
+					String cart_product_count = request.getParameter("cart_product_count"); // 주문수량
+
+					Map<String, String> paraMap = new HashMap<>();
+					paraMap.put("product_name", product_name);
+					paraMap.put("product_color", product_color);
+					paraMap.put("product_size", product_size);
 					
+					// tbl_product 테이블에서 제품명, 제품색상, 제품사이즈를 이용하여 product_no 를 select
+					InterProductDAO pdao = new ProductDAO();
+					String product_no = pdao.selectProduct_no(paraMap);
+
 		     		prodMap.put("product_no", product_no);
-		     		prodMap.put("order_count", order_count);
+		     		prodMap.put("order_count", cart_product_count);
 				}
 				
 				HttpSession session = request.getSession();

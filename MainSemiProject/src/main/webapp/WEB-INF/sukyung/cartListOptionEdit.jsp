@@ -28,7 +28,19 @@
 <!-- Font Awesome 6 Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">    
 
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+</style>
+
 <style type="text/css">
+ 	div#div_container{
+		font-family: 'Noto Sans KR', serif;	
+		font-weight: 300;
+	}
+	table > thead > tr > th {
+		font-family: 'Noto Sans KR', serif;
+		font-weight: 400;
+	}
 	span#product_color {
 		display: inline-block;
 		width: 20px;
@@ -156,7 +168,7 @@
   <input type="hidden" name="cart_no" value="${requestScope.cart_no}">
   <input type="hidden" name="product_name" value="${pvo.product_name}">
 
-	<div class="container mt-5 mx-auto align-self-center">
+	<div id="div_container" class="container mt-5 mx-auto align-self-center">
 		<div class="table-responsive mx-auto" style="background-color: #fefce7; border-radius: 2%; box-shadow: 1px 1px 1px 1px #e6e6e6;">
 			<table class="table text-center table-borderless" id="tbl_optionEdit">
 			  <thead>
@@ -212,8 +224,8 @@
 			  <tfoot>
 			  	<tr>
 			    	<td colspan="2" class="pb-4">
-						<button type="button" class="btn" onclick="goOptionEdit()" style="background-color: #fdd007;">변경</button>		    	
-						<button type="reset" class="btn btn-dark">취소</button>		    	
+						<button type="button" class="btn mx-2 px-3" onclick="goOptionEdit()" style="background-color: #fdd007;">변경</button>		    	
+						<button type="reset" class="btn btn-dark mx-2 px-3">취소</button>		    	
 			    	</td>
 			  	</tr>
 			  </tfoot>
