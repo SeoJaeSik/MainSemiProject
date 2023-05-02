@@ -24,7 +24,7 @@ public class SearchProductAction extends AbstractController {
 		   ( !"100".equals(buyer_type) && 
 			 !"200".equals(buyer_type) && 
 			 !"300".equals(buyer_type) )) {
-			buyer_type = "";
+			buyer_type = ""; 
 		}
 		if ( search_word == null ||
 		   ( search_word != null && search_word.trim().isEmpty()) ) {
