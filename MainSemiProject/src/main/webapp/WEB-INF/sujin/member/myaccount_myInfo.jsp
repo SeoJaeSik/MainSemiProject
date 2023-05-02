@@ -40,6 +40,8 @@
 		padding-top:40px;
 		padding-bottom:40px;
 	}
+	
+	
 
 </style>
 
@@ -48,6 +50,7 @@
 	$(document).ready(function(){
 		$("div#memberEdit").hide();		
 		
+		// 쿠폰명 보이기
 		$('[data-toggle="tooltip"]').tooltip();
 		
 	});
@@ -56,6 +59,9 @@
 	function goEditPersonal(userid) {
 		
 		$("div#memberEdit").show();
+		
+		<%-- const url = "<%= request.getContextPath()%>/member/memberEdit.moc?userid=" + userid;
+	    location.href = url; --%>
 		
 	}//end of goEditPersonal()--------------------------------- 
 
@@ -87,6 +93,7 @@
 	  	</div>
 	</div>
 </div>  
+
 
 <div id="memberEdit">
 	<jsp:include page="memberEdit.jsp"/> 

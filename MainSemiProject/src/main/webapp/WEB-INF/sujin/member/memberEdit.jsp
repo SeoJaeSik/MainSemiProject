@@ -98,14 +98,14 @@
 			const regExp = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g;
 			const bool = regExp.test($(e.target).val()); 
 			
-			if(!bool) {	// 4-1 암호가 정규표현식이 맞는 경우 
+			if(!bool) {	// 4-1 암호가 정규표현식이 아닌 경우 
 				
 				$("form[name='frmMemberRegister']:input").prop("disabled", true);
 				$(e.target).prop("disabled", false); 
 				$(e.target).parent().find("small.error").show();
 				$(e.target).focus();
 			}
-			else {		// 4-2 암호가 정규표현식이 아닌 경우
+			else {		// 4-2 암호가 정규표현식이 맞는 경우
 				$("form[name='frmMemberRegister']:input").prop("disabled", false);
 				$(e.target).parent().find("small.error").hide();
 			}
@@ -120,6 +120,7 @@
 				$(e.target).prop("disabled", false);   
 				$("input#pwd").prop("disabled", false); // 둘 다 살리고 포커스를 비밀번호에 주겠다
 				$(e.target).parent().find("small.error").show();
+				$("input#pwdcheck").val("");
 				$("input#pwd").focus();
 			}
 			else {														// 5-2 같은경우 
@@ -344,6 +345,11 @@
 					gogo = false;
 					return;
 				}
+			<%--else {
+					$("span#duplicate_pwd").html("");
+					gogo = true;
+				}
+			--%>		
 			},
         	error:function(request, status, error){ // 어딘가 잘못된 부분이 발생하면 alert 를 띄운다
                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -365,7 +371,7 @@
 </script>
 
 
-<div class="container mt-5 mx-auto" id="MemberEdit" style="background-color:#fefce7;">
+<div class="container mt-5 py-3 mx-auto" id="MemberEdit" style="background-color:#fefce7;">
 
 	<form name="frmMemberEdit" class="col-md-10 py-3 mx-auto">
 	  
@@ -381,7 +387,7 @@
 	  
 	  	<div class="form-group row col-md-10 mx-auto" >
 		    <label class="col-3 col-form-label">이메일&nbsp;<span class="star">*</span></label>
-		    <input class="col-5 form-control" type="text" id="email" name="email" value="${sessionScope.loginuser.email}" class="requiredInfo" required />&nbsp;&nbsp;
+		    <input class="col-5 form-control requiredInfo" type="text" id="email" name="email" value="${sessionScope.loginuser.email}" required />&nbsp;&nbsp;
 		    <button type="button" class="btn btn-secondary btn-sm col-3" id="emailcheck" style="border-radius: 20px;">email 중복확인</button>
 		    <span id="emailCheckResult"></span>
 		    <span><small class="error" style="color:red">The email format is not correct.</small></span>
@@ -389,14 +395,14 @@
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">비밀번호&nbsp;<span class="star">*</span></label>
-		    <input class="col-6 form-control" type="password" id="pwd" name="pwd" class="requiredInfo" placeholder = "Password" required></input>
+		    <input class="col-6 form-control requiredInfo" type="password" id="pwd" name="pwd" placeholder = "Password" required></input>
 		    <span><small class="error" style="color:red">Password is required</small></span>
 		    <span id="duplicate_pwd" style="color:red;"></span>
 	  	</div>
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">비밀번호확인&nbsp;<span class="star">*</span></label>
-		    <input class="col-6 form-control" type="password" id="pwdcheck" name="pwdcheck" class="requiredInfo" placeholder = "Confirm Password" required></input>
+		    <input class="col-6 form-control requiredInfo" type="password" id="pwdcheck" name="pwdcheck" placeholder = "Confirm Password" required></input>
 		    <span><small class="error" style="color:red">Please enter valid, matching passwords.</small></span>
 	  	</div>
 	  
