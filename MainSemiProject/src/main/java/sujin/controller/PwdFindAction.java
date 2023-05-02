@@ -50,7 +50,7 @@ public class PwdFindAction extends AbstractController {
 					sb.append("<table style='border-collapse: collapse; margin: auto; border: none;'>");
 					sb.append("	<tr>");
 					sb.append("		<td colspan='2' style='padding: 10px; text-align: center;'>");
-					sb.append("			<h1 style='text-align: center;'><a style='color:black; text-align:center; line-height:40px; font-size: 30px; font-weight: bold; text-decoration: none !important; text-underline: none;' href='http://localhost:9090/SemiProject_MOSACOYA/index.moc'>MOSACOYA</a></h1>");
+					sb.append("			<h1 style='text-align: center;'><a style='color:black; text-align:center; line-height:40px; font-size: 30px; font-weight: bold; text-decoration: none !important; text-underline: none;' href='http://localhost:9090/MainSemiProject/index.moc'>MOSACOYA</a></h1>");
 					sb.append("			<h2 style='text-align: center;'>OY! LET'S TRY THIS AGAIN!</h2>");
 					sb.append("		</td>");
 					sb.append("	</tr>");
@@ -62,7 +62,7 @@ public class PwdFindAction extends AbstractController {
 					sb.append("	</tr>");
 					sb.append("	<tr>");
 					sb.append("		<td colspan='2' style='padding: 10px; text-align: center;'>");
-					sb.append("			<a style='display:block; border-radius: 5px; margin: auto; color:black; text-align:center; background-color:#fdd007; width:350px; padding: 10px; font-size: 15pt; text-decoration: none !important; text-underline: none;' href='http://localhost:9090/SemiProject_MOSACOYA/login/pwdUpdateEnd.moc?userid=" + mbrforpwdReset.getUserid() + "&email=" + mbrforpwdReset.getEmail() + "'>RESET PASSWORD</a>");
+					sb.append("			<a style='display:block; border-radius: 5px; margin: auto; color:black; text-align:center; background-color:#fdd007; width:350px; padding: 10px; font-size: 15pt; text-decoration: none !important; text-underline: none;' href='http://localhost:9090/MainSemiProject/login/pwdUpdateEnd.moc?userid=" + mbrforpwdReset.getUserid() + "&email=" + mbrforpwdReset.getEmail() + "'>RESET PASSWORD</a>");
 					sb.append("		</td>");
 					sb.append("	</tr>");
 					sb.append("	<tr>");
