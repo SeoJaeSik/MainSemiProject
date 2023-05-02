@@ -67,14 +67,11 @@
 		font-weight: bold;
 	}
 	
-	span#price {
+	span[name="product_price"] {
 		font: 28px courier, arial, sans-serif;
 	}
 	
 	img#img_select {
-		width: 18%;
-		margin: 2%;
-		padding: 1%;
 		cursor: pointer;
 	}
 	
@@ -84,7 +81,7 @@
 	}
 	
 	.img_selected {
-		border: solid 1px #FDD007;
+		border: solid 3px #FDD007;
 	}
 	
 	.img_not_selected {
@@ -285,7 +282,7 @@
       
       // 주문개수가 1개 이상인 경우
       frm.method = "POST";
-      frm.action = "<%= request.getContextPath()%>/shop/cartAdd.up";
+      frm.action = "<%= request.getContextPath()%>/shop/cartListAdd.moc";
       frm.submit();
    
    }// end of function goCart()-------------------------
@@ -296,11 +293,11 @@
 	   
 	   if( ${not empty sessionScope.loginuser} ) {
 			   
-		   const current_coin = Number("${sessionScope.loginuser.coin}"); // 현재코인액
+		   const current_point = Number("${sessionScope.loginuser.point}"); // 현재포인트
 		   const sum_totalPrice = Number("${requestScope.pvo.product_price}") * Number($("input#spinner").val()); // 제품총판매가
 		   
 			if( sum_totalPrice > current_coin) {
-				$("p#order_error_msg").html("코인잔액이 부족하므로 주문이 불가합니다.<br>주문총액 : "+sum_totalPrice.toLocaleString('en')+"원 / 코인잔액 : "+current_coin.toLocaleString('en')+"원").css('display','');
+				$("p#order_error_msg").html("포인트가 부족하므로 주문이 불가합니다.<br>주문총액 : "+sum_totalPrice.toLocaleString('en')+"원 / 포인트잔액 : "+ current_point.toLocaleString('en')+"포인트").css('display','');
 				return;
 			}
 	   
@@ -313,10 +310,12 @@
 				   $(btn).html('<i class="fa-solid fa-circle-notch fa-spin"></i> loading');
 				   
 					$.ajax({
-						url:"<%= request.getContextPath()%>/shop/orderAdd.up",
+						url:"<%= request.getContextPath()%>/shop/orderAdd.moc",
 						type:"post",
 						data:{"sum_totalPrice":sum_totalPrice,
-							"product_no_join":"${requestScope.pvo.product_no}",
+							"product_name_join":"${requestScope.pvo.product_name}",
+							"product_color_join":"${requestScope.pvo.product_color}",
+							"product_size_join":"${requestScope.pvo.product_size}",
 							"oqty_join":$("input#spinner").val(),
 							"totalPrice_join":sum_totalPrice
 							},
@@ -374,19 +373,18 @@
   <div class="mt-3 detail_top row">
   
     <div class="col-md-7">
-	  <div class="container">
-	    <img id="expandedImg" class="col-md-12" src="${requestScope.pvo.product_image}">
-	  </div>
+	  <img id="expandedImg" class="col-md-12" src="${requestScope.pvo.product_image}">
+	  
 	
-	  <div class="row">
-	    <div class="column">
-	      <img id="img_select" name="imgList" class="img_small img_selected" src="${requestScope.pvo.product_image}" onclick="imgSelect(this);">
+	  <div class="row-md-12">
+	    <div class="column p-3">
+	      <img id="img_select" name="imgList" class="col-md-2 p-1 img_selected" src="${requestScope.pvo.product_image}" onclick="imgSelect(this);">
 	    </div>
 	
 	    <c:if test="${not empty requestScope.imgList}">
 	      <c:forEach var="imgfilename" items="${requestScope.imgList}">
 	        <div class="column">
-	          <img id="img_select" name="imgList" class="col-md-2 img_small img_not_selected" src="${imgfilename}" style="width:100%" onclick="colorSelect(this);">
+	          <img id="img_select" name="imgList" class="col-md-2 p-1 img_not_selected" src="${imgfilename}" style="width:100%" onclick="colorSelect(this);">
 	        </div>
 	      </c:forEach>
 	    </c:if>
@@ -398,7 +396,7 @@
     
         <div class="d-flex product-main_meta">
           <span class="col product-main_price p1">
-            <span id="price"><fmt:formatNumber value="${requestScope.pvo.product_price}" pattern="###,###" /></span>
+            <span name="product_price"><fmt:formatNumber value="${requestScope.pvo.product_price}" pattern="###,###" /></span>
           </span>
         <div class="ml-5 pt-2 review">
           <span class="fa-stars">
@@ -420,7 +418,7 @@
 	  <div class="row">	
 	    <c:if test="${not empty requestScope.colorList}">
 	      <c:forEach var="colorfilename" items="${requestScope.colorList}">
-	        <img id="img_select" name="colorList" class="img_small col-2" src="${colorfilename}" onclick="colorSelect(this);">	        
+	        <img id="img_select" name="colorList" class="col-md-2 m-3 p-1" src="${colorfilename}" onclick="colorSelect(this);">	        
 	      </c:forEach>
 	    </c:if>
       </div>
@@ -446,27 +444,13 @@
             </div>
           </div>
         </div>
-    
-    
-      <%--  
-      <ul class="">
-        <li>
-          <label for="spinner">주문개수&nbsp;</label>
-          <input id="spinner" name="oqty" value="1" style="width: 110px;">
-        </li>
-      </ul>
-      <div>
-	      <button type="button" id="btn_select" class="col-4 btn btn-white" onClick="goCart()">장바구니</button>
-	      <button type="button" id="btn_select" class="col-8 ml-1 btn btn-warning" onClick="goOrder(this)">구매하기</button>
-      </div>
-    </div>
-    --%>
+
         <form name="cartOrderFrm">
           <div class="mt-3 d-flex flex-column justify-content-between">
             <div class="align-self-end">
               <ul class="text-right">
                 <li>
-                  <label for="spinner">주문개수&nbsp;</label>
+                  <label for="spinner">주문갯수&nbsp;</label>
                   <input id="spinner" name="oqty" value="1" style="width: 110px;">
                 </li>
               </ul>
@@ -492,42 +476,6 @@
   </div>
   <!-- // detail_top -->
 
- <%-- 
- <!-- carousel -->
- <div id="carousel" class="mt-5 carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-target="#carousel" data-slide-to="0" class="active"></li>
-    <li data-target="#carousel" data-slide-to="1"></li>
-    <li data-target="#carousel" data-slide-to="2"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="https://assets3.cre.ma/p/nbkorea-com/reviews/00/00/28/35/10/image2/1d11934b947299d7.jpg" class="d-block w-100" alt="..."> <!-- d-block 은 display: block; 이고  w-100 은 width 의 크기는 <div class="carousel-item active">의 width 100% 로 잡으라는 것이다. -->
-      <div class="carousel-caption d-none d-md-block"> <!-- d-none 은 display : none; 이므로 화면에 보이지 않다가, d-md-block 이므로 d-md-block 은 width 가 768px이상인 것에서만 display: block; 으로 보여라는 말이다.  --> 
-	  </div>
-    </div>
-    <div class="carousel-item">
-      <img src="https://assets3.cre.ma/p/nbkorea-com/reviews/00/00/21/49/76/image1/96ce41d0c3d31582.jpg" class="d-block w-100" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-	  </div>		      
-    </div>
-    <div class="carousel-item">
-      <img src="https://assets3.cre.ma/p/nbkorea-com/reviews/00/00/21/49/76/image2/7ca48ca6b27a741e.jpg" class="d-block w-100" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-	  </div>		      
-    </div>
-  </div>
-  <a id="link" class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a id="link" class="carousel-control-next" href="#carousel" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-<!-- // carousel -->
-  --%>
 </div>
 <!-- // container -->
 
