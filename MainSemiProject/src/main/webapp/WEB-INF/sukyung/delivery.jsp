@@ -103,32 +103,33 @@
 	// *** 4. "우편번호찾기"
 		$("button#btnPostcode").click(function(){
 			searchPostcode(); // 다음 openAPI 실행
-			
-			if($("input#postcode").val() == ""){ // "우편번호찾기" 클릭만 한 경우
-				$(this).parent().find("span.error").show(); // 에러메시지 보여주기
-			}
-			else{
-				$(this).parent().find("span.error").hide(); 
-			}
 		}); // end of $("button#btnPostcode").click(function(){})
 		
 		// "우편번호찾기"를 클릭하지 않고 주소를 입력하려고 할 경우
 		$("input#postcode").focus(function(){
 			searchPostcode(); // 다음 openAPI 실행
-			if($("input#postcode").val() == ""){ // "우편번호찾기" 클릭만 한 경우
+		}); // end of $("input#postcode").change(function(){})
+
+		$("input#postcode").change(function(){
+			if($("input#postcode").val() == ""){
+				$("input#postcode").parent().find("span.error").show(); // 에러메시지 보여주기
+			}
+			else{
+				$("input#postcode").parent().find("span.error").hide(); 
+			}
+		});
+		
+
+	// *** 5. 필수입력사항 input 태그가 blur 되었을때 발생하는 이벤트
+		$("input.required").blur(function(){
+			$("input#checkbox_same").prop("checked", false);
+			if($(this).val() == ""){
 				$(this).parent().find("span.error").show(); // 에러메시지 보여주기
 			}
 			else{
 				$(this).parent().find("span.error").hide(); 
 			}
-			$("input#delivery_comment").focus();
-		}); // end of $("input#postcode").change(function(){})
-
-
-	// *** 5. 필수입력사항 input 태그가 change 되었을때 발생하는 이벤트
-		$("input.required").change(function(){
-			$("input#checkbox_same").prop("checked", false);
-		}); // end of $("input.required").change(function(){})
+		}); // end of $("input.required").blur(function(){})
 
 		
 	// *** 6. "다음으로" 버튼 클릭하면 발생하는 이벤트
@@ -219,11 +220,7 @@
                 document.getElementById("detailAddress").focus();
 	    	}
 		}).open();
-		
-		if($("input#postcode").val() != ""){
-			$("input#postcode").parent().find("span.error").hide(); 
-		}
-		
+
 	} // end of function searchPostcode()
 	
 	

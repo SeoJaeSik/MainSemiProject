@@ -44,10 +44,39 @@
 			$("div#btnViewOrderDetail").slideUp(1000);
 		}); // end of $("button#btnViewOrderDetail").click(function(){})
 		
+		// "주문상세내역 접기" 클릭하면 숨겨짐
 		$("button#btnViewReset").click(function(){
 			$("div#btnViewOrderDetail").slideDown(1500);
 			$("table#ViewOrderDetail").fadeOut(1000);
-		});
+		}); // end of $("button#btnViewReset").click(function(){})
+		
+		// "주문내역 받아보기" 하면 메일 발송
+		$("button#sendEmail").click(function(){
+			
+			if($(this).find("span").text() == "${sessionScope.loginuser.email} 로 주문내역 받아보기"){
+				
+				$(this).prop("disabled", true);
+				$(this).html("<div class='spinner-border'></div>&nbsp;&nbsp;<span>${sessionScope.loginuser.email} 로 주문내역 받아보기</span>");
+				
+				$.ajax({
+					url:"<%= ctxPath%>/shop/orderList.moc",
+		     		data:{"order_no":$("input#order_no").val(), 		// 주문번호
+		     			  "userid":"${sessionScope.loginuser.userid}"}, // 회원아이디
+		     		type:"post",
+		     		dataType:"json",
+		     		success:function(json) {
+						if(json.result){ // 메일보내기 성공
+							$("button#sendEmail").prop("disabled", false);
+							$("button#sendEmail").html("<span>${sessionScope.loginuser.email} 로 주문내역이 발송되었습니다.</span>");
+						}
+		     		},
+		     		error: function(request, status, error) {
+		                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		            }
+		     	});
+			} // end of if
+
+		}); // end of $("button#sendEmail").click(function(){})
 		
 	}); // end of $(document).ready(function(){})
 
@@ -60,7 +89,12 @@
 <div id="div_container" class="container py-4 mx-auto my-3" style="background-color: #fefce7; border-radius: 1%;">
 		
 		<h2 class="text-center pt-4 pb-2">YOUR ORDER</h2>
-		<h5 class="text-center pt-2 pb-4">${sessionScope.loginuser.email} 로 주문내역이 발송되었습니다.</h5>
+		<div class="h5 text-center pt-4 pb-5">
+			<button type="button" id="sendEmail" style="border:none; background-color: #fefce7;">
+			  <i class="fa-regular fa-paper-plane fa-beat fa-xl" style="color: #fdd007; text-shadow: 1px 1px 1px #cccccc;">&nbsp;&nbsp;</i>
+			  <span>${sessionScope.loginuser.email} 로 주문내역 받아보기</span>
+			</button>
+		</div>
 		
 		<div class="table-responsive mx-auto">
 			<table class="table text-center" id="tbl_orderList">
@@ -74,7 +108,10 @@
 			  </thead>
 		      <tbody>
 		 	  	<tr>
-			 		<td><div class="mt-4">${requestScope.orderMap.order_no}</div></td>
+			 		<td>
+			 		  <div id="order_no" class="mt-4">${requestScope.orderMap.order_no}</div>
+			 		  <input type="hidden" id="order_no" name="order_no" value="${requestScope.orderMap.order_no}"></input>
+			 		</td>
 			 		<td><div class="mt-4">${requestScope.orderMap.orderdate}</div></td>
 			 		<td colspan="3" class="col-md-6 text-left" style="font-size: 10pt;">
 			 			<div><label>수령자성명 : </label>${requestScope.orderMap.delivery_name}</div>
@@ -90,7 +127,7 @@
 			 		<td colspan="6">
 			 			<div id="btnViewOrderDetail">
 						  <button type="button" id="btnViewOrderDetail" class="btn px-4 py-3 my-3 mx-2" style="background-color: #fdd007;">주문상세내역 확인하기</button>
-						  <a href="#" class="btn btn-dark px-4 py-3 my-3 mx-2">계속 쇼핑하기</a>
+						  <a href="<%= ctxPath%>/shop/allproduct.moc" class="btn btn-dark px-4 py-3 my-3 mx-2">계속 쇼핑하기</a>
 			 			</div>
 			 		</td>
 		 		</tr>
@@ -127,7 +164,7 @@
 		 		<td colspan="4">
 		 			<div id="btnViewReset">
 					  <button type="button" id="btnViewReset" class="btn btn-dark px-4 py-3 my-3 mx-2">주문상세내역 접기</button>
-					  <a href="#" class="btn px-4 py-3 my-3 mx-2" style="background-color: #fdd007;">이전 주문내역 확인하기</a>
+					  <a href="<%= ctxPath %>/member/myaccount.moc" class="btn px-4 py-3 my-3 mx-2" style="background-color: #fdd007;">이전 주문내역 확인하기</a>
 		 			</div>
 		 		</td>
 	 		  </tr>
