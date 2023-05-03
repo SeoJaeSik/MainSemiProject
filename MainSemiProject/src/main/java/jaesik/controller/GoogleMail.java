@@ -7,7 +7,7 @@ import javax.mail.internet.*;
 
 public class GoogleMail {
 
-	public void sendmail(String recipient, String certificationCode) throws Exception {
+	public void sendmail(String recipient) throws Exception {
 
 		// 1. 정보를 담기 위한 객체
         Properties prop = new Properties(); 
@@ -43,7 +43,7 @@ public class GoogleMail {
         MimeMessage msg = new MimeMessage(ses);
 
         // 제목 설정
-        String subject = "MOSACOYA 회원님의 첫번째 온라인 구매 할인쿠폰 발송";
+        String subject = "MOSACOYA 신규회원님의 첫번째 온라인 구매 할인쿠폰 발송안내";
         msg.setSubject(subject);
                 
         // 보내는 사람의 메일주소
@@ -56,8 +56,8 @@ public class GoogleMail {
         msg.addRecipient(Message.RecipientType.TO, toAddr);
                 
         // 메시지 본문의 내용과 형식, 캐릭터 셋 설정
-        msg.setContent("발송된 할인 쿠폰번호 : <span style='font-size:14pt; color:red;'>"+certificationCode+"</span><br>"
-        			 +"<p style='font-size:12pt';>제품 주문시에 해당 쿠폰번호를 입력해주시면 사용 가능합니다. 감사합니다 : )</p>", "text/html;charset=UTF-8");
+        msg.setContent("발송된 할인 쿠폰번호 : <span style='font-size:16pt; font-weight:bold;'>MOSACOYA의 신규회원 가입을 진심으로 축하합니다 !</span><br>"
+        			 +"<p style='font-size:14pt';>신규회원 첫 구매 쿠폰이 발급되었으며<br>마이페이지 내의 쿠폰함에서 확인 가능합니다. 감사합니다 : )</p>", "text/html;charset=UTF-8");
                 
         // 메일 발송하기
         Transport.send(msg);
