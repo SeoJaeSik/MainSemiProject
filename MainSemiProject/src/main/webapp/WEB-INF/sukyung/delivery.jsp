@@ -25,7 +25,7 @@
 		border: none;
 		box-shadow: 1px 1px 1px 1px #e6e6e6;
 	}
-	input#address, input#detailAddress, input#extraAddress {
+	input#postcode, input#address, input#detailAddress, input#extraAddress {
 		background-color: #ffffff;
 	}
 
@@ -103,22 +103,17 @@
 	// *** 4. "우편번호찾기"
 		$("button#btnPostcode").click(function(){
 			searchPostcode(); // 다음 openAPI 실행
+			b_flag_goNext = true;
+			$("button#btnPostcode").parent().find("span.error").hide(); 
 		}); // end of $("button#btnPostcode").click(function(){})
-		
-		// "우편번호찾기"를 클릭하지 않고 주소를 입력하려고 할 경우
-		$("input#postcode").focus(function(){
-			searchPostcode(); // 다음 openAPI 실행
-		}); // end of $("input#postcode").change(function(){})
 
-		$("input#postcode").change(function(){
-			if($("input#postcode").val() == ""){
-				$("input#postcode").parent().find("span.error").show(); // 에러메시지 보여주기
-			}
-			else{
-				$("input#postcode").parent().find("span.error").hide(); 
-			}
-		});
-		
+		$("input#postcode").keyup(function(){
+			alert("'우편번호찾기'로 검색해주세요");
+			searchPostcode(); // 다음 openAPI 실행
+			b_flag_goNext = true;
+			$("button#btnPostcode").parent().find("span.error").hide(); 
+		}); // end of $("input#postcode").click(function(){})
+
 
 	// *** 5. 필수입력사항 input 태그가 blur 되었을때 발생하는 이벤트
 		$("input.required").blur(function(){
@@ -141,6 +136,9 @@
 					$(this).parent().find("span.error").show(); // 에러메시지 보여주기
 					return false;
 				}
+				else{
+					$(this).parent().find("span.error").hide(); 
+				}
 			}); // end of $("input.required").each(function(index, elmt){})
 			
 			if(b_flag_goNext){ // 필수입력사항을 모두 입력한 경우
@@ -156,6 +154,9 @@
 					$(this).parent().find("span.error").show(); // 에러메시지 보여주기
 					return false;
 				}
+				else{
+					$(this).parent().find("span.error").hide(); 
+				}
 			}); // end of $("input.required").each(function(index, elmt){})
 			
 			if(b_flag_goNext){ // 필수입력사항을 모두 입력한 경우
@@ -169,11 +170,6 @@
 
 	// 우편번호 찾기 함수
 	function searchPostcode(){
-		$("input#postcode").val("");      // 우편번호
-		$("input#address").val(""); 	  // 주소
-		$("input#extraAddress").val("");  // 참고주소
-		$("input#detailAddress").val(""); // 상세주소
-		
 		
 		new daum.Postcode({
 			oncomplete: function(data) {
@@ -307,21 +303,21 @@
 		  <div class="form-group row col-md-10 mx-auto">
 		    <input type="hidden" id="delivery_address" name="delivery_address" />
 		    <label for="address" class="col-md-3 col-form-label">주소<span style="color:red;">&nbsp;*</span><span class="error" style="color:red;">&nbsp;필수입력</span></label>
-		    <input type="text" class="required col-md-5 form-control" id="postcode" name="postcode" placeholder="우편번호" />
+		    <input type="text" class="required col-md-5 form-control" id="postcode" name="postcode" placeholder="우편번호"/>
 			<div class="col-md-1"></div>
 			<button type="button" id="btnPostcode" class="col-md-2 btn-sm">우편번호 찾기</button>
 		  </div>
 		  <div class="form-group row col-md-10 mx-auto">
 		    <div class="col-md-3"><span class="error" style="color:red;">&nbsp;필수입력</span></div>
-		    <input type="text" class="required col-md-8 form-control" id="address" name="address" placeholder="수령자 주소" readonly />
+		    <input type="text" class="required col-md-8 form-control" id="address" name="address" placeholder="수령자 주소"/>
 		  </div>
 		  <div class="form-group row col-md-10 mx-auto">
 		    <div class="col-md-3"><span class="error" style="color:red;">&nbsp;필수입력</span></div>
-		    <input type="text" class="required col-md-8 form-control" id="extraAddress" name="extraAddress" placeholder="참고주소" readonly />
+		    <input type="text" class="required col-md-8 form-control" id="extraAddress" name="extraAddress" placeholder="참고주소"/>
 		  </div>
 		  <div class="form-group row col-md-10 mx-auto">
-		    <div class="col-md-3"><span class="error" style="color:red;">&nbsp;필수입력</span></div>
-		    <input type="text" class="required col-md-8 form-control" id="detailAddress" name="detailAddress"placeholder="상세주소" />
+		    <div class="col-md-3"></div>
+		    <input type="text" class="col-md-8 form-control" id="detailAddress" name="detailAddress"placeholder="상세주소" />
 		  </div>
 
 		  <div class="form-group row col-md-10 mx-auto mb-3">
