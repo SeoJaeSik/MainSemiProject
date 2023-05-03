@@ -173,7 +173,7 @@ public class MemberDAO implements InterMemberDAO {
 			String sql = " SELECT userid, name, email, mobile, postcode, address, detailaddress, extraaddress, gender, "
 					   + "        birthyyyy, birthmm, birthdd, point, registerday, pwdchange_daygap, "
 					   + "		  pwdchangegap, "
-					   + "        NVL( latelogingap, trunc(months_between(sysdate,registerday)) ) AS latelogingap "
+					   + "        NVL( latelogingap, trunc(months_between(sysdate,registerday)) ) AS latelogingap , admin "
 					   + " FROM "
 					   + " ( "
 					   + "     select userid, name, email, mobile, postcode, address, detailaddress, extraaddress, gender "
@@ -182,7 +182,7 @@ public class MemberDAO implements InterMemberDAO {
 					   + "            , substr(birthday,7,2) AS birthdd "
 					   + "            , point, to_char(registerday, 'yyyy-mm-dd') AS registerday "
 					   + "            , ceil(sysdate-lastpwdchangedate) AS pwdchange_daygap "
-					   + "            , trunc(months_between(sysdate,lastpwdchangedate)) AS pwdchangegap "
+					   + "            , trunc(months_between(sysdate,lastpwdchangedate)) AS pwdchangegap, admin "
 					   + "     from tbl_member "
 					   + "     where status = 0 and userid = ? and pwd = ? "
 					   + " ) M "
@@ -239,6 +239,11 @@ public class MemberDAO implements InterMemberDAO {
 					
 					pstmt.executeUpdate();
 				}
+				
+				
+				// == 관리자 인지 확인하고 admin loginuser 세션에 넣어줌 ==
+				member.setAdmin(rs.getInt("ADMIN"));
+				
 				
 				// == tbl_loginhistory(로그인기록) 테이블에 insert 하기 == //
 				if(member.getIdle() != 1) {
@@ -308,35 +313,55 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of == 쿠폰 정보 불러오기 ==-------------------------------------------
 
 	
-	// == 입력받은 paraMap 을 갖고 한명의 주문번호를 리턴시켜주는 메소드 (로그인 할 때 동시에 되게 하자) ==
+	// == [마이페이지-주문내역] 입력받은 paraMap 을 갖고 한명의 주문번호를 리턴시켜주는 메소드 (로그인 할 때 동시에 되게 하자) ==
 	@Override
-	public List<String> selectMemberOrderNo(Map<String, String> paraMap) throws SQLException {
+	public List<OrderVO> selectMemberOrderNo(String userid) throws SQLException {
 		
-		List<String> order_no_List = new ArrayList<>();
+		List<OrderVO> ovolist = new ArrayList<>();
 	      
 	      try {
 	         conn = ds.getConnection();
 	         
-	         String sql = " select order_no "
-	                    + " from tbl_order "
-	                    + " where fk_userid = ? "
-	                    + " order by orderdate desc " ;
+	         String sql = " select A.order_no, to_char(A.orderdate,'yyyy-MM-dd'), A.total_price "
+	         		    + "      , D.delivery_name, D.delivery_mobile, D.delivery_address, D.delivery_comment, D.delivery_invoice "
+	         		    + " from "
+	         		    + " (	select order_no, orderdate, total_price "
+	         		    + " 	from tbl_order "
+	         		    + " 	where fk_userid = ? "
+	         		    + "		order by orderdate desc "
+	         		    + "	) A "
+	         		    + " join tbl_delivery D "
+	         		    + " on A.order_no = D.fk_order_no " ;
 	         
 	         pstmt = conn.prepareStatement(sql);
-	         pstmt.setString(1, paraMap.get("userid"));
+	         pstmt.setString(1, userid);
 	         
 	         rs = pstmt.executeQuery();
-	         
+
 	         while(rs.next()) {
-	            String order_no = rs.getString(1); // 주문번호
-	            order_no_List.add(order_no); 
-	         }
+	        
+	        //  String order_no = rs.getString(1); // 주문번호
+				OrderVO ovo = new OrderVO();
+				ovo.setOrder_no(rs.getString(1));
+				ovo.setOrderdate(rs.getString(2));
+				ovo.setTotal_price(rs.getString(3));
+				ovo.setDelivery_name(rs.getString(4));
+				ovo.setDelivery_mobile(rs.getString(5));
+				ovo.setDelivery_address(rs.getString(6));
+				ovo.setDelivery_comment(rs.getString(7));
+				ovo.setDelivery_invoice(rs.getString(8));
+				
+				ovolist.add(ovo);
+			//	System.out.println("ovo.getOrder_no() 확인 2 : " + ovo.getOrder_no());
+			//	System.out.println("ovolist 확인 1 : " + ovolist);
+					
+	         }//end of while()-------------------
 	         
 	      } finally {
 	         close();
 	      }
 	      
-	      return order_no_List;
+	      return ovolist;
 
 	}//end of == 주문번호 가져오기 메소드 ==---------------------------------------
 	
@@ -616,5 +641,6 @@ public class MemberDAO implements InterMemberDAO {
 		return mvo;
 		
 	}//end of 14. userid 값을 입력받아 회원 1명에 대한 상세정보를 알아오는 메소드---------- 
+
 
 }

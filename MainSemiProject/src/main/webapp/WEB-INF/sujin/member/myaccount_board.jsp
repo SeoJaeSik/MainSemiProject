@@ -55,7 +55,7 @@
       	const frm = document.searchFrm;
       	frm.action = "<%= ctxPath%>/member/myaccount.moc"; 
       	frm.method = "get"; // 개인정보이지만 이미 화면에 뿌려진 것을 빨리 찾으려는 용도이므로 GET 방식으로 한다
-      	frm.submit();
+      	$("form[name='searchFrm']").submit();   
 
    	}
 

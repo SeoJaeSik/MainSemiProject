@@ -7,7 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import common.controller.AbstractController;
+import sujin.model.InterMemberDAO;
+import sujin.model.MemberDAO;
 import sujin.model.MemberVO;
+import sujin.model.OrderVO;
 import jaesik.model.BoardVO;
 import jaesik.model.JS_InterMemberDAO;
 import jaesik.model.JS_MemberDAO;
@@ -22,39 +25,22 @@ public class MyaccountAction extends AbstractController {
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
       
-    //	System.out.println("loginuser 확인 : " + loginuser);
-      
-		if ( loginuser != null ) {
-			// 로그인한 경우
-    	  
+		
+		if ( loginuser != null ) { // 로그인한 경우
+			
+			InterMemberDAO modrdao = new MemberDAO();
+			
 			// 주문번호(order_no) 를 이용하여 주문정보(주문테이블, 배송테이블) 조회(select)	
+			List<OrderVO> ovolist = modrdao.selectMemberOrderNo(loginuser.getUserid());
+		//	System.out.println("ovolist 확인 : " + ovolist);
+		
 			
-		//	String order_no_array = Arrays.toString(loginuser.getOrder_no());	
-		//	System.out.println("order_no_array 확인 : " + order_no_array);
-			// order_no_array 확인 : [202305020003, 202305020002, 202305020001]
-			
-			InterProductDAO pdao = new ProductDAO();
-
-			String[] order_no_array = loginuser.getOrder_no();
-			
-		//	System.out.println("order_no_array 확인 : " + order_no_array);
-			// order_no_array 확인 : [Ljava.lang.String;@4e575d4
-			
-			for (int i = 0; i < order_no_array.length; i++) {
-			    Map<String, String> orderMap = pdao.showOrderList(order_no_array[i]);
-			    // orderMap을 이용한 작업
-			    
-			//  System.out.println("orderMap 확인 : " + orderMap);
-			    /*
-			     	orderMap 확인 : {order_no=202305020003, delivery_mobile=01041857817, delivery_address=03930 서울 마포구 월드컵북로42나길 7 (상암동, 대교빌라) 마포대교, total_price=169000, delivery_name=서재식, delivery_invoice=5365-2316-2103-3279, orderdate=2023-05-02 23:32:58, delivery_comment=null}
-					orderMap 확인 : {order_no=202305020002, delivery_mobile=01041857817, delivery_address=03930 서울 마포구 월드컵북로42나길 7 (상암동, 대교빌라) 마포대교, total_price=691280, delivery_name=서재식, delivery_invoice=1866-9096-4341-3326, orderdate=2023-05-02 19:52:56, delivery_comment=null}
-					orderMap 확인 : {order_no=202305020001, delivery_mobile=01041857817, delivery_address=03930 서울 마포구 월드컵북로42나길 7 (상암동, 대교빌라) 마포대교, total_price=134100, delivery_name=서재식, delivery_invoice=7997-4747-0963-9441, orderdate=2023-05-02 17:07:46, delivery_comment=null}
-			    */
-			    request.setAttribute("orderMap", orderMap);
+			for(int i=0; i<ovolist.size(); i++) {
+				ovolist.get(i); // 배열을 loginuser 객체에 설정
 			}
+			
+			request.setAttribute("ovolist", ovolist);
 
-		//	Map<String, String> orderMap = pdao.showOrderList(order_no);
-		//	request.setAttribute("orderMap", orderMap);
 			
 			///////////////////////////////////////////
     	  

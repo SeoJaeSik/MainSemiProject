@@ -51,7 +51,7 @@
 		$("div#memberEdit").hide();		
 		
 		// 쿠폰명 보이기
-		$('[data-toggle="tooltip"]').tooltip();
+		$("[data-toggle='tooltip']").tooltip();
 		
 	});
 
@@ -59,9 +59,6 @@
 	function goEditPersonal(userid) {
 		
 		$("div#memberEdit").show();
-		
-		<%-- const url = "<%= request.getContextPath()%>/member/memberEdit.moc?userid=" + userid;
-	    location.href = url; --%>
 		
 	}//end of goEditPersonal()--------------------------------- 
 
