@@ -36,9 +36,7 @@ public class MallDisplayJSONAction extends AbstractController {
 		paraMap.put("start", start);  
         paraMap.put("category", category);
         
-        if (category == null || category.trim().isEmpty()) {
-        	return;
-        }
+       
         
         String end = String.valueOf( Integer.parseInt(start) + Integer.parseInt(len) - 1);
 
