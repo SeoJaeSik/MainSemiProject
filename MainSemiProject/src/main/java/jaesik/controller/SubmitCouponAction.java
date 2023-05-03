@@ -68,7 +68,7 @@ public class SubmitCouponAction extends AbstractController {
 					GoogleMail mail = new GoogleMail();
 					
 					try {
-						mail.sendmail(email, certificationCode);
+						mail.sendmail(email);
 						sendMailSuccess = true; // 메일전송이 성공시 true
 						
 						if (sendMailSuccess) {
