@@ -594,7 +594,7 @@
 			    <tr>
 			    	<td class="col-md-8 pt-4"></td>
 			      	<td colspan="2" class="col-md-4 pt-4">
-					  <button type="button" id="btnContinue" class="btn btn-sm ml-3 text-right">쇼핑 계속하기</button>
+					  <button type="button" id="btnContinue" class="btn btn-sm ml-3 text-right" href="<%= ctxPath%>/shop/allproduct.moc">쇼핑 계속하기</button>
 					  <button type="button" id="btnOrder" class="btn btn-lg ml-3 px-4 text-right">주문하기</button>
 			      	</td>
 			    </tr>
@@ -621,7 +621,7 @@
 		 		<td colspan="6">
 		 			<div id="div_cart_empty" style="height: 150px;">
 		 				<p>장바구니에 담은 상품이 없습니다.</p>
-						<a class="btn btn-lg px-4 my-3" style="background-color: #fdd007;" href="#">지금 쇼핑하기</a>
+						<a class="btn btn-lg px-4 my-3" style="background-color: #fdd007;" href="<%= ctxPath%>/shop/allproduct.moc">지금 쇼핑하기</a>
 		 			</div>
 		 		</td>
 		 	</tr>

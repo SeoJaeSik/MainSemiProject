@@ -98,15 +98,13 @@
 		
 	// *** "결제하기" 클릭하면 발생하는 이벤트
 		$("button#btnPay").click(function(){
-			
-			$("div#lodaer").show();
 
+			$("div#lodaer").show();
 			const payment_name = $("input#product_no").eq(0).val();
 			const total_price = $("input#total_price").val();
 			const url = "<%= ctxPath%>/shop/paymentTry.moc?payment_name="+payment_name+"&total_price="+total_price;
-			window.open(url, payment_name, "left=350px, top=100px, width=1000px, height=600px");
-
-			goPaymentEnd();
+			window.open(url, payment_name, "left=300px, top=100px, width=830px, height=600px");
+			
 		}); // end of $("button#btnPay").click(function(){})
 		
 	}); // end of $(document).ready(function(){})
@@ -136,8 +134,7 @@
 	function goPaymentEnd(){
 		$.ajax({
 			url:"<%= ctxPath%>/shop/paymentEnd.moc",
-     		data:{
-     			  "delivery_fee":"${requestScope.delivery_fee}", // 배송비
+     		data:{"delivery_fee":"${requestScope.delivery_fee}", // 배송비
      			  "coupon_no":$("option:selected").attr("id"),   // 쿠폰번호
      			  "point_redeem":$("input#point_redeem").val(),  // 포인트 사용금액
      			  "point_saveup":$("input#point_saveup").val(),  // 포인트 적립금액
