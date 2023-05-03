@@ -97,7 +97,7 @@
 		// 수량에서 "+" 또는 "-" 를 클릭하면 발생하는 이벤트
 		$("button.changeCount").click(function(){
 			
-			cart_product_count = $(this).parent().find("input").val();
+			cart_product_count = $(this).parent().find("input#cart_product_count").val();
 			
 			if($(this).text() == "+"){
 				cart_product_count = Number(cart_product_count)+1;
@@ -106,28 +106,26 @@
 				cart_product_count = Number(cart_product_count)-1;
 			}
 
-			checkChangeCount();
-			$(this).parent().find("input").val(cart_product_count);
+			cart_product_count = checkChangeCount(cart_product_count);
+			$(this).parent().find("input#cart_product_count").val(cart_product_count);
 			// 수량을 입력하는 input 태그의 value 값을 알아와서, 그 자리에 수량+1 또는 수량-1 한 값을 꽂아넣어준다.
 			
 			$(this).parent().parent().find("div#error").show(); // 에러메시지 보여주기
-			
 			b_flag_click_btnUpdate = true; // "변경" 버튼 클릭해야 한다.
-
+		
 		}); // end of $("button.changeCount").click(function(){})
 
 		
 		// 수량이 변하면 발생하는 이벤트
-		$("input#cart_product_count").bind("change", function(){
-		
+		$("input#cart_product_count").bind("change", function(e){
+
 			cart_product_count = $(this).val();
-			checkChangeCount();
+			cart_product_count = checkChangeCount(cart_product_count);
 			$(this).val(cart_product_count);
-		
+
 			$(this).parent().parent().find("div#error").show(); // 에러메시지 보여주기
-			
 			b_flag_click_btnUpdate = true; // "변경" 버튼 클릭해야 한다.
-			
+
 		}); // end of $("input#cart_product_count").bind("change", function(){})
 		
 	//////////////////////////////////////////////////////////////////////////////////////////
@@ -375,16 +373,17 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////
 	
-	// 수량이 변하면 호출되는 함수(1개~10개로 수량제한한다.)
-	function checkChangeCount(){
-		if(isNaN(cart_product_count) || cart_product_count <= 0){ 
+	// 수량이 변하면 호출되는 함수(1개~20개로 수량제한한다.)
+	function checkChangeCount(cart_product_count){
+		if(isNaN(cart_product_count) || cart_product_count < 1){ 
 			// 수량에 숫자가 아닌 값 또는 음수가 들어오면
 			cart_product_count = "1";
 		}
-		else if(cart_product_count > 10){ // 수량이 10개보다 크면
-			cart_product_count = "10";
-			alert("최대 10개까지만 구매가능합니다.");
+		else if(cart_product_count > 20){ // 수량이 20개보다 크면
+			cart_product_count = "20";
+			alert("최대 20개까지만 구매가능합니다.");
 		}
+		return cart_product_count;
 	} // end of function checkChangeCount()
 
 	
@@ -475,7 +474,6 @@
 			</div>
 		</div>
 		
-		<form name="CartListFrm">
 		<div class="table-responsive mx-auto">
 			<table class="table text-center" id="tbl_cart">
 			  <thead>
@@ -601,7 +599,6 @@
 			  </tbody>
 			</table>
 		</div>
-		</form>
 </c:if>
 		
 <c:if test="${empty requestScope.cartList}">
