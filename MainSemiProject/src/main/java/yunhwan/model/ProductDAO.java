@@ -60,20 +60,20 @@ public class ProductDAO implements InterProductDAO {
 		try {
 			conn = ds.getConnection(); // 본인의 오라클DB와 연동
 			
-			String sql = " SELECT product_no, product_name, fk_shoes_category_no, product_price, product_color\n"
-					+ "     , MAX(product_size) AS product_size, product_image, product_date, product_content\n"
-					+ "     , upload_date, stock_count, sale_count \n"
-					+ " FROM (\n"
-					+ "	  SELECT ROW_NUMBER() OVER (PARTITION BY product_name, product_color ORDER BY product_name DESC) AS RNO, product_no, product_name, \n"
-					+ "			 fk_shoes_category_no, product_price, product_color, product_size, product_image,\n"
-					+ "			 product_date, product_content, upload_date, stock_count, sale_count \n"
-					+ "	  FROM tbl_product \n"
-					+ "      WHERE fk_shoes_category_no LIKE '%' || ? || '%' \n"
-					+ "	 )\n"
-					+ " WHERE RNO = 1 AND ROWNUM BETWEEN ? AND ?\n"
-					+ " GROUP BY product_no, product_name, fk_shoes_category_no, product_price, product_color,\n"
-					+ " product_image, product_date, product_content, upload_date, stock_count, sale_count, RNO\n"
-					+ " ORDER BY product_name DESC ";
+			String sql = " SELECT product_no, product_name, fk_shoes_category_no, product_price, product_color "
+					   + "     , MAX(product_size) AS product_size, product_image, product_date, product_content "
+				       + "     , upload_date, stock_count, sale_count "
+					   + " FROM ( "
+					   + "	  SELECT ROW_NUMBER() OVER (PARTITION BY product_name, product_color ORDER BY product_name DESC) AS RNO, product_no, product_name, "
+					   + "			 fk_shoes_category_no, product_price, product_color, product_size, product_image, "
+					   + "			 product_date, product_content, upload_date, stock_count, sale_count "
+					   + "	  FROM tbl_product "
+					   + "      WHERE fk_shoes_category_no LIKE '%' || ? || '%' "
+					   + "	 ) "
+					   + " WHERE RNO = 1 AND ROWNUM BETWEEN ? AND ? "
+					   + " GROUP BY product_no, product_name, fk_shoes_category_no, product_price, product_color, "
+					   + " product_image, product_date, product_content, upload_date, stock_count, sale_count, RNO "
+					   + " ORDER BY product_name DESC ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("category"));
@@ -116,9 +116,9 @@ public class ProductDAO implements InterProductDAO {
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select count(*) \n"
-					+ "from tbl_product \n"
-					+ "where fk_shoes_category_no LIKE '%' || ? || '%' ";
+			String sql = " select count(*) "
+					   + " from tbl_product "
+					   + " where fk_shoes_category_no LIKE '%' || ? || '%' ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, fk_shoes_category_no);

@@ -36,11 +36,11 @@ public class MallDisplayJSONAction extends AbstractController {
 		paraMap.put("start", start);  
         paraMap.put("category", category);
        
-        int totalProdCount = pdao.totalAllCount("1");
+        int totalAllCount = pdao.totalAllCount("0"); // 카테고리별 전체 제품개수 알아오기
         
-        request.setAttribute("totalProdCount", totalProdCount);
+        request.setAttribute("totalAllCount", totalAllCount);
         
-        System.out.println("totalProdCount =>" + totalProdCount);
+        System.out.println("totalAllCount =>" + totalAllCount);
         
         String end = String.valueOf( Integer.parseInt(start) + Integer.parseInt(len) - 1);
 
@@ -70,6 +70,7 @@ public class MallDisplayJSONAction extends AbstractController {
                 jsonObj.put("product_color", pvo.getProduct_color());
                 jsonObj.put("product_size", pvo.getProduct_size());
                 jsonObj.put("sale_count", pvo.getSale_count());
+                jsonObj.put("totalAllCount", totalAllCount);
                 
                 jsonArr.put(jsonObj);
             }

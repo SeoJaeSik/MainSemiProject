@@ -1,6 +1,7 @@
 package jaesik.model;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,4 +63,22 @@ public interface JS_InterMemberDAO {
 	// 타입과 검색단어를 받아와 검색하는 메소드
 	List<ProductVO> selectSearchProduct(Map<String, String> paraMap) throws SQLException;
 
+	// 전체상품을 select 해오는 메소드
+	List<ProductVO> selectAll() throws SQLException;
+
+	// Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 9개씩 잘라서(start ~ end) 조회해오기
+	List<ProductVO> selectAllProduct(Map<String, String> paraMap) throws SQLException;
+
+	// 카테고리별로 Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 9개씩 잘라서(start ~ end) 조회해오기
+	List<ProductVO> selectGroupProduct(Map<String, String> paraMap) throws SQLException;
+	
+	// 카테고리별 총 페이지 (셀렉트 개수) 알아오기
+	int totalCount(String category) throws SQLException;
+
+	// 모든 사용자들이 주문한 갯수를 알아온다.
+	int getTotalCountOrder() throws SQLException;
+
+    // 모든 사용자들의 주문내역을 페이징 처리하여 조회해온다.
+	List<HashMap<String, String>> getOrderList(int currentShowPageNo, int sizePerPage) throws SQLException;
+ 
 }

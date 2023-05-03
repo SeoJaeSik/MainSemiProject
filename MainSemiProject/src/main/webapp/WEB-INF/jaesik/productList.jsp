@@ -6,151 +6,130 @@
 <script type="text/javascript">
 
 	let start = 1;
-	
-	let lenAll = 9; // HIT 상품 "스크롤" 할 때 보여줄 상품의 개수(단위) 크기
-	
-	let category = 00;
-	
+	let len = 9;
+	let category = 0;
 
 	$(document).ready(function() {
-	 	
-		$("span#totalAllCount").hide();
-		$("span#countAll").hide(); 
+	
+		// $("span#totalAllCount").hide();
+		// $("span#countAll").hide();
 		
-	   displayAll(start); 
-	  // === scroll 이벤트 발생시키기 시작 === //
-		$(window).scroll(function() {
+		displayAll(start);
+		
+		// 스크롤 이벤트 발생시키기
+		$(window).scroll(function(e) {
+			
+      		if ( $(window).scrollTop() == $(document).height() - $(window).height() ) {
+      			// 내가 스크롤한 화면이 문서의 끝과 같으면
 
-            if($(window).scrollTop() +1 >= $(document).height() - $(window).height() ) {
-	            $("span#totalAllCount").text();
-	            $("span#countAll").text();
-	            
-	            if( $("span#totalAllCount").text() != $("span#countAll").text() ) {
-		            start += lenAll;
-		            displayAll(start); 
-	            }
-	         }
-            if( $(window).scrollTop() == 0 ) {
-            	$("div#displayAll").empty();
-            	$("span#end").empty();
-            	$("span#countAll").text(0);
-            	
-            	start = 1;
-            	displayAll(start);
-            }
-		});	//end of $(window).scroll(function()--------------------------- // === scroll 이벤트 발생시키기 끝 === //
+      			if ( $("span#totalAllCount").text() != $("span#countAll").text() ) {
+	      			start += len;
+	      			displayAll(start);
+      			}
+      		}
 		
-				
-		/* 새로 추가한 이벤트, + html 사이드바 카테고리 부분에도 data-category 추가해놨음  */		
+      		if ( $(window).scrollTop() == 0 ) {
+  				// 맨위로 올라오면 초기화가 되어지도록 한다.
+  				$("div#displayAll").empty();
+  				$("span#end").empty();
+  				$("span#countAll").text("0");
+  				
+  				start = 1;
+      			displayAll(start);
+  			}
+		})
+		
 		$(".category-link").click(function(event) {
 		    event.preventDefault(); // 기본 동작 방지
 		    category = $(this).data("category"); // data-category 속성 값 가져오기
 		    console.log("선택한 카테고리: " + category);
 		    // 여기서 가져온 category 변수를 ajax 요청의 data 객체에 추가하여 서버에 전송하면 됩니다.
-
-		    $("div#displayAll").empty();
+			
+			window.scrollTo(0,0);
 		    displayAll(start);
-		    
-		  });		
+		});		
 		
 		
-	}); // end of $(document).ready(function() -----------------
+	}); // end of $(document).ready
 			
 	// 모든 제품에 대한 정보를 DB에서 가져와 뿌려주는 함수
 	function displayAll(start) {
-       
-		$.ajax({
-			url:"<%= request.getContextPath()%>/shop/mallDisplayJSON.moc",
-			// 클라이언트(웹브라우저)가 서버에 데이터를 요청할 때 사용하는 URL (HTTP 요청을 보낼 서버의 주소) 사용자가 지정한 URL경로에 데이터를 전송하고 받아온다. , 접속할 페이지 주소
-			type:"GET",
-			data:{"start":start,
-				  "len":lenAll,
-				  "category":category
-				  },
-			dataType:"json",
-			async:true,
-			success:function(json){ 
-			//	console.log("확인용 json => " + json);
-			//	console.log("json 의 타입 => " + typeof json);
-			//	console.log("확인용 json => " + JSON.stringify(json));
-			//	console.log("JSON.stringify(json) 의 타입 => " + typeof JSON.stringify(json));
-			
-			if(start == 1) {
-				$("div#displayAll").empty();
-				$("span#totalAllCount").text("0");
-				$("span#end").empty();
-				
-			}
-			
-			
-			let html = "";
-				
-				if(start == "1" && json.length == 0) {
-				    html += "현재 상품 준비중...";
-					$("div#displayAll").html(html); // id가 displayAll인 div에 값을 뿌려준다.
-					
-				}
-				else if(json.length > 0) {
-					
+
+        $.ajax({
+        	url:"<%= request.getContextPath()%>/shop/productJSON.moc" ,
+        	type:"get" ,
+        	data:{
+        		  "start":start ,
+        		  "len":len ,
+        		  "category":category} ,
+        	dataType:"json" ,
+        	async:true ,
+        	success:function(json){
+        		
+        		if (start == "1"){
+        			$("div#displayAll").empty();
+        			$("span#end").empty();
+     				$("span#countAll").text("0");
+        		}
+        		
+        		let html = "";
+        		
+        		if (start == "1" && json.length == 0 ){
+        			// 처음부터 데이터가 존재하지 않는 경우 (주의 - json이 null이 아닌 length가 0이다)
+        			html += "현재 상품 준비중 ...";
+        		}
+        		else if ( json.length > 0) {
+        			// 데이터가 존재하는 경우
+        			
 					$.each(json, function(index, item) {
-					    
+						
 						if(index%3 == 0) {
 							html += "<div style='display:flex'>";		
 						}
 						
-						html += "<div class='col-md-6 col-lg-4 col-xl-4' style='margin= 0 auto; padding=0px'>"+
+						html +=  "<div class='col-md-6 col-lg-4 col-xl-4' style='margin= 0 auto; padding=0px'>"+
 									"<div id='product-1' class='single-product' style='display: flex; justify-content: center; align-items: center;'>"+
 										"<div class='part-1'>"+
-											"<a href='/MainSemiProject/product.moc?product_name="+item.product_name+"&product_color="+item.product_color+"' style='width:inherit; height:inherit; text-align:center;'><img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+"></a>"+
+											"<a href='/MainSemiProject/product.moc?product_name="+item.product_name+"' style='width:inherit; height:inherit; text-align:center;'><img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+"></a>"+
 											"<ul>"+
-												"<li><a href='/MainSemiProject/shop/cartList.moc?product_name="+item.product_name+"&product_color="+item.product_color+"&product_size="+item.product_size+"'><i class='fas fa-shopping-cart'></i></a></li>"+
+												"<li><a href='/MainSemiProject/shop/cartList.moc'><i class='fas fa-shopping-cart'></i></a></li>"+
 											"</ul>"+
 										"</div>"+
 									"</div>"+
-										"<div class='part-2' style='text-align:center;'>"+
-											"<h3 class='product-title'>"+item.product_name+"</h3>"+
-											"<h4 class='product-price'><i class='fa fa-krw' style='font-size:14px'>&nbsp;"+(item.product_price).toLocaleString('en')+"</i></h4>"+
-										"</div>"+
-								"</div>";
-						
-								
-								
-								
+									"<div class='part-2' style='text-align:center;'>"+
+										"<h3 class='product-title'>"+item.product_no+"</h3>"+
+										"<h3 class='product-title'>"+item.product_name+"</h3>"+
+										"<h4 class='product-price'><i class='fa fa-krw' style='font-size:14px'>&nbsp;"+(item.product_price).toLocaleString('en')+"</i></h4>"+
+									"</div>"+
+								 "</div>";
 						if((index+1)%3 == 0) {
 							html += "</div>";		
 						}
 						
-						$("div#displayAll").text(item.totalAllCount);
+						$('#totalAllCount').text(item.totalCount);
 						
-					});// end of $.each(json, function(index, item)-------------------
-				
-					// 전체상품 상품 결과물 출력하기
-					$("div#displayAll").append(html);		
+					}) // end each
 					
-					// $("span#countHIT") 에 지금까지 출력된 상품의 개수를 누적해서 기록한다.
-					$("span#countAll").text( Number($("span#countAll").text()) + json.length ); // span 태그는 value값이 없다. 그래서 text로 해준다.(아래 태그를 보면 이해할 수 있다.)
-																		
-					// 스크롤을 계속해서 countHIT 값과 totalHITCount 값이 일치하는 경우 
-					if( $("span#totalAllCount").text() == $("span#countAll").text() ) {
-					    $("span#end").html("더이상 조회할 제품이 없습니다.");
-					    $("span#countAll").text(0);
-					}
-				
-				}// end of else if(json,length > 0)-------------------------
-						
-			},
-			error: function(request, status, error){ // 통신 실패시 실행할 함수
-				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-			}
-		});// end of $.ajax --------------
-		        
-	}// end of function displayAll(start)------------------------------------
-			
+        		} // end else if
+        		
+        		// 상품 결과물 출력하기
+        		$("div#displayAll").append(html);
+        		
+        		// 지금까지 출력된 상품의 개수를 누적해서 기록
+        		$("span#countAll").text( Number($("span#countAll").text()) + json.length );
+
+        		// 더보기... 버튼을 계속해서 클릭하여 countHIT 값과 totalHITCount 값이 일치하는 경우 
+        		if( $("span#totalAllCount").text() == $("span#countAll").text() ) {
+					$("span#end").html("더이상 조회할 제품이 없습니다.");
+				}
+
+        	} , 
+        	error: function(request, status, error){
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+        });
 		
-		
-		
-		
-		
+	}
 		
 	
 
@@ -189,9 +168,6 @@
 				    <li class="nav-item sidebar_title_name">
 				      <a class="nav-link middle_cat category-link" data-category="004" href="#">sandal</a>
 				    </li>
-				    <li class="nav-item sidebar_title_name">
-				      <a class="nav-link middle_cat category-link" data-category="3002" href="#">aqua shoes</a>
-				    </li>
 				  </ul>  
 				</div>
 				
@@ -218,7 +194,7 @@
 				<div>    
 				  <ul class="navbar-nav all_sidebar">
 					<li class="nav-item sidebar_title_name">
-				      <a class="nav-link big_cat category-link" data-category="200" href="#">WOMEN</a>
+				      <a class="nav-link big_cat category-link" data-category="200" href="#">LADIES</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">
 				      <a class="nav-link middle_cat category-link" data-category="2001" href="#">running</a>
@@ -247,9 +223,9 @@
 				      <a class="nav-link middle_cat category-link" data-category="3002" href="#">aqua shoes</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">
-				      <a class="nav-link middle_ca category-link" style="color: black;" data-category="3003" href="#">sandal</a>
+				      <a class="nav-link middle_cat category-link" data-category="3003" href="#">sandal</a>
 				    </li>  
-				  </ul>  
+				  </ul>   
 				  
 				<hr style="width: 80%; margin-left: 0; text-align: left;">	
 				</div>    
@@ -347,9 +323,9 @@
 			
 				<div>
 			         <p class="text-center">
-			            <span id="end" style="display:block; margin:20px; font-size: 14pt; font-weight: bold; color: black;"></span> 
+			            <span id="end" style="display:block; margin:20px; font-size: 18pt; font-weight: bold; color: black;"></span> 
 			            <span id="totalAllCount"></span>
-			            <span id="countAll"></span>
+			            <span id="countAll">0</span>
 			         </p>
       			</div>
 			
