@@ -7,7 +7,7 @@
 
 	let start = 1;
 	
-	let lenAll = 6; // HIT 상품 "스크롤" 할 때 보여줄 상품의 개수(단위) 크기
+	let lenAll = 9; // HIT 상품 "스크롤" 할 때 보여줄 상품의 개수(단위) 크기
 	
 	let category = 00;
 	
@@ -47,7 +47,8 @@
 		    category = $(this).data("category"); // data-category 속성 값 가져오기
 		    console.log("선택한 카테고리: " + category);
 		    // 여기서 가져온 category 변수를 ajax 요청의 data 객체에 추가하여 서버에 전송하면 됩니다.
-		    $("div#displayAll").empty
+
+		    $("div#displayAll").empty();
 		    displayAll(start);
 		    
 		  });		
@@ -73,11 +74,21 @@
 			//	console.log("json 의 타입 => " + typeof json);
 			//	console.log("확인용 json => " + JSON.stringify(json));
 			//	console.log("JSON.stringify(json) 의 타입 => " + typeof JSON.stringify(json));
-				let html = "";
+			
+			if(start == 1) {
+				$("div#displayAll").empty();
+				$("span#totalAllCount").text("0");
+				$("span#end").empty();
+				
+			}
+			
+			
+			let html = "";
 				
 				if(start == "1" && json.length == 0) {
 				    html += "현재 상품 준비중...";
 					$("div#displayAll").html(html); // id가 displayAll인 div에 값을 뿌려준다.
+					
 				}
 				else if(json.length > 0) {
 					
@@ -90,9 +101,9 @@
 						html += "<div class='col-md-6 col-lg-4 col-xl-4' style='margin= 0 auto; padding=0px'>"+
 									"<div id='product-1' class='single-product' style='display: flex; justify-content: center; align-items: center;'>"+
 										"<div class='part-1'>"+
-											"<img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+" href='/MainSemiProject/shop/product.moc'>"+
+											"<a href='/MainSemiProject/shop/product.moc' style='width:inherit; height:inherit; text-align:center;'><img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+"></a>"+
 											"<ul>"+
-												"<li><a href='/MainSemiProject/shop/cartList.moc'><i class='fas fa-shopping-cart'></i></a></li>"+
+												"<li><a href='/product.moc?product_name="+item.product_name+"&product_color="+item.product_color+"'><i class='fas fa-shopping-cart'></i></a></li>"+
 											"</ul>"+
 										"</div>"+
 									"</div>"+
@@ -105,7 +116,9 @@
 						if((index+1)%3 == 0) {
 							html += "</div>";		
 						}
-								
+						
+						$("div#displayAll")
+						
 					});// end of $.each(json, function(index, item)-------------------
 				
 					// 전체상품 상품 결과물 출력하기
@@ -117,6 +130,7 @@
 					// 스크롤을 계속해서 countHIT 값과 totalHITCount 값이 일치하는 경우 
 					if( $("span#totalAllCount").text() == $("span#countAll").text() ) {
 					    $("span#end").html("더이상 조회할 제품이 없습니다.");
+					    $("span#countAll").text(0);
 					}
 				
 				}// end of else if(json,length > 0)-------------------------
@@ -171,6 +185,11 @@
 				    </li>  
 				    <li class="nav-item sidebar_title_name">
 				      <a class="nav-link middle_cat category-link" data-category="004" href="#">sandal</a>
+
+				    </li>
+				    <li class="nav-item sidebar_title_name">
+				      <a class="nav-link middle_cat category-link" data-category="3002" href="#">aqua shoes</a>
+
 				    </li>
 				  </ul>  
 				</div>
@@ -198,7 +217,11 @@
 				<div>    
 				  <ul class="navbar-nav all_sidebar">
 					<li class="nav-item sidebar_title_name">
+
+				      <a class="nav-link big_cat category-link" data-category="200" href="#">WOMEN</a>
+
 				      <a class="nav-link big_cat category-link" data-category="200" href="#">LADIES</a>
+
 				    </li>  
 					<li class="nav-item sidebar_title_name">
 				      <a class="nav-link middle_cat category-link" data-category="2001" href="#">running</a>
@@ -227,7 +250,7 @@
 				      <a class="nav-link middle_cat category-link" data-category="3002" href="#">aqua shoes</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">
-				      <a class="nav-link middle_ca category-link" data-category="3003" href="#">sandal</a>
+				      <a class="nav-link middle_ca category-link" style="color: black;" data-category="3003" href="#">sandal</a>
 				    </li>  
 				  </ul>  
 				  

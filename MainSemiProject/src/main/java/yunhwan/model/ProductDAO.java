@@ -46,33 +46,39 @@ public class ProductDAO implements InterProductDAO {
 	}// end of public ProductDAO()---------------------
 
 	
-	// === Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 6개씩 잘라서(start ~ end) 전체제품 조회해오기 === //
+	
+	
+	
+	
+	
+	// === Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 9개씩 잘라서(start ~ end) 전체제품 조회해오기 === //
 	@Override
-	public List<ProductVO> selectProduct(Map<String, String> param) throws SQLException {
+	public List<ProductVO> selectProduct(Map<String, String> paraMap) throws SQLException {
 
 		List<ProductVO> prodList = new ArrayList<>();
 		
 		try {
 			conn = ds.getConnection(); // 본인의 오라클DB와 연동
 			
-			String sql = " SELECT product_no, product_name, fk_shoes_category_no, product_price, product_color,  "
-					+ "       MAX(product_size) AS product_size, product_image, product_date, product_content,  "
-					+ "       upload_date, stock_count, sale_count "
-					+ " FROM ( "
-					+ "       SELECT ROW_NUMBER() OVER (ORDER BY product_name DESC) AS RNO, product_no, product_name,  "
-					+ "              fk_shoes_category_no, product_price, product_color, product_size, product_image,  "
-					+ "              product_date, product_content, upload_date, stock_count, sale_count "
-					+ "       FROM tbl_product "
-					+ "       WHERE fk_shoes_category_no LIKE '%' || ? || '%' "
-					+ "     ) "
-					+ " GROUP BY product_no, product_name, fk_shoes_category_no, product_price, product_color, "
-					+ "         product_image, product_date, product_content, upload_date, stock_count, sale_count, RNO "
-					+ " HAVING RNO BETWEEN ? AND ? ";
+			String sql = " SELECT product_no, product_name, fk_shoes_category_no, product_price, product_color\n"
+					+ "     , MAX(product_size) AS product_size, product_image, product_date, product_content\n"
+					+ "     , upload_date, stock_count, sale_count \n"
+					+ " FROM (\n"
+					+ "	  SELECT ROW_NUMBER() OVER (PARTITION BY product_name, product_color ORDER BY product_name DESC) AS RNO, product_no, product_name, \n"
+					+ "			 fk_shoes_category_no, product_price, product_color, product_size, product_image,\n"
+					+ "			 product_date, product_content, upload_date, stock_count, sale_count \n"
+					+ "	  FROM tbl_product \n"
+					+ "      WHERE fk_shoes_category_no LIKE '%' || ? || '%' \n"
+					+ "	 )\n"
+					+ " WHERE RNO = 1 AND ROWNUM BETWEEN ? AND ?\n"
+					+ " GROUP BY product_no, product_name, fk_shoes_category_no, product_price, product_color,\n"
+					+ " product_image, product_date, product_content, upload_date, stock_count, sale_count, RNO\n"
+					+ " ORDER BY product_name DESC ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, param.get("category"));
-			pstmt.setString(2, param.get("start"));
-			pstmt.setString(3, param.get("end"));
+			pstmt.setString(1, paraMap.get("category"));
+			pstmt.setString(2, paraMap.get("start"));
+			pstmt.setString(3, paraMap.get("end"));
 			
 			rs =pstmt.executeQuery();
 			
@@ -96,8 +102,41 @@ public class ProductDAO implements InterProductDAO {
 			close();
 		}
 		return prodList;
-		
 	}// end of public List<ProductVO> selectProduct(Map<String, String> param) throws SQLException------------
+
+	
+	
+	
+
+	@Override
+	public int totalAllCount(String fk_shoes_category_no) throws SQLException {
+		
+		int totalAllCount = 0;
+		
+		try {
+			conn = ds.getConnection();
+			
+			String sql = " select count(*) \n"
+					+ "from tbl_product \n"
+					+ "where fk_shoes_category_no LIKE '%' || ? || '%' ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, fk_shoes_category_no);
+			
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			
+			totalAllCount = rs.getInt(1);
+			
+		} finally {
+			close();
+		}
+		
+		return totalAllCount;
+	}//end of public int totalAllCount(String fk_shoes_category_no) throws SQLException --------------------------
+	
+	
 	
 	
 }
