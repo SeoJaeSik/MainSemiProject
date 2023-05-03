@@ -17,9 +17,9 @@ public class CartListDeleteAction extends AbstractController {
 		String method = request.getMethod();
 		
 		if("POST".equalsIgnoreCase(method)) { // POST 방식
-			
-			String cart_no = request.getParameter("cart_no");
 
+			String cart_no = request.getParameter("cart_no");
+			
 			// tbl_cart 테이블에서 cart_no 의 데이터행을 삭제
 			InterProductDAO pdao = new ProductDAO();
 			int result = pdao.cartDelete(cart_no);

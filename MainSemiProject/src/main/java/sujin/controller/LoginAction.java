@@ -1,6 +1,8 @@
 package sujin.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +47,27 @@ public class LoginAction extends AbstractController {
 		//	System.out.println("나와라 loginuser : " + loginuser);
 		//	나와라 loginuser : sujin.model.MemberVO@5c9f0728	
 			
+			
 			if(loginuser != null) { // DB 에 있는데, 
+				
+				Map<String, String> couponMap = mdao.selectMembercoupon(paraMap);
+				loginuser.setCouponCnt(Integer.parseInt(couponMap.get("couponCnt")));
+				loginuser.setCouponName(couponMap.get("couponName"));
+				
+			//	List<String> order_no = mdao.selectMemberOrderNo(paraMap);
+			//	loginuser.setOrder_no(order_no.get("order_no"));
+				
+				List<String> order_no_list = mdao.selectMemberOrderNo(paraMap);
+				String[] order_no_array = new String[order_no_list.size()];
+				order_no_list.toArray(order_no_array); // 리스트를 배열로 변환
+
+				loginuser.setOrder_no(order_no_array); // 배열을 loginuser 객체에 설정
+
+			//	System.out.println("order_no_array 확인 : " + loginuser.getOrder_no());
+				// order_no_array 확인 : [Ljava.lang.String;@2aa086ed
+			//	System.out.println("order_no_array 확인 : " + Arrays.toString(loginuser.getOrder_no()));
+				// order_no_array 확인 : [202305020003, 202305020002, 202305020001]
+				
 				
 				// 1) 휴면계정이라면
 				if(loginuser.getIdle() == 1) {
@@ -73,7 +95,7 @@ public class LoginAction extends AbstractController {
 				
 				InterProductDAO pdao = new ProductDAO();
 				int cartCount = pdao.cartCount(userid); // 로그인한 회원이 장바구니에 담은 상품수량
-				loginuser.setCartCount(cartCount); // 세션에 저장된 로그인회원의 상품수량 업데이트
+				loginuser.setCartCount(cartCount);      // 세션에 저장된 로그인회원의 상품수량 업데이트
 				
 			
 				if( loginuser.isRequirePwdChange() ) {

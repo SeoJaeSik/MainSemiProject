@@ -172,14 +172,14 @@
 			const regExp = /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*$/g;
 			const bool = regExp.test($(e.target).val()); 
 			
-			if(bool == false) {	// 4-1 암호가 정규표현식이 맞는 경우 
+			if(!bool) {	// 4-1 암호가 정규표현식이 아닌 경우 
 				
 				$("form[name='frmMemberRegister']:input").prop("disabled", true);
 				$(e.target).prop("disabled", false); 
 				$(e.target).parent().find("small.error").show();
 				$(e.target).focus();
 			}
-			else {				// 4-2 암호가 정규표현식이 아닌 경우
+			else {				// 4-2 암호가 정규표현식이 맞는 경우
 				$("form[name='frmMemberRegister']:input").prop("disabled", false);
 				$(e.target).parent().find("small.error").hide();
 			}
@@ -194,6 +194,7 @@
 				$(e.target).prop("disabled", false);   
 				$("input#pwd").prop("disabled", false); // 둘 다 살리고 포커스를 비밀번호에 주겠다
 				$(e.target).parent().find("small.error").show();
+				$("input#pwdcheck").val("");
 				$("input#pwd").focus();
 			}
 			else {														// 5-2 같은경우 
@@ -352,6 +353,8 @@
 		
 		$("input.requiredInfo").each(function(index, elt){
 			
+			console.log($(elt).val().trim());
+			
 			if( $(elt).val().trim() == "" ) {
 				alert(" * 표시된 필수입력사항은 모두 입력하셔야 합니다.");
 				b_flag_requiredInfo = true; 
@@ -423,13 +426,13 @@
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">성명&nbsp;<span class="star">*</span></label>
-		    <input class="col-6 form-control" type="text" id="name" name="name" class="requiredInfo" placeholder = "Name" ></input> <%-- autocomplete="off" : 자동완성막아줌 --%>
+		    <input class="col-6 form-control requiredInfo" type="text" id="name" name="name" placeholder = "Name" ></input> <%-- autocomplete="off" : 자동완성막아줌 --%>
 		    <span><small class="error" style="color:red">Name is required</small></span>
 	  	</div>
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">아이디&nbsp;<span class="star">*</span></label>
-		    <input class="col-5 form-control" type="text" id="userid" name="userid" class="requiredInfo" placeholder = "ID" />&nbsp;&nbsp;
+		    <input class="col-5 form-control requiredInfo" type="text" id="userid" name="userid" placeholder = "ID" />&nbsp;&nbsp;
 		    <button type="button" class="btn btn-secondary btn-sm col-3" id="idcheck" style="border-radius: 20px; width:50px;">ID중복확인</button>
             <span id="idcheckResult"></span>
 		    <span><small class="error" style="color:red">ID is required</small></span>
@@ -437,7 +440,7 @@
 	  
 	  	<div class="form-group row col-md-10 mx-auto" >
 		    <label class="col-3 col-form-label">이메일&nbsp;<span class="star">*</span></label>
-		    <input class="col-5 form-control" type="text" id="email" name="email" class="requiredInfo" placeholder = "Email" />&nbsp;&nbsp;
+		    <input class="col-5 form-control requiredInfo" type="text" id="email" name="email" placeholder = "Email" />&nbsp;&nbsp;
 		    <button type="button" class="btn btn-secondary btn-sm col-3" id="emailcheck" style="border-radius: 20px;">email 중복확인</button>
 		    <span id="emailCheckResult"></span>
 		    <span><small class="error" style="color:red">The email format is not correct.</small></span>
@@ -445,13 +448,13 @@
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">비밀번호&nbsp;<span class="star">*</span></label>
-		    <input class="col-6 form-control" type="password" id="pwd" name="pwd" class="requiredInfo" placeholder = "Password"></input>
+		    <input class="col-6 form-control requiredInfo" type="password" id="pwd" name="pwd" placeholder = "Password"></input>
 		    <span><small class="error" style="color:red">Password is required</small></span>
 	  	</div>
 	  
 	  	<div class="form-group row col-md-10 mx-auto">
 		    <label class="col-3 col-form-label">비밀번호확인&nbsp;<span class="star">*</span></label>
-		    <input class="col-6 form-control" type="password" id="pwdcheck" name="pwdcheck" class="requiredInfo" placeholder = "Confirm Password"></input>
+		    <input class="col-6 form-control requiredInfo" type="password" id="pwdcheck" name="pwdcheck" placeholder = "Confirm Password"></input>
 		    <span><small class="error" style="color:red">Please enter valid, matching passwords.</small></span>
 	  	</div>
 	  

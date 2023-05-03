@@ -297,6 +297,21 @@ public class MemberVO {
 	}
 
 	
+	//////////////////////////////////////////////////
+	
+	// 총 주문내역에서 보일 주문번호
+
+	private String[] order_no;
+	
+	public String[] getOrder_no() {
+		return order_no;
+	}
+
+	public void setOrder_no(String[] order_no_array) {
+		this.order_no = order_no_array;
+	}
+
+	
 	
 	
 	

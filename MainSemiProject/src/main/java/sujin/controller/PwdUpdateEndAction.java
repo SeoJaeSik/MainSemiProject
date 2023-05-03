@@ -20,13 +20,11 @@ public class PwdUpdateEndAction extends AbstractController {
 		String method = request.getMethod();  // "GET" 또는 "POST"
 		
 		String userid = request.getParameter("userid"); /* 넘어온 userid */
-		String email = request.getParameter("email"); /* 암호화된 넘어온 email */
+		String email = request.getParameter("email");   /* 암호화된 넘어온 email */
 		
 	//	System.out.println("~~~~~~ 요기요1 userid : " + userid);
 	//	System.out.println("~~~~~~ 요기요1 email : " + email);
-		
-	//	HttpSession session = request.getSession();
-	//	String userid = (String) session.getAttribute("gouserIdURL");
+
 				
 		//*** [GET방식일때 form 만 보이다가 버튼을 클릭해 POST 방식으로 암호를 변경하면 변경된게 DB 에도 적용되게 하고 메인으로 로그인창으로 간다 ]
 		if("GET".equals(method)) {
@@ -57,8 +55,8 @@ public class PwdUpdateEndAction extends AbstractController {
 				
 				if(n==1) { // 비밀번호 변경이 성공되면,
 					
-					System.out.println("~~~ 요기요3 userid : " + userid);
-					System.out.println("~~~ 요기요3 pwd : " + pwd);
+				//	System.out.println("~~~ 요기요3 userid : " + userid);
+				//	System.out.println("~~~ 요기요3 pwd : " + pwd);
 					
 					request.setAttribute("userid", userid);
 					request.setAttribute("pwd", pwd);

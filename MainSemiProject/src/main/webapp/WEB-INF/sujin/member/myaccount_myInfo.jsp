@@ -35,11 +35,13 @@
 		border-radius:50%;
 	}
 	
-	/* div#viewmyInfo {
+	div#viewmy1 {
 		background-color:#fefce7; 
 		padding-top:40px;
 		padding-bottom:40px;
-	} */
+	}
+	
+	
 
 </style>
 
@@ -48,20 +50,24 @@
 	$(document).ready(function(){
 		$("div#memberEdit").hide();		
 		
+		// 쿠폰명 보이기
 		$('[data-toggle="tooltip"]').tooltip();
 		
-	})
+	});
 
 	// == 나의정보수정하기 == 
 	function goEditPersonal(userid) {
 		
 		$("div#memberEdit").show();
 		
+		<%-- const url = "<%= request.getContextPath()%>/member/memberEdit.moc?userid=" + userid;
+	    location.href = url; --%>
+		
 	}//end of goEditPersonal()--------------------------------- 
 
 </script>
 
-<div class="tab-pane container active" id="viewmyInfo"> <%-- fade 클래스를 넣으면 active 가 안먹는다 뺴야함! --%>
+<div class="tab-pane container active" id="viewmy1"> <%-- fade 클래스를 넣으면 active 가 안먹는다 뺴야함! --%>
 	
 	<div class="mypage-wrapper">
   		<div class="p_column col-3" id="profile_img">
@@ -87,6 +93,7 @@
 	  	</div>
 	</div>
 </div>  
+
 
 <div id="memberEdit">
 	<jsp:include page="memberEdit.jsp"/> 

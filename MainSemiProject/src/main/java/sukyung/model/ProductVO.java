@@ -21,7 +21,7 @@ public class ProductVO {
 	private ShoesCategoryVO catevo;
 		
 	// CartVO 주문금액 계산
-	private int totalPrice; // 판매당시의 제품판매가 * 주문량
+	private int order_price; // 판매당시의 제품판매가 * 주문수량
 
 	// 기본 생성자
 	public ProductVO() {}
@@ -156,12 +156,12 @@ public class ProductVO {
 		this.catevo = catevo;
 	}
 
-	public void setTotalPrice(int cart_product_count) { // cart_product_count 는 주문수량임
-		totalPrice = product_price * cart_product_count; 
+	public void setOrder_price(int cart_product_count) { // cart_product_count 는 주문수량임
+		order_price = product_price * cart_product_count; 
 	}
 
-	public int getTotalPrice() {
-		return totalPrice;
+	public int getOrder_price() {
+		return order_price;
 	}		
 
 }

@@ -34,8 +34,13 @@ public class CartListAction extends AbstractController {
 			ProductVO rndpvo = pdao.showRandomItem(buyer_type_no);
 			request.setAttribute("rndpvo", rndpvo);
 
+			// 특정 제품의 사이즈 조회
 			List<ProductVO> sizeList = pdao.selectSizeList(rndpvo);
 			request.setAttribute("sizeList", sizeList);
+
+			// 특정 제품의 색상(이미지) 조회
+			List<ProductVO> colorList = pdao.selectColorList(rndpvo);
+			request.setAttribute("colorList", colorList);
 			
 			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/sukyung/cartList.jsp");
