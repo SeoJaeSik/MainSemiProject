@@ -101,9 +101,9 @@
 						html += "<div class='col-md-6 col-lg-4 col-xl-4' style='margin= 0 auto; padding=0px'>"+
 									"<div id='product-1' class='single-product' style='display: flex; justify-content: center; align-items: center;'>"+
 										"<div class='part-1'>"+
-											"<a href='/MainSemiProject/shop/product.moc' style='width:inherit; height:inherit; text-align:center;'><img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+"></a>"+
+											"<a href='/MainSemiProject/product.moc?product_name="+item.product_name+"&product_color="+item.product_color+"' style='width:inherit; height:inherit; text-align:center;'><img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+"></a>"+
 											"<ul>"+
-												"<li><a href='/product.moc?product_name="+item.product_name+"&product_color="+item.product_color+"'><i class='fas fa-shopping-cart'></i></a></li>"+
+												"<li><a href='/MainSemiProject/shop/cartList.moc?product_name="+item.product_name+"&product_color="+item.product_color+"&product_size="+item.product_size+"'><i class='fas fa-shopping-cart'></i></a></li>"+
 											"</ul>"+
 										"</div>"+
 									"</div>"+
@@ -113,11 +113,14 @@
 										"</div>"+
 								"</div>";
 						
+								
+								
+								
 						if((index+1)%3 == 0) {
 							html += "</div>";		
 						}
 						
-						$("div#displayAll")
+						$("div#displayAll").text(item.totalAllCount);
 						
 					});// end of $.each(json, function(index, item)-------------------
 				
@@ -185,11 +188,9 @@
 				    </li>  
 				    <li class="nav-item sidebar_title_name">
 				      <a class="nav-link middle_cat category-link" data-category="004" href="#">sandal</a>
-
 				    </li>
 				    <li class="nav-item sidebar_title_name">
 				      <a class="nav-link middle_cat category-link" data-category="3002" href="#">aqua shoes</a>
-
 				    </li>
 				  </ul>  
 				</div>
@@ -217,11 +218,7 @@
 				<div>    
 				  <ul class="navbar-nav all_sidebar">
 					<li class="nav-item sidebar_title_name">
-
 				      <a class="nav-link big_cat category-link" data-category="200" href="#">WOMEN</a>
-
-				      <a class="nav-link big_cat category-link" data-category="200" href="#">LADIES</a>
-
 				    </li>  
 					<li class="nav-item sidebar_title_name">
 				      <a class="nav-link middle_cat category-link" data-category="2001" href="#">running</a>
@@ -351,8 +348,8 @@
 				<div>
 			         <p class="text-center">
 			            <span id="end" style="display:block; margin:20px; font-size: 14pt; font-weight: bold; color: black;"></span> 
-			            <span id="totalAllCount">${requestScope.totalAllCount}</span>
-			            <span id="countAll">0</span>
+			            <span id="totalAllCount"></span>
+			            <span id="countAll"></span>
 			         </p>
       			</div>
 			
