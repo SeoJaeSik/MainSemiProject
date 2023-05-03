@@ -285,7 +285,7 @@
 			</li>
 	
 			<li class="nav-item my-auto px-2">
-				<a class="nav-link header_nav_link" href="#" >Men</a>
+				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/allproduct.moc" >Men</a>
 				<div id="nav-group_Men" class="nav-group" data-group="group-collections">
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
@@ -308,7 +308,7 @@
 			</li>
 			
 			<li class="nav-item my-auto px-2">
-				<a class="nav-link header_nav_link" href="#">Women</a>
+				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/allproduct.moc">Women</a>
 				<div id="nav-group_Women" class="nav-group" data-group="group-collections">
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
@@ -331,7 +331,7 @@
 			</li>
 			
 			<li class="nav-item my-auto px-2">
-				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/kidsProduct.moc">Kids</a>
+				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/allproduct.moc">Kids</a>
 				<div id="nav-group_Kids" class="nav-group" data-group="group-collections">
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
@@ -366,7 +366,7 @@
 						<a class="dropdown-item text-body" href="<%= ctxPath %>/member/admin/memberList.moc">회원목록</a>
 						<a class="dropdown-item text-body" href="<%= ctxPath %>/shop/admin/productRegister.moc">제품등록</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item text-body" href="#">전체주문내역</a>
+						<a class="dropdown-item text-body" href="<%= ctxPath %>/member/admin/orderAll.moc">전체 주문내역 조회</a>
 					</div>
 				</li>
 			</c:if>
