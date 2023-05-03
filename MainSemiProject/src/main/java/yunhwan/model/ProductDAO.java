@@ -46,7 +46,7 @@ public class ProductDAO implements InterProductDAO {
 	}// end of public ProductDAO()---------------------
 
 	
-	// === Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 6개씩 잘라서(start ~ end) 전체제품 조회해오기 === //
+	// === Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 9개씩 잘라서(start ~ end) 전체제품 조회해오기 === //
 	@Override
 	public List<ProductVO> selectProduct(Map<String, String> param) throws SQLException {
 
