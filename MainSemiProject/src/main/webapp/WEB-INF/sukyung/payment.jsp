@@ -45,6 +45,7 @@
 		$("a#btnCart").find("i").css('color', '#fdd007');
 		$("a#btnOrder").find("i").css('color', '#fdd007');
 		$("a#btnPay").find("i").css('color', '#fdd007');
+		$("div#lodaer").hide();
 		
 		calc_totalPrice(); // 결제금액 계산하는 함수 호출
 		
@@ -97,13 +98,15 @@
 		
 	// *** "결제하기" 클릭하면 발생하는 이벤트
 		$("button#btnPay").click(function(){
-		<%--
+			
+			$("div#lodaer").show();
+
 			const payment_name = $("input#product_no").eq(0).val();
 			const total_price = $("input#total_price").val();
 			const url = "<%= ctxPath%>/shop/paymentTry.moc?payment_name="+payment_name+"&total_price="+total_price;
 			window.open(url, payment_name, "left=350px, top=100px, width=1000px, height=600px");
-		--%>
-		goPaymentEnd();
+
+			goPaymentEnd();
 		}); // end of $("button#btnPay").click(function(){})
 		
 	}); // end of $(document).ready(function(){})
@@ -245,25 +248,26 @@
 			<table class="table table-borderless text-right mx-auto my-auto">
 			  <tbody>
 			    <tr>
-			    	<td class="col-md-7"></td>
+			    	<td rowspan="7" class="col-md-7 text-center">
+			    		<div id="lodaer" class="h4 mx-auto" style="padding-top: 150px;">
+			    		  <i class="fa-solid fa-sack-dollar fa-fade fa-2xl" style="color: #333333; text-shadow: 1px 1px 1px #e6e6e6;"> 결제진행중</i>	
+						</div>
+			    	</td>
 			      	<td class="col-md-3 p-1">총 주문금액</td>
 			      	<td class="col-md-2 p-1">
       				  <span id="sum_order_price" name="sum_order_price" class="h6"><fmt:formatNumber value="${requestScope.total_price}" pattern="###,###" />원</span>
 			      	</td>
 			    </tr>
 			    <tr>
-			    	<td class="col-md-7 pb-4"></td>
 			      	<td class="col-md-3 p-1 pb-4">배송비</td>
 			      	<td class="col-md-2 p-1 pb-4">
       				  <span id="delivery_fee" name="delivery_fee" class="h6"><fmt:formatNumber value="${requestScope.delivery_fee}" pattern="###,###" />원</span>
     		      	</td>
 			    </tr>
 			    <tr>
-			    	<td class="col-md-7 pt-4"></td>
-			      	<td colspan="2" class="col-md-5 pt-4 h5 border-top">${sessionScope.loginuser.name}(${sessionScope.loginuser.userid}) 님의 쿠폰 및 포인트</td>
+			      	<td colspan="2" class="col-md-5 pt-4 h6 border-top">${sessionScope.loginuser.name}(${sessionScope.loginuser.userid}) 님의 쿠폰 및 포인트</td>
 			    </tr>
 			    <tr>
-			    	<td class="col-md-7"></td>
 			      	<td colspan="2" class="col-md-5 p-1">
 			      		<select name="coupon" style="padding-bottom: 5px; width: 210px; height: 30px;">
 			      			  <option value="0">보유쿠폰 조회하기</option>
@@ -282,21 +286,18 @@
 			      	</td>
 			    </tr>
 			    <tr>
-			    	<td class="col-md-7 pb-2"></td>
 			      	<td class="col-md-3 p-1 pb-2">쿠폰 할인금액</td>
 			      	<td class="col-md-2 p-1 pb-2">
       				  <span id="coupon_dis_price" name="coupon_dis_price" style="font-size: 11pt; font-weight:bold;">적용된 쿠폰없음</span>
 			      	</td>
 			    </tr>
 			    <tr>
-			    	<td class="col-md-7 pt-2"></td>
 			      	<td class="col-md-3 p-1 pt-2">보유한 포인트</td>
 			      	<td class="col-md-2 p-1 pt-2">
       				    <span id="user_point" name="user_point" class="h6"><fmt:formatNumber value="${sessionScope.loginuser.point}" pattern="###,###" />원</span>
 			      	</td>
 			    </tr>
 			    <tr>
-			    	<td class="col-md-7 pb-4"></td>
 			      	<td class="col-md-3 p-1 pb-4">포인트 사용금액</td>
 			      	<td class="col-md-2 p-1 pb-4">
 		      		  <input type="text" id="point_redeem" name="point_redeem" value="0" style="width: 60px; height: 28px; text-align:right;" placeholder="0"/>원

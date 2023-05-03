@@ -127,7 +127,7 @@
 		 		<td colspan="4">
 		 			<div id="btnViewReset">
 					  <button type="button" id="btnViewReset" class="btn btn-dark px-4 py-3 my-3 mx-2">주문상세내역 접기</button>
-					  <a href="#" class="btn px-4 py-3 my-3 mx-2" style="background-color: #fdd007;">이전 주문내역 확인하기</a>
+					  <a href="<%= ctxPath %>/member/myaccount.moc" class="btn px-4 py-3 my-3 mx-2" style="background-color: #fdd007;">이전 주문내역 확인하기</a>
 		 			</div>
 		 		</td>
 	 		  </tr>

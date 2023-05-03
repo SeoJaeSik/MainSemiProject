@@ -38,9 +38,18 @@
 		border-bottom: solid 1px #cccccc;
 		border-radius: 1%;
 	}
-	button#btnOrder, button#btnAdd, button#btnOptionEdit {
+	button#btnOrder, button#btnOptionEdit {
 		background-color: #fdd007;
 		box-shadow: 1px 1px 1px 1px #e6e6e6;
+	}
+	button#btnAdd {
+		background-color: #333333;
+		color: #ffffff;
+		box-shadow: 1px 1px 1px 1px #e6e6e6;
+	}
+	button#btnAdd:hover{
+		background-color: #fdd007;
+		color: black;
 	}
 	input[type="number"]::-webkit-outer-spin-button,
 	input[type="number"]::-webkit-inner-spin-button {
@@ -62,7 +71,6 @@
 	}
 	.selected {
 		font-weight: bold;
-		font-size: 11pt;
 		text-decoration: underline;
 	}
 	
@@ -231,8 +239,8 @@
 		// 3) 선택한 색상의 css 변경
 		$("input:radio[name='add_product_color']").click(function(){
 			if($(this).prop("checked")){
-				$("label#add_product_color").removeClass('selected', {duration:1000});
-				$(this).parent().addClass('selected', {duration:1000});
+				$("label#add_product_color").removeClass('selected');
+				$(this).parent().addClass('selected');
 				selectedColor = $(this).val();
 
 				// 선택한 색상에 따른 이미지 보여주기
@@ -654,7 +662,7 @@
 				</div>
 	      	</div>
 			<div class="col-md-3 align-self-center text-center">
-				<button type="button" id="btnAdd" class="btn btn-lg px-5 py-3"><i class="fa-sharp fa-solid fa-cart-plus"></i>&nbsp;&nbsp;ADD TO CART</button>
+				<button type="button" id="btnAdd" class="btn btn-lg px-5 py-3"><i class="fa-sharp fa-solid fa-cart-plus"></i>&nbsp;&nbsp;추가하기</button>
 			</div>
 		</div>
 	

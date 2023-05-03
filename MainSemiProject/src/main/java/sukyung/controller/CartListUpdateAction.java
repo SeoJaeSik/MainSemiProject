@@ -36,7 +36,7 @@ public class CartListUpdateAction extends AbstractController {
 			String json = jsonObj.toString();
 			request.setAttribute("json", json);
 			
-		//	super.setRedirect(false);
+			super.setRedirect(false);
 			super.setViewPage("/WEB-INF/sukyung/jsonview.jsp");
 		
 		}
