@@ -29,14 +29,18 @@ public class MallDisplayJSONAction extends AbstractController {
         String category = request.getParameter("category");
         
         InterProductDAO pdao = new ProductDAO();
-        
+       
 
         Map<String, String> paraMap = new HashMap<>();
         
 		paraMap.put("start", start);  
         paraMap.put("category", category);
-        
        
+        int totalProdCount = pdao.totalAllCount("1");
+        
+        request.setAttribute("totalProdCount", totalProdCount);
+        
+        System.out.println("totalProdCount =>" + totalProdCount);
         
         String end = String.valueOf( Integer.parseInt(start) + Integer.parseInt(len) - 1);
 
@@ -44,6 +48,8 @@ public class MallDisplayJSONAction extends AbstractController {
 
         List<ProductVO> productList = pdao.selectProduct(paraMap);
 
+        
+        
         JSONArray jsonArr = new JSONArray();
 
         if (productList.size() > 0) {

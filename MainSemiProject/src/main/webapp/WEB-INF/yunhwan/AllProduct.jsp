@@ -74,7 +74,16 @@
 			//	console.log("json 의 타입 => " + typeof json);
 			//	console.log("확인용 json => " + JSON.stringify(json));
 			//	console.log("JSON.stringify(json) 의 타입 => " + typeof JSON.stringify(json));
-				let html = "";
+			
+			if(start == 1) {
+				$("div#displayAll").empty();
+				$("span#totalAllCount").empty();
+				$("span#end").empty();
+				
+			}
+			
+			
+			let html = "";
 				
 				if(start == "1" && json.length == 0) {
 				    html += "현재 상품 준비중...";
@@ -91,7 +100,7 @@
 						html += "<div class='col-md-6 col-lg-4 col-xl-4' style='margin= 0 auto; padding=0px'>"+
 									"<div id='product-1' class='single-product' style='display: flex; justify-content: center; align-items: center;'>"+
 										"<div class='part-1'>"+
-											"<a href='/MainSemiProject/shop/product.moc'><img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+"></a>"+
+											"<a href='/MainSemiProject/shop/product.moc' style='width:inherit; height:inherit; text-align:center;'><img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+"></a>"+
 											"<ul>"+
 												"<li><a href='/product.moc?product_name="+(item.product_name)+"&product_color="+(item.product_color)+"'><i class='fas fa-shopping-cart'></i></a></li>"+
 											"</ul>"+
@@ -118,6 +127,7 @@
 					// 스크롤을 계속해서 countHIT 값과 totalHITCount 값이 일치하는 경우 
 					if( $("span#totalAllCount").text() == $("span#countAll").text() ) {
 					    $("span#end").html("더이상 조회할 제품이 없습니다.");
+					    $("span#countAll").text(0);
 					}
 				
 				}// end of else if(json,length > 0)-------------------------
@@ -204,11 +214,11 @@
 				<div>    
 				  <ul class="navbar-nav all_sidebar">
 					<li class="nav-item sidebar_title_name">
-<<<<<<< HEAD
+
 				      <a class="nav-link big_cat category-link" data-category="200" href="#">WOMEN</a>
-=======
+
 				      <a class="nav-link big_cat category-link" data-category="200" href="#">LADIES</a>
->>>>>>> refs/heads/main
+
 				    </li>  
 					<li class="nav-item sidebar_title_name">
 				      <a class="nav-link middle_cat category-link" data-category="2001" href="#">running</a>
