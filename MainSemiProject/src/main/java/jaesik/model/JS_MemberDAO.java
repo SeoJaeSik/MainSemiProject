@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -751,6 +752,295 @@ public class JS_MemberDAO implements JS_InterMemberDAO {
 		}
 		
 		return prodList;
+	}
+
+	
+	// 전체상품을 select 해오는 메소드
+	@Override
+	public List<ProductVO> selectAll() throws SQLException {
+		
+		List<ProductVO> prodList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			String sql = " select *"
+					   + " from tbl_product"
+					   + " order by upload_date";
+			
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductVO pvo = new ProductVO();
+				
+				pvo.setProduct_no(rs.getString(1));
+				pvo.setProduct_name(rs.getString(2));
+				pvo.setFk_shoes_category_no(rs.getInt(3));
+				pvo.setProduct_price(rs.getInt(4));
+				pvo.setProduct_color(rs.getString(5));
+				pvo.setProduct_size(rs.getInt(6));
+				pvo.setProduct_image(rs.getString(7));
+				pvo.setProduct_date(rs.getString(8));
+				pvo.setProduct_content(rs.getString(9));
+				pvo.setUpload_date(rs.getString(10));
+				pvo.setStock_count(rs.getInt(11));
+				pvo.setSale_count(rs.getInt(12));
+				
+	            prodList.add(pvo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return prodList;
+	
+	}
+
+	
+	
+	// Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 9개씩 잘라서(start ~ end) 조회해오기
+	@Override
+	public List<ProductVO> selectAllProduct(Map<String, String> paraMap) throws SQLException {
+
+		List<ProductVO> prodList = new ArrayList<>();
+
+		try {
+			conn = ds.getConnection();
+			String sql = " select product_no, product_name, fk_shoes_category_no, product_price, product_color, product_size\n"+
+						 "     , product_image, product_date, product_content, upload_date, stock_count, sale_count\n"+
+						 " from \n"+
+						 " (select row_number() over (order by upload_date desc) as RNO, product_no, product_name, fk_shoes_category_no, product_price, product_color, product_size\n"+
+						 "     , product_image, product_date, product_content, upload_date, stock_count, sale_count\n"+
+						 " from tbl_product)\n"+
+						 " where rno between ? and ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("start"));
+			pstmt.setString(2, paraMap.get("end"));
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductVO pvo = new ProductVO();
+				
+				pvo.setProduct_no(rs.getString(1));
+				pvo.setProduct_name(rs.getString(2));
+				pvo.setFk_shoes_category_no(rs.getInt(3));
+				pvo.setProduct_price(rs.getInt(4));
+				pvo.setProduct_color(rs.getString(5));
+				pvo.setProduct_size(rs.getInt(6));
+				pvo.setProduct_image(rs.getString(7));
+				pvo.setProduct_date(rs.getString(8));
+				pvo.setProduct_content(rs.getString(9));
+				pvo.setUpload_date(rs.getString(10));
+				pvo.setStock_count(rs.getInt(11));
+				pvo.setSale_count(rs.getInt(12));
+
+	            prodList.add(pvo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return prodList;
+	
+	}
+
+	
+	// 카테고리별로 Ajax(JSON)를 이용한 더보기 방식(페이징처리)으로 상품정보를 9개씩 잘라서(start ~ end) 조회해오기
+	@Override
+	public List<ProductVO> selectGroupProduct(Map<String, String> paraMap) throws SQLException {
+
+		List<ProductVO> prodList = new ArrayList<>();
+
+		try {
+			conn = ds.getConnection();
+			String sql = " select product_no, product_name, fk_shoes_category_no, product_price, product_color, product_size"+
+						 "     , product_image, product_date, product_content, upload_date, stock_count, sale_count"+
+						 " from "+
+						 " ("+ 
+						 " select row_number() over (order by upload_date desc) as RNO, product_no, product_name, fk_shoes_category_no, product_price, product_color, product_size"+
+						 "     , product_image, product_date, product_content, upload_date, stock_count, sale_count"+
+						 " from tbl_product "+ 
+						 " where fk_shoes_category_no like '%'|| ? || '%' "+ 
+						 " ) "+
+						 " where rno between ? and ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, paraMap.get("category"));
+			pstmt.setString(2, paraMap.get("start"));
+			pstmt.setString(3, paraMap.get("end"));
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductVO pvo = new ProductVO();
+				
+				pvo.setProduct_no(rs.getString(1));
+				pvo.setProduct_name(rs.getString(2));
+				pvo.setFk_shoes_category_no(rs.getInt(3));
+				pvo.setProduct_price(rs.getInt(4));
+				pvo.setProduct_color(rs.getString(5));
+				pvo.setProduct_size(rs.getInt(6));
+				pvo.setProduct_image(rs.getString(7));
+				pvo.setProduct_date(rs.getString(8));
+				pvo.setProduct_content(rs.getString(9));
+				pvo.setUpload_date(rs.getString(10));
+				pvo.setStock_count(rs.getInt(11));
+				pvo.setSale_count(rs.getInt(12));
+
+	            prodList.add(pvo);
+			}
+			
+		} finally {
+			close();
+		}
+		
+		return prodList;
+	
+	}
+
+	
+	// 카테고리별 총 페이지 (셀렉트 개수) 알아오기
+	@Override
+	public int totalCount(String category) throws SQLException {
+		
+		int count = 0 ;
+		
+		try {
+			conn = ds.getConnection();
+			String sql = " select count(*)"+
+						 " from tbl_product "+ 
+						 " where fk_shoes_category_no like '%'|| ? || '%' ";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, category);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+		} finally {
+			close();
+		}
+		return count;
+	}
+
+	
+	
+	// 모든 사용자들이 주문한 갯수를 알아온다.
+	@Override
+	public int getTotalCountOrder() throws SQLException {
+
+		int totalCountOrder = 0;
+	      
+	    try {
+	    	conn = ds.getConnection();
+	         
+	        String sql = " select count(*) "
+	        		   + " from tbl_order_detail";
+	         
+	        pstmt = conn.prepareStatement(sql);
+	        rs = pstmt.executeQuery();
+	        rs.next();
+	                  
+	        totalCountOrder = rs.getInt(1);
+	         
+	    } finally {
+	    	close();
+	    }
+
+	    return totalCountOrder;
+	}
+
+	
+	
+	
+    // 모든 사용자들의 주문내역을 페이징 처리하여 조회해온다.
+	@Override
+	public List<HashMap<String, String>> getOrderList(int currentShowPageNo, int sizePerPage) throws SQLException {
+
+		List<HashMap<String, String>> orderList = null;
+	      
+		try {
+			conn = ds.getConnection();
+	          
+			String sql = " select order_no, fk_userid, orderdate, delivery_fee\n"+
+						 "     , total_price, order_detail_no, fk_product_no, order_count, order_price, delivery_mobile, delivery_address\n"+
+						 "     , delivery_comment, delivery_invoice, product_name, product_color, product_size, product_image, product_content\n"+
+						 " from \n"+
+						 "     (\n"+
+						 "     select row_number () over (order by orderdate desc) as RNO, order_no, fk_userid, orderdate, delivery_fee\n"+
+						 "         , total_price, order_detail_no, fk_product_no, order_count, order_price, delivery_mobile, delivery_address\n"+
+						 "         , delivery_comment, delivery_invoice, product_name, product_color, product_size, product_image, product_content\n"+
+						 "     from tbl_order O join tbl_order_detail D on O.order_no = D.fk_order_no\n"+
+						 "         join tbl_delivery V on V.fk_order_no = O.order_no\n"+
+						 "         join tbl_product P on P.product_no = D.fk_product_no\n"+
+						 "     )\n"+
+						 " where RNO between ? and ?";
+	                 
+			pstmt = conn.prepareStatement(sql);      
+
+			pstmt.setInt(1, (currentShowPageNo*sizePerPage)-(sizePerPage-1) );
+			pstmt.setInt(2, currentShowPageNo*sizePerPage );
+	                                      
+			rs = pstmt.executeQuery();
+	            
+			int cnt = 0;
+			while(rs.next()) {
+				cnt++;
+	               
+				if(cnt==1) {
+					orderList = new ArrayList<>(); 
+				}   
+	               
+				String order_no = rs.getString("order_no");
+	            String fk_userid = rs.getString("fk_userid");
+	            String orderdate = rs.getString("orderdate");
+	            String delivery_fee = rs.getString("delivery_fee");
+	            String total_price = rs.getString("total_price");
+	            String order_detail_no = rs.getString("order_detail_no");
+	            String fk_product_no = rs.getString("fk_product_no");
+	            String order_count = rs.getString("order_count");
+	            String order_price = rs.getString("order_price");
+	            String delivery_mobile = rs.getString("delivery_mobile");
+	            String delivery_address = rs.getString("delivery_address");
+	            String delivery_comment = rs.getString("delivery_comment");
+	            String delivery_invoice = rs.getString("delivery_invoice");
+	            String product_name = rs.getString("product_name");
+	            String product_color = rs.getString("product_color");
+	            String product_size = rs.getString("product_size");
+	            String product_image = rs.getString("product_image");
+	            String product_content = rs.getString("product_content");
+
+	            HashMap<String,String> odrmap = new HashMap<>();
+//	            odrmap.put("ODRCODE", odrcode);
+//	            odrmap.put("FK_USERID", fk_userid);
+//	            odrmap.put("ODRDATE", odrdate);
+//	            odrmap.put("ODRSEQNUM", odrseqnum);
+//	            odrmap.put("FK_PNUM", fk_pnum);
+//	            odrmap.put("OQTY", oqty);
+//	            odrmap.put("ODRPRICE", odrprice);	
+//	            odrmap.put("DELIVERSTATUS", deliverstatus);
+//	            odrmap.put("PNAME", pname);
+//	            odrmap.put("PIMAGE1", pimage1);
+//	            odrmap.put("PRICE", price);
+//	            odrmap.put("SALEPRICE", saleprice);
+//	            odrmap.put("POINT", point);
+
+	            orderList.add(odrmap);
+
+			}// end of while---------------------
+	                 
+		} finally {
+			close();
+		}
+
+		return orderList;
+	
 	}
 
 }

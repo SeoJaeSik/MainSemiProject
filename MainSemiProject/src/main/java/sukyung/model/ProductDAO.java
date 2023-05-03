@@ -830,7 +830,8 @@ public class ProductDAO implements InterProductDAO {
 					   + "      , P.product_no, P.product_name, P.product_color, P.product_size, P.product_image "
 					   + " from tbl_order_detail D join tbl_product P "
 					   + " on D.fk_product_no = P.product_no "
-					   + " where D.fk_order_no = ? ";
+					   + " where D.fk_order_no = ? "
+					   + " order by D.order_detail_no asc ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, order_no); // 주문번호

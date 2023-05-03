@@ -34,7 +34,6 @@ $(document).ready(function() {
 		if ( rsp.success ) { // PC 데스크탑용
 			window.opener.goPaymentEnd();
 			self.close(); // 자신의 팝업창(결제팝업창)을 닫는다.
-				
 		} else {
 			alert("결제 중 오류가 발생하였습니다.");
 			self.close(); // 자신의 팝업창(결제팝업창)을 닫는다.
