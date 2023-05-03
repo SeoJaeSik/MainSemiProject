@@ -9,7 +9,7 @@
 	
 	let lenAll = 6; // HIT 상품 "스크롤" 할 때 보여줄 상품의 개수(단위) 크기
 	
-	let category = 1;
+	let category = 00;
 	
 
 	$(document).ready(function() {
@@ -47,6 +47,7 @@
 		    category = $(this).data("category"); // data-category 속성 값 가져오기
 		    console.log("선택한 카테고리: " + category);
 		    // 여기서 가져온 category 변수를 ajax 요청의 data 객체에 추가하여 서버에 전송하면 됩니다.
+		    $("div#displayAll").empty();
 		    displayAll(start);
 		  });		
 		
@@ -156,19 +157,22 @@
 			  	<div>
 				  <ul class="navbar-nav all_sidebar">
 				  	<li class="nav-item sidebar_title_name">
-				      <a class="nav-link big_cat category-link" data-category="1" href="#">ALL</a>
+				      <a class="nav-link big_cat category-link" data-category="00" href="#">ALL</a>
 				    </li>
 				    <li class="nav-item sidebar_title_name">  
-				      <a class="nav-link middle_cat category-link" data-category="2" href="#">running</a>
+				      <a class="nav-link middle_cat category-link" data-category="001" href="#">running</a>
 				    </li>  
 				    <li class="nav-item sidebar_title_name">
-				      <a class="nav-link middle_cat category-link" data-category="3" href="#">walking</a>
+				      <a class="nav-link middle_cat category-link" data-category="002" href="#">walking</a>
 				    </li>  
 				    <li class="nav-item sidebar_title_name"> 
-				      <a class="nav-link middle_cat category-link" data-category="4" href="#">golf</a>
+				      <a class="nav-link middle_cat category-link" data-category="003" href="#">golf</a>
 				    </li>  
 				    <li class="nav-item sidebar_title_name">
-				      <a class="nav-link middle_cat category-link" data-category="5" href="#">sandal</a>
+				      <a class="nav-link middle_cat category-link" data-category="004" href="#">sandal</a>
+				    </li>
+				    <li class="nav-item sidebar_title_name">
+				      <a class="nav-link middle_cat category-link" data-category="3002" href="#">aqua shoes</a>
 				    </li>
 				  </ul>  
 				</div>
@@ -176,19 +180,19 @@
 				<div >    
 				  <ul class="navbar-nav all_sidebar">
 					<li class="nav-item sidebar_title_name">	
-				      <a class="nav-link big_cat category-link" data-category="6" href="#">MENS</a>
+				      <a class="nav-link big_cat category-link" data-category="100" href="#">MENS</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">	
-				      <a class="nav-link middle_cat category-link" data-category="7" href="#">running</a>
+				      <a class="nav-link middle_cat category-link" data-category="1001" href="#">running</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">	
-				      <a class="nav-link middle_cat category-link" data-category="8" href="#">walking</a>
+				      <a class="nav-link middle_cat category-link" data-category="1002" href="#">walking</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">	
-				      <a class="nav-link middle_cat category-link" data-category="9" href="#">golf</a>
+				      <a class="nav-link middle_cat category-link" data-category="1003" href="#">golf</a>
 				    </li>  
 					<li class="nav-item sidebar_name">	
-				      <a class="nav-link middle_cat category-link" data-category="10" style="color: black;" href="#">sandal</a>
+				      <a class="nav-link middle_cat category-link" data-category="1004" style="color: black;" href="#">sandal</a>
 				    </li>  
 				  </ul>  
 				</div>  
@@ -196,19 +200,19 @@
 				<div>    
 				  <ul class="navbar-nav all_sidebar">
 					<li class="nav-item sidebar_title_name">
-				      <a class="nav-link big_cat category-link" data-category="11" href="#">LADIES</a>
+				      <a class="nav-link big_cat category-link" data-category="200" href="#">WOMEN</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">
-				      <a class="nav-link middle_cat category-link" data-category="12" href="#">running</a>
+				      <a class="nav-link middle_cat category-link" data-category="2001" href="#">running</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">
-				      <a class="nav-link middle_cat category-link" data-category="13" href="#">walking</a>
+				      <a class="nav-link middle_cat category-link" data-category="2002" href="#">walking</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">
-				      <a class="nav-link middle_cat category-link" data-category="14" href="#">golf</a>
+				      <a class="nav-link middle_cat category-link" data-category="2003" href="#">golf</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">
-				      <a class="nav-link middle_cat category-link" data-category="15" href="#">sandal</a>
+				      <a class="nav-link middle_cat category-link" data-category="2004" href="#">sandal</a>
 				    </li>  
 				  </ul>  
 				</div>    
@@ -216,16 +220,16 @@
 				<div>    
 				  <ul class="navbar-nav all_sidebar">
 					<li class="nav-item sidebar_title_name">
-				      <a class="nav-link big_cat category-link" data-category="16" href="#">KIDS</a>
+				      <a class="nav-link big_cat category-link" data-category="300" href="#">KIDS</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">
-				      <a class="nav-link middle_cat category-link" data-category="17" href="#">running</a>
+				      <a class="nav-link middle_cat category-link" data-category="3001" href="#">running</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">
-				      <a class="nav-link middle_cat category-link" data-category="18" href="#">aqua shoes</a>
+				      <a class="nav-link middle_cat category-link" data-category="3002" href="#">aqua shoes</a>
 				    </li>  
 					<li class="nav-item sidebar_title_name">
-				      <a class="nav-link middle_ca category-link" data-category="19" href="#">sandal</a>
+				      <a class="nav-link middle_ca category-link" data-category="3003" href="#">sandal</a>
 				    </li>  
 				  </ul>  
 				  
