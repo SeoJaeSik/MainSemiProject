@@ -53,8 +53,8 @@ public class LoginAction extends AbstractController {
 				Map<String, String> couponMap = mdao.selectMembercoupon(paraMap);
 				loginuser.setCouponCnt(Integer.parseInt(couponMap.get("couponCnt")));
 				loginuser.setCouponName(couponMap.get("couponName"));
-				
-				
+		
+					
 				// 1) 휴면계정이라면
 				if(loginuser.getIdle() == 1) {
 					String message = "로그인을 한지 1년이 지나 휴면계정으로 전환되었습니다. 관리자에게 문의바랍니다.";
