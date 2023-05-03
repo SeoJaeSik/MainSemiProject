@@ -20,6 +20,10 @@ public class MallDisplayJSONAction extends AbstractController {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         
+    	// 로그인을 하면 시작페이지가 아니라 방금 보았던 그 페이지로 감.
+    	super.goBackURL(request);
+    	
+    	
     	String start = request.getParameter("start");
 		String len = request.getParameter("len"); // end 를 구하기 위해 가져온 것이다.
         String category = request.getParameter("category");
