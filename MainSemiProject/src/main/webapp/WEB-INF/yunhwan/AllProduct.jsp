@@ -77,7 +77,7 @@
 			
 			if(start == 1) {
 				$("div#displayAll").empty();
-				$("span#totalAllCount").empty();
+				$("span#totalAllCount").text("0");
 				$("span#end").empty();
 				
 			}
@@ -88,6 +88,7 @@
 				if(start == "1" && json.length == 0) {
 				    html += "현재 상품 준비중...";
 					$("div#displayAll").html(html); // id가 displayAll인 div에 값을 뿌려준다.
+					
 				}
 				else if(json.length > 0) {
 					
@@ -102,7 +103,7 @@
 										"<div class='part-1'>"+
 											"<a href='/MainSemiProject/shop/product.moc' style='width:inherit; height:inherit; text-align:center;'><img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+"></a>"+
 											"<ul>"+
-												"<li><a href='/product.moc?product_name="+(item.product_name)+"&product_color="+(item.product_color)+"'><i class='fas fa-shopping-cart'></i></a></li>"+
+												"<li><a href='/product.moc?product_name="+item.product_name+"&product_color="+item.product_color+"'><i class='fas fa-shopping-cart'></i></a></li>"+
 											"</ul>"+
 										"</div>"+
 									"</div>"+
@@ -115,7 +116,9 @@
 						if((index+1)%3 == 0) {
 							html += "</div>";		
 						}
-								
+						
+						$("div#displayAll")
+						
 					});// end of $.each(json, function(index, item)-------------------
 				
 					// 전체상품 상품 결과물 출력하기

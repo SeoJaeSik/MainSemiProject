@@ -118,7 +118,7 @@ public class ProductDAO implements InterProductDAO {
 			
 			String sql = " select count(*) \n"
 					+ "from tbl_product \n"
-					+ "where fk_shoes_category_no = ? ";
+					+ "where fk_shoes_category_no LIKE '%' || ? || '%' ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, fk_shoes_category_no);
@@ -134,7 +134,7 @@ public class ProductDAO implements InterProductDAO {
 		}
 		
 		return totalAllCount;
-	}
+	}//end of public int totalAllCount(String fk_shoes_category_no) throws SQLException --------------------------
 	
 	
 	
