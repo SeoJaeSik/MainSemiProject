@@ -47,8 +47,13 @@
 		    category = $(this).data("category"); // data-category 속성 값 가져오기
 		    console.log("선택한 카테고리: " + category);
 		    // 여기서 가져온 category 변수를 ajax 요청의 data 객체에 추가하여 서버에 전송하면 됩니다.
+<<<<<<< HEAD
 		    $("div#displayAll").empty();
+=======
+		    $("div#displayAll").empty
+>>>>>>> refs/heads/main
 		    displayAll(start);
+		    
 		  });		
 		
 		
@@ -170,9 +175,12 @@
 				    </li>  
 				    <li class="nav-item sidebar_title_name">
 				      <a class="nav-link middle_cat category-link" data-category="004" href="#">sandal</a>
+<<<<<<< HEAD
 				    </li>
 				    <li class="nav-item sidebar_title_name">
 				      <a class="nav-link middle_cat category-link" data-category="3002" href="#">aqua shoes</a>
+=======
+>>>>>>> refs/heads/main
 				    </li>
 				  </ul>  
 				</div>
@@ -200,7 +208,11 @@
 				<div>    
 				  <ul class="navbar-nav all_sidebar">
 					<li class="nav-item sidebar_title_name">
+<<<<<<< HEAD
 				      <a class="nav-link big_cat category-link" data-category="200" href="#">WOMEN</a>
+=======
+				      <a class="nav-link big_cat category-link" data-category="200" href="#">LADIES</a>
+>>>>>>> refs/heads/main
 				    </li>  
 					<li class="nav-item sidebar_title_name">
 				      <a class="nav-link middle_cat category-link" data-category="2001" href="#">running</a>
