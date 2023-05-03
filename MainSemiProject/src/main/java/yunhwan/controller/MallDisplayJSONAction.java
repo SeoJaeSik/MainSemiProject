@@ -28,10 +28,6 @@ public class MallDisplayJSONAction extends AbstractController {
         
         InterProductDAO pdao = new ProductDAO();
         
-        if (category == null || category.trim().isEmpty()) {
-            return;
-        }
-
         Map<String, String> paraMap = new HashMap<>();
 		paraMap.put("start", start);  
         paraMap.put("category", category);
@@ -41,70 +37,9 @@ public class MallDisplayJSONAction extends AbstractController {
 
         JSONArray jsonArr = new JSONArray();
 
-        List<ProductVO> productList = null;
+        List<ProductVO> productList = pdao.selectProduct(paraMap);
 
-        switch (category) {
-            case "1":
-                productList = pdao.selectProduct(paraMap);
-                break;
-            case "2":
-                productList = pdao.selectAllRunningProduct(paraMap);
-                break;
-            case "3":
-                productList = pdao.selectAllWalking(paraMap);
-                break;
-            case "4":
-                productList = pdao.selectAllGolf(paraMap);
-                break;
-            case "5":
-                productList = pdao.selectAllSandal(paraMap);
-                break;
-            case "6":
-                productList = pdao.selectMenAll(paraMap);
-                break;
-            case "7":
-                productList = pdao.selectMenRunning(paraMap);
-                break;
-            case "8":
-                productList = pdao.selectMenWalking(paraMap);
-                break;
-            case "9":
-                productList = pdao.selectMenGolf(paraMap);
-                break;
-            case "10":
-                productList = pdao.selectMenSandal(paraMap);
-                break;
-            case "11":
-                productList = pdao.selectWomenAll(paraMap);
-                break;
-            case "12":
-                productList = pdao.selectWomenRunning(paraMap);
-                break;
-            case "13":
-                productList = pdao.selectWomenWalking(paraMap);
-                break;
-            case "14":
-                productList = pdao.selectWomenGolf(paraMap);
-                break;
-            case "15":
-                productList = pdao.selectWomenSandal(paraMap);
-                break;
-            case "16":
-                productList = pdao.selectKidAll(paraMap);
-                break;
-            case "17":
-                productList = pdao.selectKidRunning(paraMap);
-                break;
-            case "18":
-            	productList = pdao.selectKidsAqua(paraMap);
-                break;
-            case "19":
-            	productList = pdao.selectKidSandals(paraMap);
-                break;
-            default :     
-        }
-
-        if (productList != null && !productList.isEmpty()) {
+        if (productList.size() > 0) {
             for (ProductVO pvo : productList) {
                 JSONObject jsonObj = new JSONObject();
                 jsonObj.put("product_no", pvo.getProduct_no());
