@@ -21,7 +21,7 @@ public class MemberListAction extends AbstractController {
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 		
-		if ( loginuser != null && "admin".equals(loginuser.getUserid()) ) {
+		if ( loginuser != null && loginuser.getAdmin() == 1 ) {
 			// 관리자로만 로그인한 경우 일반유저와 로그아웃일때 url만 입력해서 들어오는 것을 막아야 한다.
 			
 			String searchType = request.getParameter("searchType"); 

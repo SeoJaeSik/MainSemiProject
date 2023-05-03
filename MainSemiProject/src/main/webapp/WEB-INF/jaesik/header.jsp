@@ -265,17 +265,17 @@
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
 							<li class="prod_view_list">
-								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/all1.jpg" style="width: 100%; "/></a>
+								<a href="<%= ctxPath%>/product.moc?product_name=프레쉬폼 워킹 1880 V1(여성,D)" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/all1.jpg" style="width: 100%; "/></a>
 								<h2 style="display: inline-block;"><span class="badge badge-danger">BEST</span></h2>
 								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/all2.jpg" style="width: 100%; "/></a>
+								<a href="<%= ctxPath%>/product.moc?product_name=프레쉬폼x 1080 V12(여성,D)" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/all2.jpg" style="width: 100%; "/></a>
 								<h2 style="display: inline-block;"><span class="badge badge-danger">BEST</span></h2>
 								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/all3.jpg" style="width: 100%; "/></a>
+								<a href="<%= ctxPath%>/product.moc?product_name=키즈런닝" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/all3.jpg" style="width: 100%; "/></a>
 								<h2 style="display: inline-block;"><span class="badge badge-danger">BEST</span></h2>
 								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
@@ -290,16 +290,16 @@
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
 							<li class="prod_view_list">
-								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/men1.jpg" style="width: 100%; "/></a>
+								<a href="<%= ctxPath%>/product.moc?product_name=W480KB5" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/men1.jpg" style="width: 100%; "/></a>
 								<h2 style="display: inline-block;"><span class="badge badge-danger">BEST</span></h2>
 								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/men2.jpg" style="width: 100%; "/></a>
+								<a href="<%= ctxPath%>/product.moc?product_name=UGBS574D (GOLF)" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/men2.jpg" style="width: 100%; "/></a>
 								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/men3.jpg" style="width: 100%; "/></a>
+								<a href="<%= ctxPath%>/product.moc?product_name=SD3601HIV" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/men3.jpg" style="width: 100%; "/></a>
 								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 						</ul> 
@@ -313,16 +313,16 @@
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
 							<li class="prod_view_list">
-								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/women1.jpg" style="width: 100%; "/></a>
+								<a href="<%= ctxPath%>/product.moc?product_name=WGBS574W(GOLF)" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/women1.jpg" style="width: 100%; "/></a>
 								<h2 style="display: inline-block;"><span class="badge badge-danger">BEST</span></h2>
 								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/women2.jpg" style="width: 100%; "/></a>
+								<a href="<%= ctxPath%>/product.moc?product_name=프레쉬폼 워킹 1880 V1(여성,D)" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/women2.jpg" style="width: 100%; "/></a>
 								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/women3.jpg" style="width: 100%; "/></a>
+								<a href="<%= ctxPath%>/product.moc?product_name=NB쿠셔닝 슬라이드 / SD1501BE3" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/women3.jpg" style="width: 100%; "/></a>
 								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 						</ul> 
@@ -331,21 +331,21 @@
 			</li>
 			
 			<li class="nav-item my-auto px-2">
-				<a class="nav-link header_nav_link" href="#">Kids</a>
+				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/kidsProduct.moc">Kids</a>
 				<div id="nav-group_Kids" class="nav-group" data-group="group-collections">
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
 							<li class="prod_view_list">
-								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/kids1.jpg" style="width: 100%; "/></a>
+								<a href="<%= ctxPath%>/product.moc?product_name=키즈런닝" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/kids1.jpg" style="width: 100%; "/></a>
 								<h2 style="display: inline-block;"><span class="badge badge-danger">BEST</span></h2>
 								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/kids2.jpg" style="width: 100%; "/></a>
+								<a href="<%= ctxPath%>/product.moc?product_name=키즈런닝" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/kids2.jpg" style="width: 100%; "/></a>
 								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 							<li class="prod_view_list">
-								<a href="#" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/kids3.jpg" style="width: 100%; "/></a>
+								<a href="<%= ctxPath%>/product.moc?product_name=K8809Y3I" class="prod_image" style="width: 100%;"><img src="<%= ctxPath%>/images/kids3.jpg" style="width: 100%; "/></a>
 								<h2 style="display: inline-block;"><span class="badge badge-primary">NEW</span></h2>
 							</li>
 						</ul> 
