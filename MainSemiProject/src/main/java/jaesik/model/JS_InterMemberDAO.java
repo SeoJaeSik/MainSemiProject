@@ -80,5 +80,5 @@ public interface JS_InterMemberDAO {
 
     // 모든 사용자들의 주문내역을 페이징 처리하여 조회해온다.
 	List<HashMap<String, String>> getOrderList(int currentShowPageNo, int sizePerPage) throws SQLException;
-
+ 
 }
