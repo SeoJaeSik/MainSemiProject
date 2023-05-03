@@ -17,7 +17,7 @@ public class MemberOneDetailAction extends AbstractController {
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 		
-		if ( loginuser != null && "admin".equals(loginuser.getUserid()) ) {
+		if ( loginuser != null && loginuser.getAdmin() == 1 ) {
 			
 			String userid = request.getParameter("userid");
 			JS_InterMemberDAO mdao = new JS_MemberDAO();
