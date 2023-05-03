@@ -25,11 +25,9 @@ public class MyaccountAction extends AbstractController {
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
       
-    //	System.out.println("loginuser 확인 : " + loginuser);
-      
-		if ( loginuser != null ) {
-			// 로그인한 경우
-    	  
+		
+		if ( loginuser != null ) { // 로그인한 경우
+			
 			InterMemberDAO modrdao = new MemberDAO();
 			
 			// 주문번호(order_no) 를 이용하여 주문정보(주문테이블, 배송테이블) 조회(select)	
@@ -39,20 +37,10 @@ public class MyaccountAction extends AbstractController {
 			
 			for(int i=0; i<ovolist.size(); i++) {
 				ovolist.get(i); // 배열을 loginuser 객체에 설정
-			//	System.out.println(loginuser.getOrder_no());
 			}
 			
+			request.setAttribute("ovolist", ovolist);
 
-			System.out.println("ovolist 확인 2 : " + ovolist);
-			// order_no_array 확인 : 202305020003,202305020002,202305020001,
-			
-			// order_no_array 확인 : [Ljava.lang.String;@2aa086ed
-		//	System.out.println("order_no_array 확인 : " + Arrays.toString(loginuser.getOrder_no()));
-			// order_no_array 확인 : [202305020003, 202305020002, 202305020001]
-			   request.setAttribute("ovolist", ovolist);
-
-		//	Map<String, String> orderMap = pdao.showOrderList(order_no);
-		//	request.setAttribute("orderMap", orderMap);
 			
 			///////////////////////////////////////////
     	  

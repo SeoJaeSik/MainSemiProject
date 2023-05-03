@@ -80,11 +80,11 @@
 		cursor: pointer;
 	}
 	
-	.img_selected {
+	.selected {
 		border: solid 3px #FDD007;
 	}
 	
-	.img_not_selected {
+	.not_selected {
 		border: solid 1px gray;
 	}
 
@@ -185,32 +185,14 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
-		 
-	    $("p#order_error_msg").css('display','none'); // 코인잔액 부족시 주문이 안된다는 표시해주는 곳. 
 		
-		// 초기 로딩 시 선택된 색상 강조 표시
-		$('img[name="colorList"]').each(function() {
-			let img1 = this.src;
-			let img2 = $('input[name="product_image"]').val();
-
-		    if (img1 == img2) {
-		    	$(this).addClass('img_selected').removeClass('img_not_selected');
-		    } else {
-		    	$(this).addClass('img_not_selected').removeClass('img_selected');
-		    }
-		});
+		// 로그인을 하면 시작페이지가 아니라 방금 보았던 그 페이지로 감.
+		super.goBackURL(request);
 		
-		// 초기 로딩 시 선택된 사이즈 강조 표시
-		$('button[name="sizeList"]').each(function() {
-			let size1 = $(this).val();
-			let size2 = $('input[name="product_size"]').val();
-
-		    if (size1 == size2) {
-		    	$(this).addClass('btn-warning').removeClass('btn-white');
-		    } else {
-		    	$(this).addClass('btn-white').removeClass('btn-warning');
-		    }
-		});
+		let btn_html; // 버튼의 원래 값을 담을 변수
+		
+		function colorSelected();
+		function sizeSelected();
 		
 		
 		// 스피너
@@ -229,7 +211,63 @@
 				
 	}); // end of $(document).ready();------------------------------
 
+	
+	
 	// Function Declaration
+	
+	function Selected() {
+		$('img[name="colorList"]').each(function() {
+			let img1 = this.src;
+			
+			let img2 = $('input[name="product_image"]').val();
+	
+		    if ( img1.substring("http://localhost:9090".length) == img2
+		    		|| img1 == img2 ) {
+		    	
+		    	$(this).addClass('selected').removeClass('not_selected');
+		    
+		    } else {
+		    	
+		    	$(this).addClass('not_selected').removeClass('selected');
+		    
+		    }
+		});
+	}
+	
+	
+ 	// 선택된 색상 강조 표시
+	function colorSelected() {
+		$('img[name="colorList"]').each(function() {
+			let img1 = this.src;
+			
+			let img2 = $('input[name="product_image"]').val();
+	
+		    if ( img1.substring("http://localhost:9090".length) == img2
+		    		|| img1 == img2 ) {
+		    	
+		    	$(this).addClass('selected').removeClass('not_selected');
+		    
+		    } else {
+		    	
+		    	$(this).addClass('not_selected').removeClass('selected');
+		    
+		    }
+		});
+	}
+	
+	// 선택된 사이즈 강조 표시
+	function sizeSelected() {
+		$('button[name="sizeList"]').each(function() {
+			let size1 = $(this).val();
+			let size2 = $('input[name="product_size"]').val();
+	
+		    if (size1 == size2) {
+		    	$(this).addClass('btn-warning').removeClass('btn-white');
+		    } else {
+		    	$(this).addClass('btn-white').removeClass('btn-warning');
+		    }
+		});
+	}
 	
 	// *** 이미지 클릭 ***//
 	function imgSelect(img) {
@@ -254,20 +292,22 @@
 	
 	
    // *** 장바구니 담기 ***//
-   function goCart() {
+   function goCart(btn) {
+	   
+      btn_loading(btn) // 버튼 로딩처리
    
       // === 주문량에 대한 유효성 검사하기 === //
       var frm = document.cartOrderFrm;
       
       var regExp = /^[0-9]+$/;  // 숫자만 체크하는 정규표현식
-      var oqty = frm.oqty.value;
-      var bool = regExp.test(oqty);
+      var bool = regExp.test($("input#spinner").val());
       
       if(!bool) {
          // 숫자 이외의 값이 들어온 경우 
-         alert("주문갯수는 1개 이상이어야 합니다.");
-         frm.oqty.value = "1";
-         frm.oqty.focus();
+         alert("주문갯수에는 숫자만 입력해주세요.");
+         $("input#spinner").val("1");
+         $("input#spinner").focus();
+         
          return; // 종료 
       }
       
@@ -275,78 +315,95 @@
       oqty = parseInt(oqty);
       if(oqty < 1) {
          alert("주문갯수는 1개 이상이어야 합니다.");
-         frm.oqty.value = "1";
-         frm.oqty.focus();
+         $("input#spinner").val("1");
+         $("input#spinner").focus();
+         
          return; // 종료 
       }
       
       // 주문개수가 1개 이상인 경우
-      frm.method = "POST";
-      frm.action = "<%= request.getContextPath()%>/shop/cartListAdd.moc";
-      frm.submit();
+      // *** 장바구니 담기 *** // 
+      
+		$.ajax({
+			url:"<%= request.getContextPath()%>/shop/cartListAdd.moc",
+			type:"post",
+			data:{"product_name":"${requestScope.pvo.product_name}",
+				"product_color":"${requestScope.pvo.product_color}",
+				"product_size":"${requestScope.pvo.product_size}",
+				"cart_product_count":$("input#spinner").val(),
+				},
+			dataType:"json",
+			success:function(json) {
+				// json은 {"result":1} 또는 {"result":0}이다.
+				
+				if(json.result == 1) {
+					if(confirm("장바구니에 상품을 담았습니다.\n장바구니로 이동하시겠습니까?")){
+						
+						location.href="<%= request.getContextPath()%>/shop/cartList.moc";
+						
+					}
+					
+				}
+			
+			},
+        	 error: function(request, status, error){
+                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+			
+		});		
+		
+	}// end of function goCart()-------------------------
    
-   }// end of function goCart()-------------------------
-   
-   
+	
    // *** 바로주문하기 *** // 
    function goOrder(btn) {
-	   
-	   if( ${not empty sessionScope.loginuser} ) {
-			   
-		   const current_point = Number("${sessionScope.loginuser.point}"); // 현재포인트
-		   const sum_totalPrice = Number("${requestScope.pvo.product_price}") * Number($("input#spinner").val()); // 제품총판매가
-		   
-			if( sum_totalPrice > current_coin) {
-				$("p#order_error_msg").html("포인트가 부족하므로 주문이 불가합니다.<br>주문총액 : "+sum_totalPrice.toLocaleString('en')+"원 / 포인트잔액 : "+ current_point.toLocaleString('en')+"포인트").css('display','');
-				return;
-			}
-	   
-	  		
-		   else {
-			   $("p#order_error_msg").css('display','none');
-		   
-			   if( confirm("총주문액 : " + sum_totalPrice.toLocaleString('en') + "원 결제하시겠습니까?") ) {
-
-				   $(btn).html('<i class="fa-solid fa-circle-notch fa-spin"></i> loading');
-				   
-					$.ajax({
-						url:"<%= request.getContextPath()%>/shop/orderAdd.moc",
-						type:"post",
-						data:{"sum_totalPrice":sum_totalPrice,
-							"product_name_join":"${requestScope.pvo.product_name}",
-							"product_color_join":"${requestScope.pvo.product_color}",
-							"product_size_join":"${requestScope.pvo.product_size}",
-							"oqty_join":$("input#spinner").val(),
-							"totalPrice_join":sum_totalPrice
-							},
-						dataType:"json",
-						success:function(json) {
-							// json은 {"isSuccess":1} 또는 {"isSuccess":0}이다.
-							
-							if(json.isSuccess == 1) {
-								location.href="<%= request.getContextPath()%>/shop/orderList.up";
-							}
-							else {
-								location.href="<%=request.getContextPath()%>/shop/orderError.up";
-							}
-							
-						},
-			        	 error: function(request, status, error){
-			                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-				        }
-							
-					});
-					   
-					}// end of if
-				}
-			}// end of if
 		
-		else {
-	   		alert("주문을 하시려면 먼저 로그인 하세요!!");
-	   }
+	    btn_loading(btn) // 버튼 로딩처리
+		
+		// 제품상세에서 바로결제
+		$.ajax({
+			url:"<%= ctxPath%>/shop/orderAdd.moc",
+     		data:{"product_name":"${requestScope.pvo.product_name}",
+				"product_color":"${requestScope.pvo.product_color}",
+				"product_size":"${requestScope.pvo.product_size}",
+				"cart_product_count":$("input#spinner").val(),
+     			}, 
+	  		type:"post",
+	 		dataType:"json",
+	 		async:false,
+	 		success:function(json) {
+		    	if(json.isSuccess == 1) { // 배송정보로 이동
+			    	location.href="<%= ctxPath%>/shop/delivery.moc";
+			    }
+			    else {
+					location.href="javascript:history.go(0);"; // 새로고침
+			    }
+	 		},
+	 		error: function(request, status, error) {
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+ 		});
 			
    } // end of function goOrder()----------------------   
    
+   
+	// 로딩 버튼으로 만들기
+	function start_loading(btn) {
+  
+		btn_html = $(btn).html();
+		$(btn).html('<i class="fa-solid fa-circle-notch fa-spin"></i> loading');
+		$(btn).attr("disabled", true);
+  
+	}
+ 
+ 
+	// 로딩버튼 되돌리기
+	function end_loading(btn) {
+	
+		$(btn).html(btn_html);
+		$(btn).attr("disabled", false);
+	  
+	}
    
 </script>  
    
@@ -378,13 +435,13 @@
 	
 	  <div class="row-md-12">
 	    <div class="column p-3">
-	      <img id="img_select" name="imgList" class="col-md-2 p-1 img_selected" src="${requestScope.pvo.product_image}" onclick="imgSelect(this);">
+	      <img id="img_select" name="imgList" class="col-md-2 p-1" src="${requestScope.pvo.product_image}" onclick="imgSelect(this);">
 	    </div>
 	
 	    <c:if test="${not empty requestScope.imgList}">
 	      <c:forEach var="imgfilename" items="${requestScope.imgList}">
 	        <div class="column">
-	          <img id="img_select" name="imgList" class="col-md-2 p-1 img_not_selected" src="${imgfilename}" style="width:100%" onclick="colorSelect(this);">
+	          <img id="img_select" name="imgList" class="col-md-2 p-1" src="${imgfilename}" style="width:100%" onclick="imgSelect(this);">
 	        </div>
 	      </c:forEach>
 	    </c:if>
@@ -396,7 +453,7 @@
     
         <div class="d-flex product-main_meta">
           <span class="col product-main_price p1">
-            <span name="product_price"><fmt:formatNumber value="${requestScope.pvo.product_price}" pattern="###,###" /></span>
+            <span name="product_price"><fmt:formatNumber value="${requestScope.pvo.product_price}" pattern="###,###" />원</span>
           </span>
         <div class="ml-5 pt-2 review">
           <span class="fa-stars">
@@ -445,31 +502,24 @@
           </div>
         </div>
 
-        <form name="cartOrderFrm">
-          <div class="mt-3 d-flex flex-column justify-content-between">
-            <div class="align-self-end">
-              <ul class="text-right">
-                <li>
-                  <label for="spinner">주문갯수&nbsp;</label>
-                  <input id="spinner" name="oqty" value="1" style="width: 110px;">
-                </li>
-              </ul>
-            </div>
-            <div class="d-flex justify-content-between mt-3">
-              <button type="button" id="btn_select" class="col-4 btn btn-white" onClick="goCart()">장바구니</button>
-              <button type="button" id="btn_select" class="col-8 ml-1 btn btn-warning" onClick="goOrder(this)">구매하기</button>
-            </div>
+        <div class="mt-3 d-flex flex-column justify-content-between">
+          <div class="align-self-end">
+            <ul class="text-right">
+              <li>
+                <label for="spinner">주문갯수&nbsp;</label>
+                <input id="spinner" name="oqty" value="1" style="width: 110px;">
+              </li>
+            </ul>
           </div>
-          <input type="hidden" name="product_no" value="${requestScope.pvo.product_no}" />
-          <input type="hidden" name="product_color" value="${requestScope.pvo.product_color}" />
-          <input type="hidden" name="product_size" value="${requestScope.pvo.product_size}" />
-          <input type="hidden" name="product_image" value="${requestScope.pvo.product_image}" />
-        </form>  
-    
-         
-	    <div>
-		  <p id="order_error_msg" class="text-center text-danger font-weight-bold h4">코인잔액이 부족하므로<br>주문이 불가합니다.</p>
-	    </div>
+          <div class="d-flex justify-content-between mt-3">
+            <button type="button" id="btn_select" class="col-4 btn btn-white" onClick="goCart(this)">장바구니</button>
+            <button type="button" id="btn_select" class="col-8 ml-1 btn btn-warning" onClick="goOrder(this)">구매하기</button>
+          </div>
+        </div>
+        <input type="hidden" name="product_no" value="${requestScope.pvo.product_no}" />
+        <input type="hidden" name="product_color" value="${requestScope.pvo.product_color}" />
+        <input type="hidden" name="product_size" value="${requestScope.pvo.product_size}" />
+        <input type="hidden" name="product_image" value="${requestScope.pvo.product_image}" />
      
       </div>
     </div>
