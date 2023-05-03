@@ -186,13 +186,11 @@
 
 	$(document).ready(function() {
 		
-		// 로그인을 하면 시작페이지가 아니라 방금 보았던 그 페이지로 감.
-		super.goBackURL(request);
-		
 		let btn_html; // 버튼의 원래 값을 담을 변수
 		
-		function colorSelected();
-		function sizeSelected();
+		imgSelected();
+		colorSelected();
+		sizeSelected();
 		
 		
 		// 스피너
@@ -215,8 +213,10 @@
 	
 	// Function Declaration
 	
-	function Selected() {
-		$('img[name="colorList"]').each(function() {
+	
+ 	// 선택된 이미지 강조 표시
+	function imgSelected() {
+		$('img[name="imgList"]').each(function() {
 			let img1 = this.src;
 			
 			let img2 = $('input[name="product_image"]').val();
@@ -234,8 +234,7 @@
 		});
 	}
 	
-	
- 	// 선택된 색상 강조 표시
+	// 선택된 색상 강조 표시
 	function colorSelected() {
 		$('img[name="colorList"]').each(function() {
 			let img1 = this.src;
@@ -294,11 +293,12 @@
    // *** 장바구니 담기 ***//
    function goCart(btn) {
 	   
-      btn_loading(btn) // 버튼 로딩처리
+      start_loading(btn); // 버튼 로딩처리
    
       // === 주문량에 대한 유효성 검사하기 === //
       var frm = document.cartOrderFrm;
       
+      var oqty = $("input#spinner").val();
       var regExp = /^[0-9]+$/;  // 숫자만 체크하는 정규표현식
       var bool = regExp.test($("input#spinner").val());
       
@@ -308,6 +308,7 @@
          $("input#spinner").val("1");
          $("input#spinner").focus();
          
+         end_loading(btn); // 로딩버튼 원상복구
          return; // 종료 
       }
       
@@ -318,39 +319,47 @@
          $("input#spinner").val("1");
          $("input#spinner").focus();
          
+         end_loading(btn); // 로딩버튼 원상복구
          return; // 종료 
       }
       
       // 주문개수가 1개 이상인 경우
       // *** 장바구니 담기 *** // 
       
-		$.ajax({
-			url:"<%= request.getContextPath()%>/shop/cartListAdd.moc",
-			type:"post",
-			data:{"product_name":"${requestScope.pvo.product_name}",
-				"product_color":"${requestScope.pvo.product_color}",
-				"product_size":"${requestScope.pvo.product_size}",
-				"cart_product_count":$("input#spinner").val(),
-				},
-			dataType:"json",
-			success:function(json) {
-				// json은 {"result":1} 또는 {"result":0}이다.
-				
-				if(json.result == 1) {
-					if(confirm("장바구니에 상품을 담았습니다.\n장바구니로 이동하시겠습니까?")){
+      if(${not empty sessionScope.loginuser}){
+    	  
+			$.ajax({
+				url:"<%= request.getContextPath()%>/shop/cartListAdd.moc",
+				type:"post",
+				data:{"product_name":"${requestScope.pvo.product_name}",
+					"product_color":"${requestScope.pvo.product_color}",
+					"product_size":"${requestScope.pvo.product_size}",
+					"cart_product_count":$("input#spinner").val(),
+					},
+				dataType:"json",
+				success:function(json) {
+					// json은 {"result":1} 또는 {"result":0}이다.
+					
+					if(json.result == 1) {
+						if(confirm("장바구니에 상품을 담았습니다.\n장바구니로 이동하시겠습니까?")){
+							
+							location.href="<%= request.getContextPath()%>/shop/cartList.moc";
+						}
 						
-						location.href="<%= request.getContextPath()%>/shop/cartList.moc";
+						end_loading(btn); // 로딩버튼 원상복구
 						
 					}
-					
-				}
+				},
+	        	 error: function(request, status, error){
+	                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		        }
+				
+			});	
 			
-			},
-        	 error: function(request, status, error){
-                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	        }
-			
-		});		
+      }
+      else {
+    	  location.href="<%= request.getContextPath()%>/login/login.moc";
+      }
 		
 	}// end of function goCart()-------------------------
    
@@ -358,31 +367,39 @@
    // *** 바로주문하기 *** // 
    function goOrder(btn) {
 		
-	    btn_loading(btn) // 버튼 로딩처리
+	   start_loading(btn); // 버튼 로딩처리
 		
 		// 제품상세에서 바로결제
-		$.ajax({
-			url:"<%= ctxPath%>/shop/orderAdd.moc",
-     		data:{"product_name":"${requestScope.pvo.product_name}",
-				"product_color":"${requestScope.pvo.product_color}",
-				"product_size":"${requestScope.pvo.product_size}",
-				"cart_product_count":$("input#spinner").val(),
-     			}, 
-	  		type:"post",
-	 		dataType:"json",
-	 		async:false,
-	 		success:function(json) {
-		    	if(json.isSuccess == 1) { // 배송정보로 이동
-			    	location.href="<%= ctxPath%>/shop/delivery.moc";
-			    }
-			    else {
-					location.href="javascript:history.go(0);"; // 새로고침
-			    }
-	 		},
-	 		error: function(request, status, error) {
-	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	        }
- 		});
+		 if(${not empty sessionScope.loginuser}){
+		
+			$.ajax({
+				url:"<%= ctxPath%>/shop/orderAdd.moc",
+	     		data:{"product_name":"${requestScope.pvo.product_name}",
+					"product_color":"${requestScope.pvo.product_color}",
+					"product_size":"${requestScope.pvo.product_size}",
+					"cart_product_count":$("input#spinner").val(),
+	     			}, 
+		  		type:"post",
+		 		dataType:"json",
+		 		async:false,
+		 		success:function(json) {
+			    	if(json.isSuccess == 1) { // 배송정보로 이동
+			    		end_loading(btn); // 로딩버튼 원상복구
+				    	location.href="<%= ctxPath%>/shop/delivery.moc";
+				    }
+				    else {
+						location.href="javascript:history.go(0);"; // 새로고침
+				    }
+		 		},
+		 		error: function(request, status, error) {
+		            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+		        }
+	 		});
+      }
+      else {
+    	  location.href="<%= request.getContextPath()%>/login/login.moc";
+      }
+		
 			
    } // end of function goOrder()----------------------   
    
@@ -440,7 +457,7 @@
 	
 	    <c:if test="${not empty requestScope.imgList}">
 	      <c:forEach var="imgfilename" items="${requestScope.imgList}">
-	        <div class="column">
+	        <div class="column p-3">
 	          <img id="img_select" name="imgList" class="col-md-2 p-1" src="${imgfilename}" style="width:100%" onclick="imgSelect(this);">
 	        </div>
 	      </c:forEach>
