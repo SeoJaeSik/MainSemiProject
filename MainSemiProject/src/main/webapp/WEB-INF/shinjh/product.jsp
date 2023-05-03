@@ -219,7 +219,7 @@
 		$('img[name="imgList"]').each(function() {
 			let img1 = this.src;
 			
-			let img2 = $('input[name="product_image"]').val();
+			let img2 = $('#expandedImg').val();
 	
 		    if ( img1.substring("http://localhost:9090".length) == img2
 		    		|| img1 == img2 ) {
@@ -270,23 +270,28 @@
 	
 	// *** 이미지 클릭 ***//
 	function imgSelect(img) {
-	    $('img[name="imgList"]').addClass('img_not_selected').removeClass('img_selected');
-	    $(img).addClass('img_selected').removeClass('img_not_selected');
+
 	    $('#expandedImg').attr('src', $(img).attr('src'));
+	    
+	 	// 선택된 이미지 강조 표시
+		imgSelected();
 	}
 	
 	// *** 색상 클릭 ***//
 	function colorSelect(img) {
-	    $('img[name="colorList"]').addClass('img_not_selected').removeClass('img_selected');
-	    $(img).addClass('img_selected').removeClass('img_not_selected');
+
 	    $('input[name="product_color"]').val($(img).attr('src'));
+	    
+	 	// 선택된 색상 강조 표시
+	    colorSelected();
 	}
 	
 	// *** 사이즈 클릭 ***//
 	function sizeSelect(btn) {
-	    $('button[name="sizeList"]').addClass('btn-white').removeClass('btn-warning');
-	    $(btn).addClass('btn-warning').removeClass('btn-white');
 	    $('input[name="product_size"]').val($(btn).val());
+	    
+	 	// 선택된 사이즈 강조 표시
+		sizeSelected();
 	}
 	
 	
