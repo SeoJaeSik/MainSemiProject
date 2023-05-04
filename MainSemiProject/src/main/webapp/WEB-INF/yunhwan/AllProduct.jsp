@@ -1,13 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
+<%
+    String ctxPath = request.getContextPath();
+%>
+    
+    
+    
 <jsp:include page="../jaesik/header.jsp"/>
 
 <script type="text/javascript">
 
 	let start = 1;
 	
-	let lenAll = 9; // HIT 상품 "스크롤" 할 때 보여줄 상품의 개수(단위) 크기
+	let lenAll = 9; // 카테고리별 상품 "스크롤" 할 때 보여줄 상품의 개수(단위) 크기
 	
 	let category = 0;
 	
@@ -54,6 +60,40 @@
 		    displayAll(start);
 		    
 		  });		
+		
+		
+		
+		
+		// 장바구니에 바로 추가 이벤트
+		$('[data-product-id="12345"]').on('click', function() {
+  			const productId = $(this).data('product-id');
+
+	        // Send an ajax request to add the product to the cart
+	        $.ajax({
+	            url:"<%= ctxPath%>/shop/cartListAdd.moc",
+	            data:{
+	                "product_name": product_name,  
+	                "product_color": product_color,
+	                "product_size": product_size,
+	            },
+	            type:"post",
+	            dataType:"json",
+	            success:function(json) {
+	                if(json.result == 1){ // insert sql 성공
+	                    location.href="javascript:history.go(0);"; // 새로고침
+	                }
+	            },
+	            error: function(request, status, error) {
+	                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	            }
+	        });
+	    });
+		
+		
+		
+		
+		
+		
 		
 		
 	}); // end of $(document).ready(function() -----------------
@@ -103,7 +143,7 @@
 										"<div class='part-1'>"+
 											"<a href='/MainSemiProject/product.moc?product_name="+item.product_name+"&product_color="+item.product_color+"' style='width:inherit; height:inherit; text-align:center;'><img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="+item.product_image+"></a>"+
 											"<ul>"+
-												"<li><a href='/MainSemiProject/shop/cartList.moc?product_name="+item.product_name+"&product_color="+item.product_color+"&product_size="+item.product_size+"'><i class='fas fa-shopping-cart'></i></a></li>"+
+												"<li><a><i class='fas fa-shopping-cart' data-product-id='12345'></i></a></li>"+
 											"</ul>"+
 										"</div>"+
 									"</div>"+
@@ -113,6 +153,7 @@
 										"</div>"+
 								"</div>";
 						
+								
 						if((index+1)%3 == 0) {
 							html += "</div>";		
 						}
@@ -143,7 +184,9 @@
 		        
 	}// end of function displayAll(start)------------------------------------
 			
-		
+	
+	
+	
 		
 		
 		

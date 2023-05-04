@@ -26,10 +26,11 @@ public class MallDisplayJSONAction extends AbstractController {
     	String start = request.getParameter("start");
 		String len = request.getParameter("len"); // end 를 구하기 위해 가져온 것이다.
         String category = request.getParameter("category");
+        String productId = request.getParameter("productId");
         
-        System.out.println("start => "+ start);
-        System.out.println("len => "+ len);
-        System.out.println("category => "+ category);
+       // System.out.println("start => "+ start);
+        //System.out.println("len => "+ len);
+        //System.out.println("category => "+ category);
         
         InterProductDAO pdao = new ProductDAO();
 
@@ -39,7 +40,7 @@ public class MallDisplayJSONAction extends AbstractController {
         String end = String.valueOf( Integer.parseInt(start) + Integer.parseInt(len) - 1);
         paraMap.put("end", end);  // start값 len값 가져와서 페이징
 
-        System.out.println("end => "+end);
+       // System.out.println("end => "+end);
         
         paraMap.put("category", category);
 
@@ -76,7 +77,7 @@ public class MallDisplayJSONAction extends AbstractController {
 
         String json = jsonArr.toString();
         
-        System.out.println("jsonArr.length() => "+ jsonArr.length()+"\n---------");
+       // System.out.println("jsonArr.length() => "+ jsonArr.length()+"\n---------");
         
         
         request.setAttribute("json", json);
