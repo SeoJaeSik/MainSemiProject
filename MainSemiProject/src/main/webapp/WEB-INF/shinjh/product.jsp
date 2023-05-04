@@ -218,7 +218,9 @@
 	 				  		  '<div class="row flex-wrap">';
 	 				
 	 				$.each(json.imgList, function(index, item){
-	 					
+
+	 					alert("item => " + item);
+	 					alert("typeof item => " + typeof item);
 		 			    html += '<img id="img_select" name="imgList" class="col-md-2 m-3 p-1" src="'+item+'" onclick="imgSelect(this);">';
 				 			    
 				 	});// end of if(!$.isEmptyObject(json.imgList))
