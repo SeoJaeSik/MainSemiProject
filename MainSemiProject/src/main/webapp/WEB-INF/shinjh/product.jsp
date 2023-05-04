@@ -77,16 +77,9 @@
 		color: orange;
 	}
 	
-	
 	ul {
 		list-style: none;
-	}
-	
-	.wrap {
-		display: flex;
-		flex-wrap: wrap;
-	}
-	
+	}	
 	
 	div#testimonial{
 		display: flex;
@@ -222,15 +215,11 @@
 	 				
 	 			    html += '<div class="col-md-12">'+
 	 				  		  '<img id="expandedImg" class="col-md-12" src="'+json.imgList[0]+'">'+
-	 				  		  '<div class="row-md-12">';
+	 				  		  '<div class="row flex-wrap">';
 	 				
 	 				$.each(json.imgList, function(index, item){
 	 					
-	 					console.log(index + ": " + item);
-	 					
-		 			    html += '<div class="column p-3">'+
-				 			      '<img id="img_select" name="imgList" class="col-md-2 p-1" src="'+item+'" onclick="imgSelect(this);">'+
-				 			    '</div>';
+		 			    html += '<img id="img_select" name="imgList" class="col-md-2 m-3 p-1" src="'+item+'" onclick="imgSelect(this);">';
 				 			    
 				 	});// end of if(!$.isEmptyObject(json.imgList))
 	 				
@@ -574,7 +563,7 @@
         
 	    <div class="row">
           <div class="col-md-12">
-            <div id="size_list" class="btn-group wrap" role="group">
+            <div id="size_list" class="btn-group flex-wrap" role="group">
             </div>
           </div>
         </div>
