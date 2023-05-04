@@ -135,6 +135,11 @@ public class OrderListAction extends AbstractController {
 				} // end of POST
 
 				else { // GET 방식일때
+
+					// session 에 저장해놨던 주문정보, 배송정보 삭제
+					session.removeAttribute("prodMap");
+					session.removeAttribute("shipMap");
+
 					super.setRedirect(false);
 					super.setViewPage("/WEB-INF/sukyung/orderList.jsp");
 				}
