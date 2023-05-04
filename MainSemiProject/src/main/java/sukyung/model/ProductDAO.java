@@ -581,14 +581,15 @@ public class ProductDAO implements InterProductDAO {
 			conn.setAutoCommit(false); // 수동커밋
 			
 		// 1) 주문 테이블(tbl_order) - insert 주문번호(생성), 회원아이디(fk), 배송비, 결제금액
-			String sql = " insert into tbl_order(order_no, fk_userid, delivery_fee, total_price) "
-					   + " values(?, ?, ?, ?) ";
+			String sql = " insert into tbl_order(order_no, fk_userid, delivery_fee, total_price, discount_price) "
+					   + " values(?, ?, ?, ?, ?) ";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, (String)paraMap.get("order_no"));
 			pstmt.setString(2, (String)paraMap.get("userid"));
 			pstmt.setString(3, (String)paraMap.get("delivery_fee"));
 			pstmt.setString(4, (String)paraMap.get("total_price"));
+			pstmt.setString(5, (String)paraMap.get("discount_price"));
 			
 			n1 = pstmt.executeUpdate();
 			
@@ -788,7 +789,7 @@ public class ProductDAO implements InterProductDAO {
 		
 		try {
 			conn = ds.getConnection();
-			String sql = " select A.order_no, A.orderdate, A.total_price "
+			String sql = " select A.order_no, A.orderdate, A.total_price, A.discount_price "
 					   + "      , B.delivery_name, B.delivery_mobile, B.delivery_address, B.delivery_comment, B.delivery_invoice "
 					   + " from tbl_order A join tbl_delivery B "
 					   + " on A.order_no = B.fk_order_no "
@@ -802,12 +803,20 @@ public class ProductDAO implements InterProductDAO {
 			if(rs.next()) {
 				orderMap.put("order_no", rs.getString(1));
 				orderMap.put("orderdate", rs.getString(2));
-				orderMap.put("total_price", rs.getString(3));
-				orderMap.put("delivery_name", rs.getString(4));
-				orderMap.put("delivery_mobile", rs.getString(5));
-				orderMap.put("delivery_address", rs.getString(6));
-				orderMap.put("delivery_comment", rs.getString(7));
-				orderMap.put("delivery_invoice", rs.getString(8));
+				
+				int total_price = rs.getInt(3);
+				int discount_price = rs.getInt(4);
+				int origin_product_price = total_price + discount_price;
+				
+				orderMap.put("total_price", String.valueOf(total_price));
+				orderMap.put("discount_price", String.valueOf(discount_price));
+				orderMap.put("origin_product_price", String.valueOf(origin_product_price));
+				
+				orderMap.put("delivery_name", rs.getString(5));
+				orderMap.put("delivery_mobile", rs.getString(6));
+				orderMap.put("delivery_address", rs.getString(7));
+				orderMap.put("delivery_comment", rs.getString(8));
+				orderMap.put("delivery_invoice", rs.getString(9));
 			} // end of if(rs.next())
 
 		} finally {

@@ -22,12 +22,18 @@
 		font-family: 'Noto Sans KR', serif;
 		font-weight: 500;
 	}
-	label{
-		width: 17%;
+	#tbl_orderList > tbody > tr > td:nth-child(4) > div > label {
+		width: 40%;
 		text-align:right;
 		margin-right: 5px;
+		font-weight: 400;
 	}
-	
+	#tbl_orderList > tbody > tr > td:nth-child(3) > div > label {
+		width: 12%;
+		text-align:right;
+		margin-right: 5px;
+		font-weight: 400;
+	}
 </style>
 
 <script type="text/javascript">
@@ -100,28 +106,32 @@
 			<table class="table text-center" id="tbl_orderList">
 			  <thead>
 			    <tr>
-			    	<th class="col-md-2">주문번호</th>
-			    	<th class="col-md-2">주문날짜</th>
-			      	<th colspan="3" class="col-md-6">배송정보</th>
-			      	<th class="col-md-2">결제금액</th>
+			    	<th>주문번호</th>
+			    	<th>주문날짜</th>
+			      	<th>배송정보</th>
+			      	<th>주문금액</th>
 			    </tr>
 			  </thead>
 		      <tbody>
 		 	  	<tr>
-			 		<td>
+			 		<td class="px-0 mx-1" style="width: 110px;">
 			 		  <div id="order_no" class="mt-4">${requestScope.orderMap.order_no}</div>
 			 		  <input type="hidden" id="order_no" name="order_no" value="${requestScope.orderMap.order_no}"></input>
 			 		</td>
-			 		<td><div class="mt-4">${requestScope.orderMap.orderdate}</div></td>
-			 		<td colspan="3" class="col-md-6 text-left" style="font-size: 10pt;">
-			 			<div><label>수령자성명 : </label>${requestScope.orderMap.delivery_name}</div>
-			 			<div><label>수령자연락처 : </label>${requestScope.orderMap.delivery_mobile}</div>
-			 			<div><label>수령자주소 : </label>${requestScope.orderMap.delivery_address}</div>
+			 		<td class="px-0 mx-1" style="width: 120px;"><div class="mt-4">${requestScope.orderMap.orderdate}</div></td>
+			 		<td class="text-left px-0 mx-1" style="font-size: 10pt; width: 350px;">
+			 			<div><label>성명 :</label>${requestScope.orderMap.delivery_name}</div>
+			 			<div><label>연락처 :</label>${requestScope.orderMap.delivery_mobile}</div>
+			 			<div><label>주소 :</label>${requestScope.orderMap.delivery_address}</div>
 			 			<c:if test="${not empty requestScope.orderMap.delivery_comment}">
-			 			  <div><label>수령자요청사항 : </label>${requestScope.orderMap.delivery_comment}</div>
+			 			  <div><label>요청사항 : </label>${requestScope.orderMap.delivery_comment}</div>
 			 			</c:if>
 			 		</td>
-			 		<td id="total_price" style="font-size: 12pt; font-weight: bold;"><div class="mt-4"><fmt:formatNumber value="${requestScope.orderMap.total_price}" pattern="###,###" />원</div></td>
+			 		<td class="text-left px-0 mx-1" style="width: 200px;">
+			 			<div><label>제품정가 :&nbsp;</label><fmt:formatNumber value="${requestScope.orderMap.origin_product_price}" pattern="###,###" />원</div>
+			 			<div><label>할인받은금액 :&nbsp;</label><fmt:formatNumber value="${requestScope.orderMap.discount_price}" pattern="###,###" />원</div>
+			 			<div><label>실 결제금액 :&nbsp;</label><fmt:formatNumber value="${requestScope.orderMap.total_price}" pattern="###,###" />원</div>
+			 		</td>
 		 	  	</tr>
 		 	  	<tr>
 			 		<td colspan="6">
@@ -139,7 +149,7 @@
 	 	  	<tr>
 		 		<th colspan="2" class="col-md-6">주문상품/옵션</th>
 		 		<th>주문수량</th>
-		 		<th>주문금액</th>
+		 		<th>제품정가</th>
 	 	  	</tr>
 	      </thead>
 	      <tbody>
@@ -152,7 +162,7 @@
 		 		<td class="col-md-3 text-left">
 		 		  <div class="mt-4">
 		    		<input type="hidden" id="product_no" name="product_no" value="${odvo.pvo.product_no}" />
-		      		<div id="product_name">${odvo.pvo.product_name}</div>
+		      		<div id="product_name" style="font-weight: bold;">${odvo.pvo.product_name}</div>
 		      		<div id="product_color">${odvo.pvo.product_color}<span>&nbsp;</span><span id="product_size" name="product_size">${odvo.pvo.product_size}</span></div>
 		 		  </div>
 		 		</td>

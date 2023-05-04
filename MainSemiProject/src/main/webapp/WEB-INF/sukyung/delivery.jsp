@@ -103,18 +103,14 @@
 	// *** 4. "우편번호찾기"
 		$("button#btnPostcode").click(function(){
 			searchPostcode(); // 다음 openAPI 실행
-			b_flag_goNext = true;
-			$("button#btnPostcode").parent().find("span.error").hide(); 
 		}); // end of $("button#btnPostcode").click(function(){})
 
 		$("input#postcode").keyup(function(){
 			alert("'우편번호찾기'로 검색해주세요");
 			searchPostcode(); // 다음 openAPI 실행
-			b_flag_goNext = true;
-			$("button#btnPostcode").parent().find("span.error").hide(); 
-		}); // end of $("input#postcode").click(function(){})
+		}); // end of $("input#postcode").keyup(function(){})
 
-
+/*
 	// *** 5. 필수입력사항 input 태그가 blur 되었을때 발생하는 이벤트
 		$("input.required").blur(function(){
 			$("input#checkbox_same").prop("checked", false);
@@ -125,11 +121,24 @@
 				$(this).parent().find("span.error").hide(); 
 			}
 		}); // end of $("input.required").blur(function(){})
+*/
+	// *** 5. 필수입력사항 input 태그가 change 되었을때 발생하는 이벤트
+		$("input.required").change(function(){
+			$("input#checkbox_same").prop("checked", false);
+			if($(this).val() == ""){
+				$(this).parent().find("span.error").show(); // 에러메시지 보여주기
+			}
+			else{
+				$(this).parent().find("span.error").hide(); 
+			}
+		}); // end of $("input.required").change(function(){})
 
 		
 	// *** 6. "다음으로" 버튼 클릭하면 발생하는 이벤트
 		$("button#btnNext").click(function(){ // "결제하기" 노란 버튼 클릭
 			// 필수입력사항 전부 입력했는지 체크하기
+			b_flag_goNext = true;
+		
 			$("input.required").each(function(index, elmt){
 				if($(elmt).val() == ""){ // 필수입력사항을 입력하지 않은 경우
 					b_flag_goNext = false;
@@ -148,6 +157,8 @@
 		
 		$("a#btnPay").click(function(){ // 상단바의 "결제정보" 노란 동그라미 링크 클릭
 			// 필수입력사항 전부 입력했는지 체크하기
+			b_flag_goNext = true;
+		
 			$("input.required").each(function(index, elmt){
 				if($(elmt).val() == ""){ // 필수입력사항을 입력하지 않은 경우
 					b_flag_goNext = false;

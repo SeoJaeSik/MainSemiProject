@@ -353,10 +353,6 @@
 				</div>
 			</li>
 			
-			<li class="nav-item my-auto px-2">
-				<a class="nav-link header_nav_link" href="#">INFO</a>
-			</li>
-			
 			<c:if test="${sessionScope.loginuser != null and sessionScope.loginuser.admin == '1'}">
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle menufont_size header_nav_link" style="color: white;" href="#" id="navbarDropdown" data-toggle="dropdown"> 

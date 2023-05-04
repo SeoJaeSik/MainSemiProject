@@ -141,6 +141,11 @@ public class OrderListAction extends AbstractController {
 				
 			} // end of if(loginuser.getUserid().equals(userid))
 
+			else { // 로그인을 안한 경우
+				super.setRedirect(true);
+				super.setViewPage(request.getContextPath()+"/login/login.moc");
+			}
+			
 		} // if(super.checkLogin(request)) 로그인한 경우
 
 		else { // 로그인을 안한 경우
