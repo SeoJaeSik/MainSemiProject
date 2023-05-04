@@ -160,15 +160,15 @@ public class ProductDAO implements InterProductDAO {
 				
 				switch (btvo.getBuyer_type_no()) {
 					case "100":
-						buyer_type_name = "남성";
+						buyer_type_name = "Men";
 						break;
 						
 					case "200":
-						buyer_type_name = "여성";
+						buyer_type_name = "Women";
 						break;
 						
 					default:
-						buyer_type_name = "키즈";
+						buyer_type_name = "Kids";
 						break;
 				}
 				btvo.setBuyer_type_name(buyer_type_name);
