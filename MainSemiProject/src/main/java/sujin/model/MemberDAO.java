@@ -374,7 +374,7 @@ public class MemberDAO implements InterMemberDAO {
 		
 		try {
 			conn = ds.getConnection();
-			String sql = " select D.order_detail_no, D.order_count, D.order_price "
+			String sql = " select A.order_no, D.order_detail_no, D.order_count, D.order_price "
 					   + "      , P.product_no, P.product_name, P.product_color, P.product_size, P.product_image "
          		       + " from "
          		       + " (	select order_no, orderdate, total_price "
@@ -395,16 +395,17 @@ public class MemberDAO implements InterMemberDAO {
 			while(rs.next()) {
 
 				OrderDetailVO odvo = new OrderDetailVO();
-				odvo.setOrder_detail_no(rs.getString(1)); 
-				odvo.setOrder_count(rs.getInt(2));
-				odvo.setOrder_price(rs.getInt(3));
+				odvo.setFk_order_no(rs.getString(1));
+				odvo.setOrder_detail_no(rs.getString(2)); 
+				odvo.setOrder_count(rs.getInt(3));
+				odvo.setOrder_price(rs.getInt(4));
 				
 				ProductVO pvo = new ProductVO();
-				pvo.setProduct_no(rs.getString(4));
-				pvo.setProduct_name(rs.getString(5));
-				pvo.setProduct_color(rs.getString(6));
-				pvo.setProduct_size(rs.getInt(7));
-				pvo.setProduct_image(rs.getString(8));
+				pvo.setProduct_no(rs.getString(5));
+				pvo.setProduct_name(rs.getString(6));
+				pvo.setProduct_color(rs.getString(7));
+				pvo.setProduct_size(rs.getInt(8));
+				pvo.setProduct_image(rs.getString(9));
 				
 				odvo.setPvo(pvo);
 	            
