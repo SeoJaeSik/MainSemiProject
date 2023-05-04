@@ -77,8 +77,6 @@ public class PaymentAction extends AbstractController {
 					// product_no 로 제품정보(주문정보 포함) 알아오는 메소드 호출
 					CartVO cvo = pdao.showProdInfo(paraMap);
 					orderList.add(cvo);
-
-		     		System.out.println("확인용 cvo.getPvo().getProduct_no() : " + cvo.getPvo().getProduct_no());
 		     		
 					total_price += cvo.getPvo().getOrder_price(); 	 // 총 주문금액
 					
@@ -89,7 +87,6 @@ public class PaymentAction extends AbstractController {
 				if(total_price >= 50000) { // 총 주문금액 5만원 이상이면 배송비 무료
 					delivery_fee = 0;
 				}
-	     		System.out.println("확인용 orderList : " + orderList);
 
 				request.setAttribute("orderList", orderList);
 				request.setAttribute("total_price", total_price);

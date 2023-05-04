@@ -53,8 +53,6 @@ public class OrderAddAction extends AbstractController {
 					// tbl_product 테이블에서 제품명, 제품색상, 제품사이즈를 이용하여 product_no 를 select
 					InterProductDAO pdao = new ProductDAO();
 					String product_no = pdao.selectProduct_no(paraMap);
-
-					System.out.println("확인용 product_no : "+product_no);
 					
 		     		prodMap.put("product_no", product_no);
 		     		prodMap.put("order_count", cart_product_count);
