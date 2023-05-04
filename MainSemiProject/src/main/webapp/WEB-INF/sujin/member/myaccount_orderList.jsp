@@ -33,8 +33,13 @@
 
 	$(document).ready(function(){
 		
-		$("tr#orderProduct").click(function(){
-			goProduct(); 
+		$("tr#orderProduct").click(function(e){
+			
+			const product_name = $(e.target).parent().find("div#product_name").text();
+			const product_color = $(e.target).parent().find("div#product_color").text();
+			// parent() 을 함으로 tr에 속한 어디를 눌러도 한 제품을 선택한것이 된다
+			
+			location.href = "<%= ctxPath%>/product.moc?product_name="+product_name+"&product_color="+product_color; 
 		});
 		
 	});
@@ -42,15 +47,7 @@
 	function goshopping() { // 쇼핑하기 누르면 전체 제품페이지로 이동
 	
 		location.href = "<%= ctxPath%>/shop/allproduct.moc"; 
-		$("table#ViewOrderDetail").hide();
 	}
-	
-	function goProduct() { // 주문상세 펼쳐서 제품 tr 을 클릭하면 제품페이지로 이동
-		
-		location.href = "<%= ctxPath%>/shop/allproduct.moc"; 
-		
-	}
-	
 	
 </script>
 
@@ -120,7 +117,7 @@
 															 		  	<img src="${odlist.pvo.product_image}" id="product_image" name="product_image" width="150" class="img-thumbnail"/>
 														 			</td>
 														 			<td class="col-md-3 text-left">
-															 		  	<div class="mt-4">
+															 		  	<div class="mt-4 product_Info">
 																    		<div id="product_name">${odlist.pvo.product_name}</div>
 																      		<div id="product_color">${odlist.pvo.product_color}<span>&nbsp;</span><span id="product_size" name="product_size">${odlist.pvo.product_size}</span></div>
 															 		  	</div>
