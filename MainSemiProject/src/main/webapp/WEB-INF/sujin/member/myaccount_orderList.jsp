@@ -31,12 +31,26 @@
 
 <script type="text/javascript">
 
+	$(document).ready(function(){
+		
+		$("tr#orderProduct").click(function(){
+			goProduct(); 
+		});
+		
+	});
 	
 	function goshopping() { // 쇼핑하기 누르면 전체 제품페이지로 이동
 	
 		location.href = "<%= ctxPath%>/shop/allproduct.moc"; 
 		$("table#ViewOrderDetail").hide();
 	}
+	
+	function goProduct() { // 주문상세 펼쳐서 제품 tr 을 클릭하면 제품페이지로 이동
+		
+		location.href = "<%= ctxPath%>/shop/allproduct.moc"; 
+		
+	}
+	
 	
 </script>
 
@@ -47,7 +61,7 @@
 	
 	<div class="table-responsive py-3 mx-auto">
 	
-		<%-- [주문내역] --%>
+		<%-- [주문내역] 시작 --%>
 		<table class="table text-center table-hover" id="tbl_orderList">
 			<thead>
 				<tr>
@@ -88,7 +102,7 @@
 		                        	<!-- .collapse 은 내용물을 숨기는 것임. -->
 		                            	<div class="card card-body"  id="Q${status.index}_A">
 		                              		
-		                              		<%-- [각 주문당 상세내역] --%>
+		                              		<%-- [각 주문당 상세내역] 시작 --%>
 											<table class="table text-center col-md-10 mx-auto">
 										      	<thead>
 										 	  		<tr>
@@ -101,7 +115,7 @@
 										      		<tr>
 										      			<c:forEach var="odlist" items="${requestScope.ovodetaillist}">
 											 	  			<c:if test="${ovo.order_no == odlist.fk_order_no}">
-													 	  	  	<tr>
+													 	  	  	<tr id="orderProduct">
 														 			<td class="col-md-3 text-center">
 															 		  	<img src="${odlist.pvo.product_image}" id="product_image" name="product_image" width="150" class="img-thumbnail"/>
 														 			</td>
@@ -119,6 +133,7 @@
 										 	  		</tr>
 										      	</tbody>
 									 	  	</table>
+		                              		<%-- [각 주문당 상세내역] 끝 --%>
 		                              		
 		                             	</div>
 		                        	</div>
@@ -129,7 +144,7 @@
 				</tr>
 			</tbody>
 		</table>
-
+		<%-- [주문내역] 끝 --%>
 		
 		
 		<c:if test="${empty requestScope.ovolist}">
