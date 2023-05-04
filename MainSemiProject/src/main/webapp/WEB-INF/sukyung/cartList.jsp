@@ -510,8 +510,6 @@
 						</a>
 			      	</td>
 			      	
-			      	
-			      	
 			      	<td class="text-left">
 			    		<input type="hidden" id="product_no" name="product_no" value="${cvo.pvo.product_no}" />
 			      		<div id="product_name" name="product_name" style="font-weight: 400;">${cvo.pvo.product_name}</div>
@@ -551,7 +549,9 @@
 			<div class="col-md-2 text-center">
 				<c:forEach var="colorpvo" items="${requestScope.colorList}">
    				  <span id="${colorpvo.product_color}">
-   					<img src="${colorpvo.product_image}" id="add_product_image" name="add_product_image" width="120" class="img-thumbnail"/>
+		      		<a href='<%= ctxPath%>/product.moc?product_name=${requestScope.rndpvo.product_name}&product_color=${requestScope.rndpvo.product_color}'>
+   					  <img src="${colorpvo.product_image}" id="add_product_image" name="add_product_image" width="120" class="img-thumbnail"/>
+					</a>
    				  </span>
 	      		</c:forEach>
 			
@@ -644,7 +644,9 @@
 			<div class="col-md-2 text-center">
 				<c:forEach var="colorpvo" items="${requestScope.colorList}">
    				  <span id="${colorpvo.product_color}">
-   					<img src="${colorpvo.product_image}" id="add_product_image" name="add_product_image" width="120" class="img-thumbnail"/>
+		      		<a href='<%= ctxPath%>/product.moc?product_name=${requestScope.rndpvo.product_name}&product_color=${requestScope.rndpvo.product_color}'>
+   					  <img src="${colorpvo.product_image}" id="add_product_image" name="add_product_image" width="120" class="img-thumbnail"/>
+					</a>
    				  </span>
 	      		</c:forEach>
 			
