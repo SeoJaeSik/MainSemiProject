@@ -157,7 +157,10 @@
 	 	  	  <tr>
 		 		<td class="col-md-3 text-center">
 		 		  <input type="hidden" id="order_detail_no" val="${odvo.order_detail_no}"/>
-		 		  <img src="${odvo.pvo.product_image}" id="product_image" name="product_image" width="150" class="img-thumbnail"/>
+	      		  <a href='<%= ctxPath%>/product.moc?product_name=${odvo.pvo.product_name}&product_color=${odvo.pvo.product_color}'>
+		 		  	<img src="${odvo.pvo.product_image}" id="product_image" name="product_image" width="150" class="img-thumbnail"/>
+				  </a>
+	
 		 		</td>
 		 		<td class="col-md-3 text-left">
 		 		  <div class="mt-4">
