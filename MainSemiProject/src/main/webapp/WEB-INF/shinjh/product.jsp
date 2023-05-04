@@ -260,7 +260,8 @@
  	// 선택된 이미지 강조 표시
 	function imgSelected() {
 		$('img[name="imgList"]').each(function() {
-			let img1 = this.src;
+			
+			let img1 = $(this).attr('src');
 			
 			let img2 = $('#expandedImg').attr('src');
 	
