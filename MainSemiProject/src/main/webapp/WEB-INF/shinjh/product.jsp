@@ -499,7 +499,7 @@
 </script>  
    
 <!-- container -->
-<div class="container">
+<div class="container my-5">
  
   <!-- product-breadcrumbs -->
   <div class="product-breadcrumbs">
@@ -518,7 +518,7 @@
   <!-- // product-breadcrumbs -->  
   
   <!-- detail_top -->
-  <div class="mt-3 detail_top row">
+  <div class="detail_top row">
   
 	<div id="img_list"></div>
     
@@ -529,6 +529,7 @@
           <span class="col product-main_price p1">
             <span name="product_price"><fmt:formatNumber value="${requestScope.pvo.product_price}" pattern="###,###" />원</span>
           </span>
+          <%-- 
         <div class="ml-5 pt-2 review">
           <span class="fa-stars">
             <span class="fa fa-star checked"></span>
@@ -539,6 +540,7 @@
           </span>
         <a id="link" href="#" class="text-m">538 리뷰</a>
         </div>
+        --%>
       </div>
       
       <div class="mt-3">
@@ -556,9 +558,7 @@
 
     
       <div class="mt-5"> 
-        <p>사이즈
-          <a id="link" style="float:right;">가이드</a>
-        </p>
+        <p>사이즈</p>
         <hr/>
         
         
@@ -598,14 +598,26 @@
 </div>
 <!-- // container -->
 
-<%--
-<div id="container_review" class="container">
+<%-- 
+<div id="container_review" class="col-md-12 container">
   <div id="container_headline" class="align-c">
-    <h2 class="product-reviews_title"></h2>
+    <h2 class="product-reviews_title" class="align-c">Reviews</h2>
+    <button class="pull-right">write a review</button>
   </div>
 </div>
+--%>
+
+<%--
+<div class="row">	
+	    <c:if test="${not empty requestScope.colorList}">
+	      <c:forEach var="colorList" items="${requestScope.colorList}">
+	        <img id="img_select" name="colorList" class="col-md-2 m-3 p-1" src="${colorList.product_image}" value="${colorList.product_color}" title="${colorList.product_color}" onclick="colorSelect(this);">	        
+	      </c:forEach>
+	    </c:if>
+      </div>
 --%> 
 
+<%--
 <div id="testimonial" class="my-5">
   <div id="testimonial_container" class="row">
     <div id="testimonial_left" class="col-md-6 px-5 pt-4">
@@ -626,6 +638,6 @@
     </div>
   </div> 
 </div>
-
+--%>
   
 <jsp:include page="../jaesik/footer.jsp" />	
