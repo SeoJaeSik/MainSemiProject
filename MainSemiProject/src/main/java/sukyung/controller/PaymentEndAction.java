@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
 import common.controller.AbstractController;
-import sujin.model.MemberVO;
+import sujin.model.*;
 import sukyung.model.*;
 
 public class PaymentEndAction extends AbstractController {
@@ -124,10 +124,24 @@ public class PaymentEndAction extends AbstractController {
 	     		
 			// 8) 트랜잭션 처리해주는 메소드 호출
 				if(pdao.paymentEnd(paraMap)) {
-				// *** 3. 트랜잭션 후 세션 재설정 - 회원 포인트, 장바구니수량
+				// *** 3. 트랜잭션 후 세션 재설정 - 회원 포인트, 쿠폰개수, 장바구니수량
 					// 회원의 포인트 = 보유포인트 - 포인트사용금액 + 포인트적립금액
 					loginuser.setPoint((loginuser.getPoint() - Integer.parseInt(point_redeem) + Integer.parseInt(point_saveup)));
+
+					// 장바구니수량
 					loginuser.setCartCount(pdao.cartCount(loginuser.getUserid()));
+
+					// 쿠폰개수
+					if(coupon_no != null) {
+						InterMemberDAO mdao = new MemberDAO();
+						Map<String, String> useridMap = new HashMap<>();
+						useridMap.put("userid", loginuser.getUserid());
+						
+						// 로그인한 회원의 userid 를 Map 에 넣어 쿠폰개수, 쿠폰명을 알아오는 MemberDAO 메소드 호출
+						Map<String, String> couponMap = mdao.selectMembercoupon(useridMap);
+						loginuser.setCouponCnt(Integer.parseInt(couponMap.get("couponCnt")));
+						loginuser.setCouponName(couponMap.get("couponName"));
+					}
 					
 				} // 트랜잭션 성공
 				
