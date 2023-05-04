@@ -10,12 +10,11 @@ import common.controller.AbstractController;
 import sujin.model.InterMemberDAO;
 import sujin.model.MemberDAO;
 import sujin.model.MemberVO;
+import sujin.model.OrderDetailVO;
 import sujin.model.OrderVO;
 import jaesik.model.BoardVO;
 import jaesik.model.JS_InterMemberDAO;
 import jaesik.model.JS_MemberDAO;
-import sukyung.model.InterProductDAO;
-import sukyung.model.ProductDAO;
 
 public class MyaccountAction extends AbstractController {
    
@@ -25,23 +24,36 @@ public class MyaccountAction extends AbstractController {
 		HttpSession session = request.getSession();
 		MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
       
-		
-		if ( loginuser != null ) { // 로그인한 경우
-			
+    //	System.out.println("loginuser 확인 : " + loginuser);
+      
+		if ( loginuser != null ) {
+			// 로그인한 경우
+    	  
 			InterMemberDAO modrdao = new MemberDAO();
 			
-			// 주문번호(order_no) 를 이용하여 주문정보(주문테이블, 배송테이블) 조회(select)	
+			// ==== 주문번호(order_no) 를 이용하여 주문정보(주문테이블, 배송테이블) 조회(select) ====
 			List<OrderVO> ovolist = modrdao.selectMemberOrderNo(loginuser.getUserid());
-		//	System.out.println("ovolist 확인 : " + ovolist);
+			//	System.out.println("ovolist 확인 : " + ovolist);
 		
-			
 			for(int i=0; i<ovolist.size(); i++) {
 				ovolist.get(i); // 배열을 loginuser 객체에 설정
 			}
-			
+	
 			request.setAttribute("ovolist", ovolist);
-
 			
+			
+			// ==== 주문번호(order_no) 를 이용하여 주문상세정보(주문테이블, 주문상세테이블, 제품테이블) 조회(select) ====
+			List<OrderDetailVO> ovodetaillist = modrdao.selectOrderDetailList(loginuser.getUserid());
+			
+		//	System.out.println("ovodetaillist 확인 : " + ovodetaillist);
+			
+			for(int i=0; i<ovodetaillist.size(); i++) {
+				ovodetaillist.get(i); // 배열을 loginuser 객체에 설정
+			}
+	
+			request.setAttribute("ovodetaillist", ovodetaillist);
+			
+			   
 			///////////////////////////////////////////
     	  
 			String searchType = request.getParameter("searchType"); 

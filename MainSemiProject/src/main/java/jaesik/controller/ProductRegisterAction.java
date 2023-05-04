@@ -117,6 +117,7 @@ public class ProductRegisterAction extends AbstractController {
 				
 				ProductVO pvo = new ProductVO();
 				
+				String product_no_full = buyer_type+"_"+shoes_category+"_"+product_no;
 				pvo.setProduct_no(buyer_type+"_"+shoes_category+"_"+product_no);
 				pvo.setProduct_name(product_name);
 				pvo.setFk_shoes_category_no(Integer.parseInt(shoes_category));
@@ -146,14 +147,13 @@ public class ProductRegisterAction extends AbstractController {
 	            		attachCount = Integer.parseInt(str_attachCount);
 	            	}
 	            	
-//	            	// 첨부파일의 파일명 (파일서버에 업로드 되어진 실제파일명) 알아오기
-//	            	for (int i=0; i<attachCount; i++) {
-//	            		String attachFileName = mtrequest.getFilesystemName("attach"+i);
-//	            		
-//	            		pdao.product_imagefile_Insert(pnum, attachFileName);
-//	            		// pnum은 위에서 채번해온 제품번호
-//	            		
-//	            	} // end for
+	            	// 첨부파일의 파일명 (파일서버에 업로드 되어진 실제파일명) 알아오기
+	            	for (int i=0; i<attachCount; i++) {
+	            		String attachFileName = mtrequest.getOriginalFileName("attach"+i);
+	            		attachFileName = request.getContextPath()+"/images/plusimage/"+attachFileName;
+	            		pdao.product_imagefile_Insert(product_no_full, attachFileName);
+	            		
+	            	} // end for
 	            	
 	            	message = "제품등록 성공";
 	            	loc = request.getContextPath()+"/shop/allproduct.moc";

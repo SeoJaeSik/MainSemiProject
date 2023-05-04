@@ -201,7 +201,7 @@
 										<div class='col-md-6 col-lg-4 col-xl-4' style='margin= 0 auto; padding=0px'>
 											<div id='product-1' class='single-product' style='display: flex; justify-content: center; align-items: center;'>
 												<div class='part-1'>
-													<img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="${pvo.product_image}" href='/MainSemiProject/shop/product.moc'>
+													<a href='/MainSemiProject/product.moc?product_name=${pvo.product_name}' style='width:inherit; height:inherit; text-align:center;'><img alt='제품 준비 중입니다.' style='width:inherit; height:inherit; text-align:center;' src="${pvo.product_image}"></a>
 													<ul>
 														<li><a href='/MainSemiProject/shop/cartList.moc'><i class='fas fa-shopping-cart'></i></a></li>
 													</ul>

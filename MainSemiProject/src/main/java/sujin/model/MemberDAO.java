@@ -10,6 +10,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import sukyung.model.ProductVO;
 import util.security.AES256;
 import util.security.SecretMyKey;
 import util.security.Sha256;
@@ -313,47 +314,46 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of == 쿠폰 정보 불러오기 ==-------------------------------------------
 
 	
-	// == [마이페이지-주문내역] 입력받은 paraMap 을 갖고 한명의 주문번호를 리턴시켜주는 메소드 (로그인 할 때 동시에 되게 하자) ==
+	// == [마이페이지-주문내역] loginuser.getUserid 로 알아낸 한 회원의 모든 주문 조회해 주는 메소드 ==
 	@Override
 	public List<OrderVO> selectMemberOrderNo(String userid) throws SQLException {
 		
 		List<OrderVO> ovolist = new ArrayList<>();
 	      
-	      try {
-	         conn = ds.getConnection();
+	      	try {
+	      		conn = ds.getConnection();
 	         
-	         String sql = " select A.order_no, to_char(A.orderdate,'yyyy-MM-dd'), A.total_price "
-	         		    + "      , D.delivery_name, D.delivery_mobile, D.delivery_address, D.delivery_comment, D.delivery_invoice "
-	         		    + " from "
-	         		    + " (	select order_no, orderdate, total_price "
-	         		    + " 	from tbl_order "
-	         		    + " 	where fk_userid = ? "
-	         		    + "		order by orderdate desc "
-	         		    + "	) A "
-	         		    + " join tbl_delivery D "
-	         		    + " on A.order_no = D.fk_order_no " ;
+	      		String sql = " select A.order_no, to_char(A.orderdate,'yy/MM/dd') as orderdate, A.total_price "
+	      				   + "      , D.delivery_name, D.delivery_mobile, D.delivery_address, D.delivery_comment, D.delivery_invoice "
+	         		       + " from "
+	         		       + " (	select order_no, orderdate, total_price "
+	         		       + " 		from tbl_order "
+	         		       + " 		where fk_userid = ? "
+	         		       + "	) A "
+	         		       + " join tbl_delivery D "
+	         		       + " on A.order_no = D.fk_order_no " 
+	         		       + " order by order_no desc ";
 	         
-	         pstmt = conn.prepareStatement(sql);
-	         pstmt.setString(1, userid);
+	      		pstmt = conn.prepareStatement(sql);
+	      		pstmt.setString(1, userid);
 	         
-	         rs = pstmt.executeQuery();
+	      		rs = pstmt.executeQuery();
 
-	         while(rs.next()) {
+	      		while(rs.next()) {
 	        
-	        //  String order_no = rs.getString(1); // 주문번호
-				OrderVO ovo = new OrderVO();
-				ovo.setOrder_no(rs.getString(1));
-				ovo.setOrderdate(rs.getString(2));
-				ovo.setTotal_price(rs.getString(3));
-				ovo.setDelivery_name(rs.getString(4));
-				ovo.setDelivery_mobile(rs.getString(5));
-				ovo.setDelivery_address(rs.getString(6));
-				ovo.setDelivery_comment(rs.getString(7));
-				ovo.setDelivery_invoice(rs.getString(8));
+					OrderVO ovo = new OrderVO();
+					ovo.setOrder_no(rs.getString(1));
+					ovo.setOrderdate(rs.getString(2));
+					ovo.setTotal_price(rs.getString(3));
+					ovo.setDelivery_name(rs.getString(4));
+					ovo.setDelivery_mobile(rs.getString(5));
+					ovo.setDelivery_address(rs.getString(6));
+					ovo.setDelivery_comment(rs.getString(7));
+					ovo.setDelivery_invoice(rs.getString(8));
 				
-				ovolist.add(ovo);
-			//	System.out.println("ovo.getOrder_no() 확인 2 : " + ovo.getOrder_no());
-			//	System.out.println("ovolist 확인 1 : " + ovolist);
+					ovolist.add(ovo);
+				//	System.out.println("ovo.getOrder_no() 확인 2 : " + ovo.getOrder_no());
+				//	System.out.println("ovolist 확인 1 : " + ovolist);
 					
 	         }//end of while()-------------------
 	         
@@ -366,6 +366,61 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of == 주문번호 가져오기 메소드 ==---------------------------------------
 	
 
+	// ==== loginuser.getUserid 로 알아낸 회원의 주문번호가 같은 상세주문을 조회(select) ====
+	@Override
+	public List<OrderDetailVO> selectOrderDetailList(String userid) throws SQLException {
+		
+		List<OrderDetailVO> orderDetailList = new ArrayList<>();
+		
+		try {
+			conn = ds.getConnection();
+			String sql = " select D.order_detail_no, D.order_count, D.order_price "
+					   + "      , P.product_no, P.product_name, P.product_color, P.product_size, P.product_image "
+         		       + " from "
+         		       + " (	select order_no, orderdate, total_price "
+         		       + " 		from tbl_order "
+         		       + " 		where fk_userid = ? "
+         		       + "	) A "
+         		       + " join tbl_order_detail D "
+         		       + " on A.order_no = D.fk_order_no "
+         		       + " join tbl_product P "
+         		       + " on D.fk_product_no = P.product_no "
+         		       + " order by D.order_detail_no desc "; 
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userid); 
+
+			rs = pstmt.executeQuery();
+
+			while(rs.next()) {
+
+				OrderDetailVO odvo = new OrderDetailVO();
+				odvo.setOrder_detail_no(rs.getString(1)); 
+				odvo.setOrder_count(rs.getInt(2));
+				odvo.setOrder_price(rs.getInt(3));
+				
+				ProductVO pvo = new ProductVO();
+				pvo.setProduct_no(rs.getString(4));
+				pvo.setProduct_name(rs.getString(5));
+				pvo.setProduct_color(rs.getString(6));
+				pvo.setProduct_size(rs.getInt(7));
+				pvo.setProduct_image(rs.getString(8));
+				
+				odvo.setPvo(pvo);
+	            
+				orderDetailList.add(odvo);
+			} // end of while(rs.next())
+
+		} finally {
+			close();
+		}
+		
+		return orderDetailList;
+		
+	}//end of 주문상세정보 가져오기------------------------------------------------
+
+	
+	
 	// 5. (사용) 아이디 찾기 : 입력받은 paraMap 으로 성명&이메일을 입력받아 해당 사용자의 아이디를 알려주는 메소드 구현하기
 	@Override
 	public String findUserid(Map<String, String> paraMap) throws SQLException {

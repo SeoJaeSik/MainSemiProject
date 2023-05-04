@@ -1,5 +1,6 @@
 package shinjh.myshop.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,8 +57,8 @@ public class ProductAction extends AbstractController {
 			// 제품이름과 색상을 가지고 해당제품에 추가된 이미지 정보를 조회해오기
 			List<String> imgList = pdao.getImages(product_name, pvo.getProduct_color());
 			
-			// 제품이름을 가지고 색상 이미지를 가져오기
-			List<String> colorList = pdao.getColorByName(product_name);
+			// 제품이름을 가지고 색상과 이미지 List를 가져오기
+			List<HashMap<String, String>> colorList = pdao.getColorByName(product_name);
 			
 			// 제품이름과 색상을 가지고 사이즈 선택지를 가져오기 
 			List<Integer> sizeList = pdao.getSize(product_name, pvo.getProduct_color());

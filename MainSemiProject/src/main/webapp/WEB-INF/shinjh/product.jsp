@@ -31,6 +31,7 @@
 <style type="text/css">
 
 	div.container{
+		opacity: 0;
 		font: 13px courier, arial, sans-serif;
 	}
 	
@@ -39,18 +40,6 @@
 		padding-top: 20px;
 	}
 	
-/* 	
-	a.breadcrumbs__item.a1:link,
-	a.breadcrumbs__item.a1:visited {
-		color: black;
-		text-decoration: underline;
-	}
-	
-	a.breadcrumbs__item.a1:hover {
-		color: gray;
-		text-decoration: underline;
-	}
-*/
 	a#link:link,
 	a#link:visited,
 	a#link:hover {
@@ -71,13 +60,8 @@
 		font: 28px courier, arial, sans-serif;
 	}
 	
-	img#img_select {
-		cursor: pointer;
-	}
-	
 	button#btn_select {
 		border: solid 1px black;
-		cursor: pointer;
 	}
 	
 	.selected {
@@ -86,22 +70,16 @@
 	
 	.not_selected {
 		border: solid 1px gray;
+		cursor: pointer;
 	}
 
 	.checked {
 		color: orange;
 	}
 	
-	
 	ul {
 		list-style: none;
-	}
-	
-	.wrap {
-		display: flex;
-		flex-wrap: wrap;
-	}
-	
+	}	
 	
 	div#testimonial{
 		display: flex;
@@ -186,12 +164,13 @@
 
 	$(document).ready(function() {
 		
-		let btn_html; // 버튼의 원래 값을 담을 변수
+		let btn_html; 		// 버튼의 원래 값을 담을 변수
 		
-		imgSelected();
-		colorSelected();
-		sizeSelected();
+		moreImg(); 			// 추가이미지, 사이즈 ajax 처리
 		
+		imgSelected(); 		// 선택된 이미지 강조 표시		
+		colorSelected(); 	// 선택된 색상 강조 표시
+		sizeSelected(); 	// 선택된 사이즈 강조 표시
 		
 		// 스피너
 		$("input#spinner").spinner( {
@@ -214,12 +193,76 @@
 	// Function Declaration
 	
 	
+	// 추가이미지, 사이즈 ajax 처리
+	function moreImg() {
+		
+		$('div.container').css('opacity', 0);
+		    
+		$.ajax({
+			url:"<%= ctxPath%>/moreImgJSON.moc",
+     		data:{"product_name":"${requestScope.pvo.product_name}",
+				"product_color": $('input[name="product_color"]').val()
+     			}, 
+	  		type:"get",
+	 		dataType:"json",
+	 		async:false,
+	 		success:function(json) {
+	 			
+	 			// 추가이미지 넣기
+	 			let html = '';
+	 			
+	 			if(!$.isEmptyObject(json.imgList)) {
+	 				
+	 			    html += '<div class="col-md-12">'+
+	 				  		  '<img id="expandedImg" class="col-md-12" src="'+json.imgList[0]+'">'+
+	 				  		  '<div class="row flex-wrap">';
+	 				
+	 				$.each(json.imgList, function(index, item){
+	 					
+		 			    html += '<img id="img_select" name="imgList" class="col-md-2 m-3 p-1" src="'+item+'" onclick="imgSelect(this);">';
+				 			    
+				 	});// end of if(!$.isEmptyObject(json.imgList))
+	 				
+	 				html += '</div></div>';
+	 				
+	 				// 추가이미지 출력하기
+					$("div#img_list").html(html);
+	 			}
+	 			
+	 			
+	 			// 사이즈 넣기
+	 			html = '';
+	 			
+	 			if(!$.isEmptyObject(json.sizeList)) {
+	 				
+	 				$.each(json.sizeList, function(index, item){
+	 					
+	 				    html += '<div class="col-md-2 mt-2">'+
+	 		                      '<button type="button" id="btn_select" name="sizeList" class="btn btn-white" value="'+item+'" onclick="sizeSelect(this);">'+item+'</button>'+	        
+	 		                    '</div>';
+	 				});// end of $.each(json.sizeList, function(index, item)
+
+	 				// 사이즈 출력하기
+					$("div#size_list").html(html);
+	 			}
+	 			
+	 		},
+	 		error: function(request, status, error) {
+	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+	        }
+ 		});
+	 				
+		$('div.container').animate({opacity: 1}, 1000);
+	 				
+	}
+	
+	
  	// 선택된 이미지 강조 표시
 	function imgSelected() {
 		$('img[name="imgList"]').each(function() {
 			let img1 = this.src;
 			
-			let img2 = $('#expandedImg').val();
+			let img2 = $('#expandedImg').attr('src');
 	
 		    if ( img1.substring("http://localhost:9090".length) == img2
 		    		|| img1 == img2 ) {
@@ -236,13 +279,15 @@
 	
 	// 선택된 색상 강조 표시
 	function colorSelected() {
+		
 		$('img[name="colorList"]').each(function() {
-			let img1 = this.src;
 			
-			let img2 = $('input[name="product_image"]').val();
+			let img1 = $(this).attr('value');
+			
+			let img2 = $('input[name="product_color"]').val();
+
 	
-		    if ( img1.substring("http://localhost:9090".length) == img2
-		    		|| img1 == img2 ) {
+		    if ( img1 == img2 ) {
 		    	
 		    	$(this).addClass('selected').removeClass('not_selected');
 		    
@@ -256,7 +301,9 @@
 	
 	// 선택된 사이즈 강조 표시
 	function sizeSelected() {
+		
 		$('button[name="sizeList"]').each(function() {
+			
 			let size1 = $(this).val();
 			let size2 = $('input[name="product_size"]').val();
 	
@@ -269,25 +316,46 @@
 	}
 	
 	// *** 이미지 클릭 ***//
-	function imgSelect(img) {
-
+	function imgSelect(img) {		
+		
 	    $('#expandedImg').attr('src', $(img).attr('src'));
 	    
 	 	// 선택된 이미지 강조 표시
 		imgSelected();
 	}
 	
+	
 	// *** 색상 클릭 ***//
 	function colorSelect(img) {
 
-	    $('input[name="product_color"]').val($(img).attr('src'));
+		let img1 = $(img).attr('value');
+		
+		let img2 = $('input[name="product_color"]').val();
+
+	    if ( img1 != img2 ) { // 다른 색상을 클릭했을 경우			
+	    	
+	    	// 색상정보를 갱신한다
+	    	$('input[name="product_color"]').val($(img).attr('value'));
+	    	
+			// 추가이미지, 사이즈 구현하기!
+			moreImg();
 	    
-	 	// 선택된 색상 강조 표시
-	    colorSelected();
-	}
+			// 선택된 이미지 강조 표시
+			imgSelected();
+			 				
+		 	// 선택된 색상 강조 표시
+		    colorSelected();
+		 	
+		 	// 선택된 사이즈 강조 표시
+			sizeSelected();
+	 	
+	    }// end of if
+	}// end of function colorSelect(img)
+	
 	
 	// *** 사이즈 클릭 ***//
 	function sizeSelect(btn) {
+		
 	    $('input[name="product_size"]').val($(btn).val());
 	    
 	 	// 선택된 사이즈 강조 표시
@@ -337,8 +405,8 @@
 				url:"<%= request.getContextPath()%>/shop/cartListAdd.moc",
 				type:"post",
 				data:{"product_name":"${requestScope.pvo.product_name}",
-					"product_color":"${requestScope.pvo.product_color}",
-					"product_size":"${requestScope.pvo.product_size}",
+					"product_color":$('input[name="product_color"]').val(),
+					"product_size":$('input[name="product_size"]').val(),
 					"cart_product_count":$("input#spinner").val(),
 					},
 				dataType:"json",
@@ -451,24 +519,7 @@
   <!-- detail_top -->
   <div class="mt-3 detail_top row">
   
-    <div class="col-md-7">
-	  <img id="expandedImg" class="col-md-12" src="${requestScope.pvo.product_image}">
-	  
-	
-	  <div class="row-md-12">
-	    <div class="column p-3">
-	      <img id="img_select" name="imgList" class="col-md-2 p-1" src="${requestScope.pvo.product_image}" onclick="imgSelect(this);">
-	    </div>
-	
-	    <c:if test="${not empty requestScope.imgList}">
-	      <c:forEach var="imgfilename" items="${requestScope.imgList}">
-	        <div class="column p-3">
-	          <img id="img_select" name="imgList" class="col-md-2 p-1" src="${imgfilename}" style="width:100%" onclick="imgSelect(this);">
-	        </div>
-	      </c:forEach>
-	    </c:if>
-      </div>
-    </div>
+	<div id="img_list"></div>
     
     <div class="col-md-5 product-main_block">
       <h1 class="product-main_title h1">${requestScope.pvo.product_name}</h1>
@@ -496,8 +547,8 @@
       
 	  <div class="row">	
 	    <c:if test="${not empty requestScope.colorList}">
-	      <c:forEach var="colorfilename" items="${requestScope.colorList}">
-	        <img id="img_select" name="colorList" class="col-md-2 m-3 p-1" src="${colorfilename}" onclick="colorSelect(this);">	        
+	      <c:forEach var="colorList" items="${requestScope.colorList}">
+	        <img id="img_select" name="colorList" class="col-md-2 m-3 p-1" src="${colorList.product_image}" value="${colorList.product_color}" title="${colorList.product_color}" onclick="colorSelect(this);">	        
 	      </c:forEach>
 	    </c:if>
       </div>
@@ -512,14 +563,7 @@
         
 	    <div class="row">
           <div class="col-md-12">
-            <div class="btn-group wrap" role="group">	
-	          <c:if test="${not empty requestScope.sizeList}">
-	            <c:forEach var="size" items="${requestScope.sizeList}">
-	              <div class="col-md-2 mt-2">
-	                <button type="button" id="btn_select" name="sizeList" class="btn btn-white" value="${size}" onclick="sizeSelect(this);">${size}</button>	        
-	              </div>
-	            </c:forEach>
-	          </c:if>
+            <div id="size_list" class="btn-group flex-wrap" role="group">
             </div>
           </div>
         </div>
@@ -537,11 +581,13 @@
             <button type="button" id="btn_select" class="col-4 btn btn-white" onClick="goCart(this)">장바구니</button>
             <button type="button" id="btn_select" class="col-8 ml-1 btn btn-warning" onClick="goOrder(this)">구매하기</button>
           </div>
+          
+          <input type="hidden" name="product_no" value="${requestScope.pvo.product_no}" />
+          <input type="hidden" name="product_color" value="${requestScope.pvo.product_color}" />
+          <input type="hidden" name="product_size" value="${requestScope.pvo.product_size}" />
+          <input type="hidden" name="product_image" value="${requestScope.pvo.product_image}" />
+          
         </div>
-        <input type="hidden" name="product_no" value="${requestScope.pvo.product_no}" />
-        <input type="hidden" name="product_color" value="${requestScope.pvo.product_color}" />
-        <input type="hidden" name="product_size" value="${requestScope.pvo.product_size}" />
-        <input type="hidden" name="product_image" value="${requestScope.pvo.product_image}" />
      
       </div>
     </div>
@@ -551,7 +597,14 @@
 </div>
 <!-- // container -->
 
- 
+<%--
+<div id="container_review" class="container">
+  <div id="container_headline" class="align-c">
+    <h2 class="product-reviews_title"></h2>
+  </div>
+</div>
+--%> 
+
 <div id="testimonial" class="my-5">
   <div id="testimonial_container" class="row">
     <div id="testimonial_left" class="col-md-6 px-5 pt-4">

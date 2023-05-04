@@ -3,6 +3,7 @@ package sujin.model;
 import java.sql.SQLException;
 import java.util.*;
 
+
 public interface InterMemberDAO {
 	
 	// 1. 회원가입을 해주는 메소드 (tbl_member 테이블에 insert)
@@ -25,8 +26,12 @@ public interface InterMemberDAO {
 	Map<String, String> selectMembercoupon(Map<String, String> paraMap) throws SQLException;
 	
 	
-	// == loginuser.getUserid 로 아이디를 받아 한명의 주문번호를 리턴시켜주는 메소드 == 
+	// == [마이페이지-주문내역] loginuser.getUserid 로 알아낸 회원의 모든 주문을 리턴시켜주는 메소드 ==
 	List<OrderVO> selectMemberOrderNo(String userid) throws SQLException;
+	
+	
+	// == [마이페이지-주문상세내역] loginuser.getUserid 로 알아낸 회원의 주문번호가 같은 상세주문을 리턴시켜주는 메소드 ==
+	List<OrderDetailVO> selectOrderDetailList(String userid) throws SQLException;
 	
 
 	// 5. 아이디찾기 : 입력받은 paraMap 으로 성명&이메일을 입력받아 해당 사용자의 아이디를 알려주는 메소드
@@ -56,6 +61,7 @@ public interface InterMemberDAO {
 	// 14. userid 값을 입력받아 회원 1명에 대한 상세정보를 알아오는 메소드 
 	MemberVO memberOneDetail(String userid) throws SQLException;
 
-	
+
+
 
 }
