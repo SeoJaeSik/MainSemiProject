@@ -498,7 +498,14 @@
 						</c:if>
 			    	
 			    	</td>
-			      	<td><img src="${cvo.pvo.product_image}" id="product_image" name="product_image" width="150" class="img-thumbnail"/></td>
+			      	<td>
+			      		<a href='<%= ctxPath%>/product.moc?product_name=${cvo.pvo.product_name}&product_color=${cvo.pvo.product_color}'>
+			      		  <img src="${cvo.pvo.product_image}" id="product_image" name="product_image" width="150" class="img-thumbnail"/>
+						</a>
+			      	</td>
+			      	
+			      	
+			      	
 			      	<td class="text-left">
 			    		<input type="hidden" id="product_no" name="product_no" value="${cvo.pvo.product_no}" />
 			      		<div id="product_name" name="product_name" style="font-weight: 400;">${cvo.pvo.product_name}</div>
