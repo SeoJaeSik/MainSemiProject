@@ -226,9 +226,12 @@
 	 				
 	 				$.each(json.imgList, function(index, item){
 	 					
+	 					console.log(index + ": " + item);
+	 					
 		 			    html += '<div class="column p-3">'+
 				 			      '<img id="img_select" name="imgList" class="col-md-2 p-1" src="'+item+'" onclick="imgSelect(this);">'+
 				 			    '</div>';
+				 			    
 				 	});// end of if(!$.isEmptyObject(json.imgList))
 	 				
 	 				html += '</div></div>';
@@ -605,7 +608,14 @@
 </div>
 <!-- // container -->
 
- 
+<%--
+<div id="container_review" class="container">
+  <div id="container_headline" class="align-c">
+    <h2 class="product-reviews_title"></h2>
+  </div>
+</div>
+--%> 
+
 <div id="testimonial" class="my-5">
   <div id="testimonial_container" class="row">
     <div id="testimonial_left" class="col-md-6 px-5 pt-4">

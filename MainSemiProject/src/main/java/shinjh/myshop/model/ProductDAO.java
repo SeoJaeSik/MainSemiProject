@@ -195,7 +195,7 @@ public class ProductDAO implements InterProductDAO {
 			
 			String sql = " select imgfilename "
 						+ " from tbl_product_imagefile "
-						+ " where fk_product_no = ( select product_no "
+						+ " where fk_product_no in ( select product_no "
 						+ "                         from tbl_product "
 						+ "                         where product_name = ? and product_color = ?) ";
 			
