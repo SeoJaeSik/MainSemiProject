@@ -25,13 +25,9 @@
 		
 		<hr>
 		
-		<br><br><br>
+		<br><br>
 		<div class="text-center">리뷰 내역이 없습니다.</div>
 		<br><br>
-		<div class="text-center">
-			<button class="btn btn-lg col-4 mx-auto" style="border-radius: 5px; font-weight:bold; background-color:#ffeb99; " id="btnUpdate" onclick="goshopping()">리뷰작성하기</button>
-		</div>
-		<br><br><br>
 	
 	</div>
 </div>
