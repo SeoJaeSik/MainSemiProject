@@ -54,6 +54,8 @@ public class OrderAddAction extends AbstractController {
 					InterProductDAO pdao = new ProductDAO();
 					String product_no = pdao.selectProduct_no(paraMap);
 
+					System.out.println("확인용 product_no : "+product_no);
+					
 		     		prodMap.put("product_no", product_no);
 		     		prodMap.put("order_count", cart_product_count);
 				}

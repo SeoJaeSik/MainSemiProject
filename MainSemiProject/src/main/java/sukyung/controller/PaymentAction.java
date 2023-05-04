@@ -35,7 +35,9 @@ public class PaymentAction extends AbstractController {
 				int total_price = 0;     // 총 주문금액
 				int delivery_fee = 3000; // 배송비
 	     		
-	     		// *** 1) 장바구니에서 결제 - CartListFrm 에 있는 주문정보가 담긴 prodMap (배열 포함)
+	     		List<CartVO> orderList = new ArrayList<>();
+
+				// *** 1) 장바구니에서 결제 - CartListFrm 에 있는 주문정보가 담긴 prodMap (배열 포함)
 				if(prodMap.get("join_cart_no") != null) { 
 					// 제품번호, 주문수량, 장바구니번호 - 조인한 문자열을 배열로 만들어준다.
 					String[] arr_product_no = ((String) prodMap.get("join_product_no")).split("\\,");   // 제품번호
@@ -43,9 +45,7 @@ public class PaymentAction extends AbstractController {
 		     		String[] arr_cart_no = ((String) prodMap.get("join_cart_no")).split("\\,"); 		// 장바구니번호
 		     		String join_order_price = "";
 		     		
-		     		List<CartVO> orderList = new ArrayList<>();
 					for(int i=0; i<arr_cart_no.length; i++) {
-						
 						paraMap = new HashMap<>();
 						paraMap.put("product_no", arr_product_no[i]);
 						paraMap.put("order_count", arr_order_count[i]);	
@@ -62,7 +62,6 @@ public class PaymentAction extends AbstractController {
 						join_order_price += cvo.getPvo().getOrder_price()+str_add; // 제품별 주문금액(문자열)
 					} // end of for
 					
-					request.setAttribute("orderList", orderList);
 					session.setAttribute("join_order_price", join_order_price);
 				}
 
@@ -77,18 +76,22 @@ public class PaymentAction extends AbstractController {
 					
 					// product_no 로 제품정보(주문정보 포함) 알아오는 메소드 호출
 					CartVO cvo = pdao.showProdInfo(paraMap);
-		     		request.setAttribute("cvo", cvo);
+					orderList.add(cvo);
 
+		     		System.out.println("확인용 cvo.getPvo().getProduct_no() : " + cvo.getPvo().getProduct_no());
+		     		
 					total_price += cvo.getPvo().getOrder_price(); 	 // 총 주문금액
 					
-					int order_price = cvo.getPvo().getOrder_price(); // 제품별 주문금액
+					String order_price = String.valueOf(cvo.getPvo().getOrder_price()); // 제품별 주문금액
 					session.setAttribute("order_price", order_price);
 				}
 
 				if(total_price >= 50000) { // 총 주문금액 5만원 이상이면 배송비 무료
 					delivery_fee = 0;
 				}
+	     		System.out.println("확인용 orderList : " + orderList);
 
+				request.setAttribute("orderList", orderList);
 				request.setAttribute("total_price", total_price);
 	     		request.setAttribute("delivery_fee", delivery_fee);
 
