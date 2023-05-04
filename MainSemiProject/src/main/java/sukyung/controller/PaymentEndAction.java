@@ -28,12 +28,13 @@ public class PaymentEndAction extends AbstractController {
 				HttpSession session = request.getSession();
 				
 			// *** 1. AJAX 에서 넘어오는 정보 받기
-				String delivery_fee = request.getParameter("delivery_fee"); // 배송비
-				String coupon_no = request.getParameter("coupon_no"); 		// 쿠폰번호(쿠폰사용하지 않으면 null)
-				String point_redeem = request.getParameter("point_redeem"); // 포인트 사용금액
-				String point_saveup = request.getParameter("point_saveup"); // 포인트 적립금액
-				String total_price = request.getParameter("total_price");   // 결제금액
-				
+				String delivery_fee = request.getParameter("delivery_fee"); 	// 배송비
+				String coupon_no = request.getParameter("coupon_no"); 			// 쿠폰번호(쿠폰사용하지 않으면 null)
+				String point_redeem = request.getParameter("point_redeem"); 	// 포인트 사용금액
+				String point_saveup = request.getParameter("point_saveup"); 	// 포인트 적립금액
+				String total_price = request.getParameter("total_price");   	// 결제금액
+				String discount_price = request.getParameter("discount_price"); // 결제금액
+								
 			//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 			// *** 2. 트랜잭션
@@ -52,11 +53,12 @@ public class PaymentEndAction extends AbstractController {
 				
 				MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
 				
-				paraMap.put("order_no", order_no);			  // 주문번호
-				paraMap.put("userid", loginuser.getUserid()); // 회원아이디
-				paraMap.put("delivery_fee", delivery_fee);    // 배송비
-				paraMap.put("total_price", total_price);      // 결제금액
-
+				paraMap.put("order_no", order_no);			   // 주문번호
+				paraMap.put("userid", loginuser.getUserid());  // 회원아이디
+				paraMap.put("delivery_fee", delivery_fee);     // 배송비
+				paraMap.put("total_price", total_price);       // 결제금액
+				paraMap.put("discount_price", discount_price); // 할인받은금액
+				
 				
 			// 2) 주문상세 테이블(tbl_order_detail) - insert 주문상세일련번호(생성), 제품번호(fk), 주문번호(fk), 주문수량, 제품별 주문금액
 				// 주문상세일련번호 - 주문번호_1...10

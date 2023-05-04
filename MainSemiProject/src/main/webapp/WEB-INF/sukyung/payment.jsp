@@ -62,11 +62,11 @@
 
 	// *** 쿠폰 "적용" 버튼을 클릭하면 발생하는 이벤트
 		$("button#btnCoupon").click(function(){
-			if($("select").val() != 0){
-				const coupon_dis_price = sum_order_price*(Number($("select").val())/100); // 쿠폰할인금액
+			if($("select#coupon").val() != 0){
+				const coupon_dis_price = sum_order_price*(Number($("select#coupon").val())/100); // 쿠폰할인금액
 				$("span#coupon_dis_price").text(coupon_dis_price.toLocaleString('en')+"원");
 			}
-			else if($("select").val() == 0){
+			else{
 				$("span#coupon_dis_price").text('적용된 쿠폰없음');
 			}
 			calc_totalPrice();
@@ -116,15 +116,21 @@
 		const sum_order_price = Number("${requestScope.total_price}"); // 총 주문금액
 		const delivery_fee = Number("${requestScope.delivery_fee}"); // 배송비
 		const user_point = Number("${sessionScope.loginuser.point}"); // 로그인한 회원의 보유포인트
-		const coupon_dis_price = sum_order_price*(Number($("select").val())/100); // 쿠폰할인금액				
+		const coupon_dis_price = sum_order_price*(Number($("select#coupon").val())/100); // 쿠폰할인금액
+		const point_redeem = Number($("input#point_redeem").val()); // 포인트사용금액
 		
 		// 결제금액 = 총 주문금액 + 배송비 - 쿠폰할인금액 - 포인트사용금액
 		const total_price = sum_order_price + delivery_fee - coupon_dis_price - Number($("input#point_redeem").val());
 		$("span#total_price").text(total_price.toLocaleString('en')+"원");
 		$("input#total_price").val(total_price);
 
+		// 할인받은금액 = 쿠폰할인금액 + 포인트사용금액
+		const discount_price = Number(coupon_dis_price) + Number(point_redeem);
+		$("span#discount_price").text(discount_price.toLocaleString('en')+"원");
+		$("input#discount_price").val(discount_price);
+		
 		// 포인트 적립금액 = 결제금액 * 0.1
-		const point_saveup = total_price * 0.1;
+		const point_saveup = parseInt(total_price * 0.1);
 		$("span#point_saveup").text(point_saveup.toLocaleString('en')+"원");
 		$("input#point_saveup").val(point_saveup);
 	} // end of function calc_totalPrice()
@@ -134,11 +140,12 @@
 	function goPaymentEnd(){
 		$.ajax({
 			url:"<%= ctxPath%>/shop/paymentEnd.moc",
-     		data:{"delivery_fee":"${requestScope.delivery_fee}", // 배송비
-     			  "coupon_no":$("option:selected").attr("id"),   // 쿠폰번호
-     			  "point_redeem":$("input#point_redeem").val(),  // 포인트 사용금액
-     			  "point_saveup":$("input#point_saveup").val(),  // 포인트 적립금액
-     			  "total_price":$("input#total_price").val()},   // 결제금액
+     		data:{"delivery_fee":"${requestScope.delivery_fee}", 	// 배송비
+     			  "coupon_no":$("select#coupon").find("option:selected").attr("id"), // 쿠폰번호
+     			  "point_redeem":$("input#point_redeem").val(),  	// 포인트 사용금액
+     			  "point_saveup":$("input#point_saveup").val(),  	// 포인트 적립금액
+     			  "discount_price":$("input#discount_price").val(), // 할인받은금액
+     			  "total_price":$("input#total_price").val()},   	// 결제금액
      		type:"post",
      		dataType:"json",
      		success:function(json) {
@@ -266,9 +273,8 @@
 			    </tr>
 			    <tr>
 			      	<td colspan="2" class="col-md-5 p-1">
-			      		<select name="coupon" style="padding-bottom: 5px; width: 210px; height: 30px;">
+			      		<select id="coupon" style="padding-bottom: 5px; width: 210px; height: 30px;">
 			      			  <option value="0">보유쿠폰 조회하기</option>
-			      			  <option value="0">쿠폰 사용하지 않기</option>
 			      		  
 			      		  <c:forEach var="couponMap" items="${requestScope.couponList}">
 			      		    <c:if test="${not empty couponMap}">
@@ -278,6 +284,8 @@
 			      			  <option value="0">보유한 쿠폰이 없습니다.</option>
 			      		    </c:if>
 			      		  </c:forEach>
+
+			      			  <option value="0" style="color: blue;">쿠폰 사용하지 않기</option>
 			      		</select>
 						<button type="button" id="btnCoupon" class="btn btn-sm px-2">적용</button>
 			      	</td>
@@ -303,8 +311,16 @@
 			    </tr>
 			    <tr>
 			    	<td class="col-md-7 pt-4"></td>
-			      	<td class="col-md-3 p-1 pt-4 border-top">결제금액</td>
+			      	<td class="col-md-3 p-1 pt-4 border-top">할인받은 금액</td>
 			      	<td class="col-md-2 p-1 pt-4 border-top">
+      				  <span id="discount_price" name="discount_price" class="h6">원</span>
+      				  <input type="hidden" id="discount_price" value="" />
+			      	</td>
+			    </tr>
+			    <tr>
+			    	<td class="col-md-7"></td>
+			      	<td class="col-md-3 p-1">결제금액</td>
+			      	<td class="col-md-2 p-1">
       				  <span id="total_price" name="total_price" class="h6">원</span>
       				  <input type="hidden" id="total_price" value="" />
 			      	</td>

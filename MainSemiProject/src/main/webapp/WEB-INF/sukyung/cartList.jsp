@@ -86,7 +86,6 @@
 		
 		let cart_product_count;
 		let b_flag_goDelivery = true; // goOrder() 함수에서 b_flag_goDelivery 가 true 이면 "배송정보"로 이동가능
-		let b_flag_click_btnUpdate = false;
 
 		$("div#error").hide();
 		$("img#add_product_image").hide();
@@ -110,9 +109,13 @@
 			$(this).parent().find("input#cart_product_count").val(cart_product_count);
 			// 수량을 입력하는 input 태그의 value 값을 알아와서, 그 자리에 수량+1 또는 수량-1 한 값을 꽂아넣어준다.
 			
-			$(this).parent().parent().find("div#error").show(); // 에러메시지 보여주기
-			b_flag_click_btnUpdate = true; // "변경" 버튼 클릭해야 한다.
-		
+			if($(this).parent().find("input#origin_cart_product_count").val() != $(this).parent().find("input#cart_product_count").val()){
+				$(this).parent().parent().find("div#error").show(); // 에러메시지 보여주기
+			}
+			else{
+				$(this).parent().parent().find("div#error").hide(); 
+			}
+			
 		}); // end of $("button.changeCount").click(function(){})
 
 		
@@ -123,8 +126,12 @@
 			cart_product_count = checkChangeCount(cart_product_count);
 			$(this).val(cart_product_count);
 
-			$(this).parent().parent().find("div#error").show(); // 에러메시지 보여주기
-			b_flag_click_btnUpdate = true; // "변경" 버튼 클릭해야 한다.
+			if($(this).prev().val() != $(this).val()){
+				$(this).parent().parent().find("div#error").show(); // 에러메시지 보여주기
+			}
+			else{
+				$(this).parent().parent().find("div#error").hide(); 
+			}
 
 		}); // end of $("input#cart_product_count").bind("change", function(){})
 		
@@ -171,7 +178,7 @@
 			$.ajax({
 				url:"<%= ctxPath%>/shop/cartListUpdate.moc",
 	     		data:{"cart_no":$(this).parent().parent().parent().find("td:eq(0)").find("input:checkbox[name='cart_no']").val(), // 장바구니번호
-	     			  "cart_product_count":$(this).parent().prev().children("input").val()}, // 수량
+	     			  "cart_product_count":$(this).parent().prev().children("input#cart_product_count").val()}, // 수량
 	     		type:"post",
 	     		dataType:"json",
 	     		success:function(json) {
@@ -325,18 +332,17 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 	<%--	
-		// 제품상세에서 장바구니에 추가
+		// 제품전체에서 장바구니에 추가
 		$.ajax({
 			url:"<%= ctxPath%>/shop/cartListAdd.moc",
      		data:{"product_name":,  // 제품명
      			  "product_color":, // 제품색상
-     			  "product_size":, // 제품사이즈
-     			  "cart_product_count":}, // 주문수량
+     			  "product_size":}, // 제품사이즈
      		type:"post",
      		dataType:"json",
      		success:function(json) {
-				if(json.result == 1){ // insert sql 성공 ==> 장바구니로 이동
-					location.href = "<%= request.getContextPath()%>/shop/cartList.moc"; 
+				if(json.result == 1){ // insert sql 성공
+					location.href="javascript:history.go(0);"; // 새로고침
 				}
      		},
      		error: function(request, status, error) {
@@ -517,6 +523,7 @@
 			      	<td>
 				      	<span class="border py-1" style="border: solid 1px gray;">
 				      	  	<button type="button" class="btn btn-sm changeCount">-</button>
+					      	<input type="hidden" id="origin_cart_product_count" name="origin_cart_product_count" value="${cvo.cart_product_count}"/>
 					      	<input type="number" id="cart_product_count" name="cart_product_count" value="${cvo.cart_product_count}" class="col-md-4 text-center px-0" style="border: none; background-color: #fefce7;"/>
 					      	<button type="button" class="btn btn-sm changeCount">+</button>
 					    </span>
