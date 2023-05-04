@@ -8,7 +8,7 @@
     String ctxPath = request.getContextPath();
 %>
     
-<jsp:include page="./header.jsp"/>
+<jsp:include page="../jaesik/header.jsp" />
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -219,8 +219,6 @@
 	 				
 	 				$.each(json.imgList, function(index, item){
 
-	 					alert("item => " + item);
-	 					alert("typeof item => " + typeof item);
 		 			    html += '<img id="img_select" name="imgList" class="col-md-2 m-3 p-1" src="'+item+'" onclick="imgSelect(this);">';
 				 			    
 				 	});// end of if(!$.isEmptyObject(json.imgList))
@@ -629,4 +627,4 @@
 </div>
 
   
-<jsp:include page="./footer.jsp"/>
+<jsp:include page="../jaesik/footer.jsp" />	
