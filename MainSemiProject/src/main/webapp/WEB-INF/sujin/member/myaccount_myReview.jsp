@@ -11,6 +11,7 @@
 
 </style>
 
+
 <div class="tab-pane container fade" id="viewmy2" >
 
   	<h4 class="my-3" style="font-weight: bold; text-align: center;">내가 작성한 리뷰 보기</h4>

@@ -29,20 +29,11 @@
 	
 </style>
 
-<script type="text/javascript">
+<style>
+ 	@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+</style>
 
-	$(document).ready(function(){
-		
-		$("tr#orderProduct").click(function(e){
-			
-			const product_name = $(e.target).parent().find("div#product_name").text();
-			const product_color = $(e.target).parent().find("div#product_color").text();
-			// parent() 을 함으로 tr에 속한 어디를 눌러도 한 제품을 선택한것이 된다
-			
-			location.href = "<%= ctxPath%>/product.moc?product_name="+product_name+"&product_color="+product_color; 
-		});
-		
-	});
+<script type="text/javascript">
 	
 	function goshopping() { // 쇼핑하기 누르면 전체 제품페이지로 이동
 	
@@ -114,7 +105,9 @@
 											 	  			<c:if test="${ovo.order_no == odlist.fk_order_no}">
 													 	  	  	<tr id="orderProduct">
 														 			<td class="col-md-3 text-center">
-															 		  	<img src="${odlist.pvo.product_image}" id="product_image" name="product_image" width="150" class="img-thumbnail"/>
+															 			<a href='<%= ctxPath%>/product.moc?product_name=${odlist.pvo.product_name}&product_color=${odlist.pvo.product_color}'>
+													                    	<img src="${odlist.pvo.product_image}" id="product_image" name="product_image" width="150" class="img-thumbnail"/>
+													                  	</a>
 														 			</td>
 														 			<td class="col-md-3 text-left">
 															 		  	<div class="mt-4 product_Info">
