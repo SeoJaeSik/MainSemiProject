@@ -970,12 +970,14 @@ public class JS_MemberDAO implements JS_InterMemberDAO {
 	          
 			String sql = " select order_no, fk_userid, orderdate, delivery_fee\n"+
 						 "     , total_price, order_detail_no, fk_product_no, order_count, order_price, delivery_mobile, delivery_address\n"+
-						 "     , delivery_comment, delivery_invoice, product_name, product_color, product_size, product_image, product_content\n"+
+						 "     , delivery_comment, delivery_invoice, product_name, product_color, product_size, product_image, product_content\n"+ 
+						 "	   , product_price"+
 						 " from \n"+
 						 "     (\n"+
 						 "     select row_number () over (order by orderdate desc) as RNO, order_no, fk_userid, orderdate, delivery_fee\n"+
 						 "         , total_price, order_detail_no, fk_product_no, order_count, order_price, delivery_mobile, delivery_address\n"+
-						 "         , delivery_comment, delivery_invoice, product_name, product_color, product_size, product_image, product_content\n"+
+						 "         , delivery_comment, delivery_invoice, product_name, product_color, product_size, product_image, product_content\n"+ 
+						 "		   , product_price"+
 						 "     from tbl_order O join tbl_order_detail D on O.order_no = D.fk_order_no\n"+
 						 "         join tbl_delivery V on V.fk_order_no = O.order_no\n"+
 						 "         join tbl_product P on P.product_no = D.fk_product_no\n"+
@@ -1015,21 +1017,28 @@ public class JS_MemberDAO implements JS_InterMemberDAO {
 	            String product_size = rs.getString("product_size");
 	            String product_image = rs.getString("product_image");
 	            String product_content = rs.getString("product_content");
+	            String product_price = rs.getString("product_price");
 
 	            HashMap<String,String> odrmap = new HashMap<>();
-//	            odrmap.put("ODRCODE", odrcode);
-//	            odrmap.put("FK_USERID", fk_userid);
-//	            odrmap.put("ODRDATE", odrdate);
-//	            odrmap.put("ODRSEQNUM", odrseqnum);
-//	            odrmap.put("FK_PNUM", fk_pnum);
-//	            odrmap.put("OQTY", oqty);
-//	            odrmap.put("ODRPRICE", odrprice);	
-//	            odrmap.put("DELIVERSTATUS", deliverstatus);
-//	            odrmap.put("PNAME", pname);
-//	            odrmap.put("PIMAGE1", pimage1);
-//	            odrmap.put("PRICE", price);
-//	            odrmap.put("SALEPRICE", saleprice);
-//	            odrmap.put("POINT", point);
+	            odrmap.put("order_no", order_no);
+	            odrmap.put("fk_userid", fk_userid);
+	            odrmap.put("orderdate", orderdate);
+	            odrmap.put("delivery_fee", delivery_fee);
+	            odrmap.put("total_price", total_price);
+	            odrmap.put("order_detail_no", order_detail_no);
+	            odrmap.put("fk_product_no", fk_product_no);	
+	            odrmap.put("order_count", order_count);
+	            odrmap.put("order_price", order_price);
+	            odrmap.put("delivery_mobile", delivery_mobile);
+	            odrmap.put("delivery_address", delivery_address);
+	            odrmap.put("delivery_comment", delivery_comment);
+	            odrmap.put("delivery_invoice", delivery_invoice);
+	            odrmap.put("product_name", product_name);
+	            odrmap.put("product_color", product_color);
+	            odrmap.put("product_size", product_size);
+	            odrmap.put("product_image", product_image);
+	            odrmap.put("product_content", product_content);
+	            odrmap.put("product_price", product_price);
 
 	            orderList.add(odrmap);
 
@@ -1041,6 +1050,35 @@ public class JS_MemberDAO implements JS_InterMemberDAO {
 
 		return orderList;
 	
+	}
+
+	
+	
+	// 추가이미지가 있으면 추가 이미지 테이블에 파일명 인서트하기 
+	@Override
+	public int product_imagefile_Insert(String product_no_full, String attachFileName) throws SQLException {
+		
+		int result = 0;
+	      
+	      try {
+	         conn = ds.getConnection();
+	         
+	         String sql = " insert into tbl_product_imagefile (imgfileno, fk_product_no, imgfilename) "+ 
+	        		 	  " values(seqImgfileno.nextval, ?, ?) ";
+	         
+	         pstmt = conn.prepareStatement(sql);
+	         
+	         pstmt.setString(1, product_no_full);
+	         pstmt.setString(2, attachFileName);
+	         
+	         result = pstmt.executeUpdate();
+	         
+	      } finally {
+	         close();
+	      }
+	      
+	      return result;
+		
 	}
 
 }
