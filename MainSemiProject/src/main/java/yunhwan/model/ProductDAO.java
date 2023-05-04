@@ -60,20 +60,16 @@ public class ProductDAO implements InterProductDAO {
 		try {
 			conn = ds.getConnection(); // 본인의 오라클DB와 연동
 			
-			String sql = " SELECT product_no, product_name, fk_shoes_category_no, product_price, product_color "
-					   + "     , MAX(product_size) AS product_size, product_image, product_date, product_content "
-				       + "     , upload_date, stock_count, sale_count "
-					   + " FROM ( "
-					   + "	  SELECT ROW_NUMBER() OVER (PARTITION BY product_name, product_color ORDER BY product_name DESC) AS RNO, product_no, product_name, "
-					   + "			 fk_shoes_category_no, product_price, product_color, product_size, product_image, "
-					   + "			 product_date, product_content, upload_date, stock_count, sale_count "
-					   + "	  FROM tbl_product "
-					   + "      WHERE fk_shoes_category_no LIKE '%' || ? || '%' "
-					   + "	 ) "
-					   + " WHERE RNO = 1 AND ROWNUM BETWEEN ? AND ? "
-					   + " GROUP BY product_no, product_name, fk_shoes_category_no, product_price, product_color, "
-					   + " product_image, product_date, product_content, upload_date, stock_count, sale_count, RNO "
-					   + " ORDER BY product_name DESC ";
+			String sql = " select product_no, product_name, fk_shoes_category_no, product_price, product_color, product_size"+
+					 "     , product_image, product_date, product_content, upload_date, stock_count, sale_count"+
+					 " from "+
+					 " ("+ 
+					 " select row_number() over (order by upload_date desc) as RNO, product_no, product_name, fk_shoes_category_no, product_price, product_color, product_size"+
+					 "     , product_image, product_date, product_content, upload_date, stock_count, sale_count"+
+					 " from tbl_product "+ 
+					 " where fk_shoes_category_no like '%'|| ? || '%' "+ 
+					 " ) "+
+					 " where rno between ? and ?";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, paraMap.get("category"));
@@ -86,12 +82,18 @@ public class ProductDAO implements InterProductDAO {
 				
 				ProductVO pvo = new ProductVO();
 
-				pvo.setProduct_name(rs.getString("product_name"));  
-			    pvo.setProduct_color(rs.getString("product_color"));
-			    pvo.setProduct_price(rs.getInt("product_price"));
-				pvo.setFk_shoes_category_no(rs.getInt("fk_shoes_category_no"));
-				pvo.setProduct_image(rs.getString("product_image"));
-				pvo.setProduct_size(rs.getInt("product_size"));
+				pvo.setProduct_no(rs.getString(1));
+				pvo.setProduct_name(rs.getString(2));
+				pvo.setFk_shoes_category_no(rs.getInt(3));
+				pvo.setProduct_price(rs.getInt(4));
+				pvo.setProduct_color(rs.getString(5));
+				pvo.setProduct_size(rs.getInt(6));
+				pvo.setProduct_image(rs.getString(7));
+				pvo.setProduct_date(rs.getString(8));
+				pvo.setProduct_content(rs.getString(9));
+				pvo.setUpload_date(rs.getString(10));
+				pvo.setStock_count(rs.getInt(11));
+				pvo.setSale_count(rs.getInt(12));
 				
 				prodList.add(pvo);
 				
@@ -107,9 +109,9 @@ public class ProductDAO implements InterProductDAO {
 	
 	
 	
-
+	// Ajax로 처리한 카테고리별 전체 제품개수 가져오기
 	@Override
-	public int totalAllCount(String fk_shoes_category_no) throws SQLException {
+	public int totalAllCount(String category) throws SQLException {
 		
 		int totalAllCount = 0;
 		
@@ -121,16 +123,16 @@ public class ProductDAO implements InterProductDAO {
 					   + " where fk_shoes_category_no LIKE '%' || ? || '%' ";
 			
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, fk_shoes_category_no);
+			pstmt.setString(1, category);
 			
-			rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery(); // 쿼리 실행
 			
-			rs.next();
-			
-			totalAllCount = rs.getInt(1);
+			if(rs.next()) {
+				totalAllCount = rs.getInt(1); // 다음에 나오는 값이 있으면 적용되도록
+			}
 			
 		} finally {
-			close();
+			close(); // 종료
 		}
 		
 		return totalAllCount;

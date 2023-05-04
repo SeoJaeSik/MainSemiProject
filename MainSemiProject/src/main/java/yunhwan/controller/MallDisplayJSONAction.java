@@ -23,32 +23,30 @@ public class MallDisplayJSONAction extends AbstractController {
     	// 로그인을 하면 시작페이지가 아니라 방금 보았던 그 페이지로 감.
     	super.goBackURL(request);
     	
-    	
     	String start = request.getParameter("start");
 		String len = request.getParameter("len"); // end 를 구하기 위해 가져온 것이다.
         String category = request.getParameter("category");
         
+        System.out.println("start => "+ start);
+        System.out.println("len => "+ len);
+        System.out.println("category => "+ category);
+        
         InterProductDAO pdao = new ProductDAO();
-       
 
         Map<String, String> paraMap = new HashMap<>();
-        
 		paraMap.put("start", start);  
-        paraMap.put("category", category);
        
-        int totalAllCount = pdao.totalAllCount("0"); // 카테고리별 전체 제품개수 알아오기
-        
-        request.setAttribute("totalAllCount", totalAllCount);
-        
-        System.out.println("totalAllCount =>" + totalAllCount);
-        
         String end = String.valueOf( Integer.parseInt(start) + Integer.parseInt(len) - 1);
+        paraMap.put("end", end);  // start값 len값 가져와서 페이징
 
-        paraMap.put("end", end);  
+        System.out.println("end => "+end);
+        
+        paraMap.put("category", category);
 
         List<ProductVO> productList = pdao.selectProduct(paraMap);
-
+        int totalAllCount = pdao.totalAllCount(category); // 카테고리별 전체 제품개수 알아오기
         
+        System.out.println("totalAllCount => "+totalAllCount);
         
         JSONArray jsonArr = new JSONArray();
 
@@ -75,22 +73,14 @@ public class MallDisplayJSONAction extends AbstractController {
                 jsonArr.put(jsonObj);
             }
         }
-        else {
-			String message = "준비된 제품이 없습니다. 문의사항은 관리자에게 연락주십시오. 감사합니다.";
-            String loc = "javascript:history.back()";
-               
-            request.setAttribute("message", message);
-            request.setAttribute("loc", loc);
-              
-            super.setRedirect(false);   
-            super.setViewPage("/WEB-INF/msg.jsp");
-            
-		}// end of else--------------------
 
         String json = jsonArr.toString();
-        System.out.println("productList.length : " + productList.size());
+        
+        System.out.println("jsonArr.length() => "+ jsonArr.length()+"\n---------");
+        
         
         request.setAttribute("json", json);
+        
         super.setRedirect(false);
         super.setViewPage("/WEB-INF/jsonview.jsp");
         
