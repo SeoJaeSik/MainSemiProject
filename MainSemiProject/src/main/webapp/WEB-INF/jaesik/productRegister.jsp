@@ -72,7 +72,6 @@
 			
 			$("div#divfileattach").html(html);
 			$("input#attachCount").val(cnt);
-			alert($("input#attachCount").val());
 		});
 		
 		// 이미지 삭제 버튼 클릭시
@@ -92,7 +91,6 @@
 			
 			$("div#divfileattach").html(html);
 			$("input#attachCount").val(cnt);
-			alert($("input#attachCount").val());
 		});
 		
 		
