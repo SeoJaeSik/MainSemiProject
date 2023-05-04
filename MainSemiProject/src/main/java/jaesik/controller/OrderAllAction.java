@@ -61,7 +61,7 @@ public class OrderAllAction extends AbstractController {
 	        List<HashMap<String, String>> orderList = mdao.getOrderList(currentShowPageNo, sizePerPage); 
 	                        
 	        //  -- 페이지바 만들기 
-	        String url = "/member/admin/orderAll.moc";
+	        String url = request.getContextPath()+"/member/admin/orderAll.moc";
 	        int blockSize = 10;
 	        //  blockSize 는 1개 블럭(토막)당 보여지는 페이지번호의 갯수이다.
 	                  
@@ -78,17 +78,17 @@ public class OrderAllAction extends AbstractController {
 	         
 	        // *** [맨처음][이전] 만들기 *** // 
 	        if(pageNo != 1) {
-	        	pageBar += "<li class='page-item'><a class='page-link' href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
-	        	pageBar += "<li class='page-item'><a class='page-link' href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+	        	pageBar += "<li class='page-item'><a class='page-link bg-dark text-white' href='"+url+"?currentShowPageNo=1'>[처음]</a></li>";
+	        	pageBar += "<li class='page-item'><a class='page-link bg-dark text-white' href='"+url+"?currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
 	        }
 	         
 	        while( !(loop > blockSize || pageNo > totalPage) ) {
 	            
 	        	if(pageNo == currentShowPageNo) {
-	        		pageBar += "<li class='page-item active'><a class='page-link' href='#'>"+pageNo+"</a></li>";  
+	        		pageBar += "<li class='page-item active'><a class='page-link bg-dark text-white' href='#'>"+pageNo+"</a></li>";  
 	        	}
 	            else {
-	               pageBar += "<li class='page-item'><a class='page-link' href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+	               pageBar += "<li class='page-item'><a class='page-link bg-dark text-white' href='"+url+"?currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 	            }
 	            
 	            loop++;
@@ -97,10 +97,15 @@ public class OrderAllAction extends AbstractController {
 	         
 	        // *** [다음][마지막] 만들기 *** // 
 	        if( pageNo <= totalPage ) {
-	        	pageBar += "<li class='page-item'><a class='page-link' href='"+url+"?currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-	            pageBar += "<li class='page-item'><a class='page-link' href='"+url+"?currentShowPageNo="+totalPage+"'>[끝]</a></li>";
+	        	pageBar += "<li class='page-item'><a class='page-link bg-dark text-white' href='"+url+"?currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+	            pageBar += "<li class='page-item'><a class='page-link bg-dark text-white' href='"+url+"?currentShowPageNo="+totalPage+"'>[끝]</a></li>";
 	        }
 			
+	        request.setAttribute("orderList", orderList);
+	        request.setAttribute("pageBar", pageBar);
+	        
+	        super.setRedirect(false);
+	        super.setViewPage("/WEB-INF/jaesik/orderAll.jsp");
 			
 		}
 		else {

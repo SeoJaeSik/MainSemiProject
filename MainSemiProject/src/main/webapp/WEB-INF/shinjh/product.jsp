@@ -8,7 +8,7 @@
     String ctxPath = request.getContextPath();
 %>
     
-<jsp:include page="./header.jsp"/>
+<jsp:include page="../jaesik/header.jsp" />
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -77,16 +77,9 @@
 		color: orange;
 	}
 	
-	
 	ul {
 		list-style: none;
-	}
-	
-	.wrap {
-		display: flex;
-		flex-wrap: wrap;
-	}
-	
+	}	
 	
 	div#testimonial{
 		display: flex;
@@ -222,13 +215,12 @@
 	 				
 	 			    html += '<div class="col-md-12">'+
 	 				  		  '<img id="expandedImg" class="col-md-12" src="'+json.imgList[0]+'">'+
-	 				  		  '<div class="row-md-12">';
+	 				  		  '<div class="row flex-wrap">';
 	 				
 	 				$.each(json.imgList, function(index, item){
-	 					
-		 			    html += '<div class="column p-3">'+
-				 			      '<img id="img_select" name="imgList" class="col-md-2 p-1" src="'+item+'" onclick="imgSelect(this);">'+
-				 			    '</div>';
+
+		 			    html += '<img id="img_select" name="imgList" class="col-md-2 m-3 p-1" src="'+item+'" onclick="imgSelect(this);">';
+				 			    
 				 	});// end of if(!$.isEmptyObject(json.imgList))
 	 				
 	 				html += '</div></div>';
@@ -268,7 +260,8 @@
  	// 선택된 이미지 강조 표시
 	function imgSelected() {
 		$('img[name="imgList"]').each(function() {
-			let img1 = this.src;
+			
+			let img1 = $(this).attr('src');
 			
 			let img2 = $('#expandedImg').attr('src');
 	
@@ -506,7 +499,7 @@
 </script>  
    
 <!-- container -->
-<div class="container">
+<div class="container my-5">
  
   <!-- product-breadcrumbs -->
   <div class="product-breadcrumbs">
@@ -525,7 +518,7 @@
   <!-- // product-breadcrumbs -->  
   
   <!-- detail_top -->
-  <div class="mt-3 detail_top row">
+  <div class="detail_top row">
   
 	<div id="img_list"></div>
     
@@ -536,6 +529,7 @@
           <span class="col product-main_price p1">
             <span name="product_price"><fmt:formatNumber value="${requestScope.pvo.product_price}" pattern="###,###" />원</span>
           </span>
+          <%-- 
         <div class="ml-5 pt-2 review">
           <span class="fa-stars">
             <span class="fa fa-star checked"></span>
@@ -546,6 +540,7 @@
           </span>
         <a id="link" href="#" class="text-m">538 리뷰</a>
         </div>
+        --%>
       </div>
       
       <div class="mt-3">
@@ -563,15 +558,13 @@
 
     
       <div class="mt-5"> 
-        <p>사이즈
-          <a id="link" style="float:right;">가이드</a>
-        </p>
+        <p>사이즈</p>
         <hr/>
         
         
 	    <div class="row">
           <div class="col-md-12">
-            <div id="size_list" class="btn-group wrap" role="group">
+            <div id="size_list" class="btn-group flex-wrap" role="group">
             </div>
           </div>
         </div>
@@ -605,7 +598,26 @@
 </div>
 <!-- // container -->
 
- 
+<%-- 
+<div id="container_review" class="col-md-12 container">
+  <div id="container_headline" class="align-c">
+    <h2 class="product-reviews_title" class="align-c">Reviews</h2>
+    <button class="pull-right">write a review</button>
+  </div>
+</div>
+--%>
+
+<%--
+<div class="row">	
+	    <c:if test="${not empty requestScope.colorList}">
+	      <c:forEach var="colorList" items="${requestScope.colorList}">
+	        <img id="img_select" name="colorList" class="col-md-2 m-3 p-1" src="${colorList.product_image}" value="${colorList.product_color}" title="${colorList.product_color}" onclick="colorSelect(this);">	        
+	      </c:forEach>
+	    </c:if>
+      </div>
+--%> 
+
+<%--
 <div id="testimonial" class="my-5">
   <div id="testimonial_container" class="row">
     <div id="testimonial_left" class="col-md-6 px-5 pt-4">
@@ -626,6 +638,6 @@
     </div>
   </div> 
 </div>
-
+--%>
   
-<jsp:include page="./footer.jsp"/>
+<jsp:include page="../jaesik/footer.jsp" />	

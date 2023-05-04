@@ -9,19 +9,20 @@
 	
 	let lenAll = 9; // HIT 상품 "스크롤" 할 때 보여줄 상품의 개수(단위) 크기
 	
-	let category = 00;
+	let category = 0;
 	
 
 	$(document).ready(function() {
 	 	
-		$("span#totalAllCount").hide();
-		$("span#countAll").hide(); 
-		
+		/* 
+			$("span#totalAllCount").hide();
+			$("span#countAll").hide();  
+		*/
 	   displayAll(start); 
 	  // === scroll 이벤트 발생시키기 시작 === //
 		$(window).scroll(function() {
-
-            if($(window).scrollTop() +1 >= $(document).height() - $(window).height() ) {
+			
+            if( $(window).scrollTop() +1 >= $(document).height() - $(window).height() ) {
 	            $("span#totalAllCount").text();
 	            $("span#countAll").text();
 	            
@@ -30,7 +31,8 @@
 		            displayAll(start); 
 	            }
 	         }
-            if( $(window).scrollTop() == 0 ) {
+            
+            if( $(window).scrollTop() == 0 ) { // 스크롤탑 0 되게 올라오면 초기화
             	$("div#displayAll").empty();
             	$("span#end").empty();
             	$("span#countAll").text(0);
@@ -48,7 +50,7 @@
 		    console.log("선택한 카테고리: " + category);
 		    // 여기서 가져온 category 변수를 ajax 요청의 data 객체에 추가하여 서버에 전송하면 됩니다.
 
-		    $("div#displayAll").empty();
+		    window.scrollTo(0,0);
 		    displayAll(start);
 		    
 		  });		
@@ -75,11 +77,10 @@
 			//	console.log("확인용 json => " + JSON.stringify(json));
 			//	console.log("JSON.stringify(json) 의 타입 => " + typeof JSON.stringify(json));
 			
-			if(start == 1) {
+			if(start == "1") {
 				$("div#displayAll").empty();
-				$("span#totalAllCount").text("0");
 				$("span#end").empty();
-				
+				$("span#totalAllCount").text("0");
 			}
 			
 			
@@ -87,7 +88,6 @@
 				
 				if(start == "1" && json.length == 0) {
 				    html += "현재 상품 준비중...";
-					$("div#displayAll").html(html); // id가 displayAll인 div에 값을 뿌려준다.
 					
 				}
 				else if(json.length > 0) {
@@ -113,30 +113,27 @@
 										"</div>"+
 								"</div>";
 						
-								
-								
-								
 						if((index+1)%3 == 0) {
 							html += "</div>";		
 						}
 						
-						$("div#displayAll").text(item.totalAllCount);
+						$('#totalAllCount').text(item.totalAllCount); // 반복이 될 때마다, 해당 카테고리의 총 제품개수를 받아와 확인시켜준다.
 						
 					});// end of $.each(json, function(index, item)-------------------
 				
-					// 전체상품 상품 결과물 출력하기
-					$("div#displayAll").append(html);		
-					
-					// $("span#countHIT") 에 지금까지 출력된 상품의 개수를 누적해서 기록한다.
-					$("span#countAll").text( Number($("span#countAll").text()) + json.length ); // span 태그는 value값이 없다. 그래서 text로 해준다.(아래 태그를 보면 이해할 수 있다.)
-																		
-					// 스크롤을 계속해서 countHIT 값과 totalHITCount 값이 일치하는 경우 
-					if( $("span#totalAllCount").text() == $("span#countAll").text() ) {
-					    $("span#end").html("더이상 조회할 제품이 없습니다.");
-					    $("span#countAll").text(0);
-					}
-				
 				}// end of else if(json,length > 0)-------------------------
+					
+				// 전체상품 상품 결과물 출력하기
+				$('div#displayAll').append(html);		
+				
+				// $("span#countAll") 에 지금까지 출력된 상품의 개수를 누적해서 기록한다.
+				$("span#countAll").text( Number($("span#countAll").text()) + json.length ); // span 태그는 value값이 없다. 그래서 text로 해준다.(아래 태그를 보면 이해할 수 있다.)
+																	console.log("json.length => "+json.length);
+				// 스크롤을 계속해서 countAll 값과 totalAllCount 값이 일치하는 경우 
+				if( $("span#totalAllCount").text() == $("span#countAll").text() ) { // countAll 90
+				    $("span#end").html("더이상 조회할 제품이 없습니다.");
+				}
+			
 						
 			},
 			error: function(request, status, error){ // 통신 실패시 실행할 함수
@@ -342,26 +339,20 @@
 							<!-- ajax로 제품 들어올 자리 -->
 						</div>
 					</div>
+						
 				</div>
 			<!-- 제품목록 섹션 끝 -->
-			
-				<div>
-			         <p class="text-center">
-			            <span id="end" style="display:block; margin:20px; font-size: 14pt; font-weight: bold; color: black;"></span> 
-			            <span id="totalAllCount"></span>
-			            <span id="countAll"></span>
-			         </p>
-      			</div>
-			
+			<div>
+		         <p class="text-center">
+		            <span id="end" style="display:block; margin:20px; font-size: 14pt; font-weight: bold; color: black;"></span> 
+		            <span id="totalAllCount"></span>
+		            <span id="countAll">0</span>
+		         </p>
 			</div>
-	<!-- 우측 제품목록 및 기타 기능 섹션  -->
-	
-			
-	
 		</div>
+	<!-- 우측 제품목록 및 기타 기능 섹션  -->
+	</div>
 <!-- 전체 섹션 끝-->
-
-
 	</div>
 <!-- 전체 틀 (사이드바 및 제품목록 포함) 끝 -->
 </body>	

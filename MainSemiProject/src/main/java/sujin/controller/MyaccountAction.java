@@ -33,8 +33,7 @@ public class MyaccountAction extends AbstractController {
 			
 			// ==== 주문번호(order_no) 를 이용하여 주문정보(주문테이블, 배송테이블) 조회(select) ====
 			List<OrderVO> ovolist = modrdao.selectMemberOrderNo(loginuser.getUserid());
-			//	System.out.println("ovolist 확인 : " + ovolist);
-		
+			
 			for(int i=0; i<ovolist.size(); i++) {
 				ovolist.get(i); // 배열을 loginuser 객체에 설정
 			}
@@ -44,8 +43,6 @@ public class MyaccountAction extends AbstractController {
 			
 			// ==== 주문번호(order_no) 를 이용하여 주문상세정보(주문테이블, 주문상세테이블, 제품테이블) 조회(select) ====
 			List<OrderDetailVO> ovodetaillist = modrdao.selectOrderDetailList(loginuser.getUserid());
-			
-		//	System.out.println("ovodetaillist 확인 : " + ovodetaillist);
 			
 			for(int i=0; i<ovodetaillist.size(); i++) {
 				ovodetaillist.get(i); // 배열을 loginuser 객체에 설정
