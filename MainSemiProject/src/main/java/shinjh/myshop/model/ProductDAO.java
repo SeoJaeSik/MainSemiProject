@@ -216,27 +216,32 @@ public class ProductDAO implements InterProductDAO {
 	}// end of public List<String> getImagesByProduct_name
 
 	
-	// 제품이름을 가지고 색상 이미지를 가져오기
+	// 제품이름을 가지고 색상과 이미지 List를 가져오기
 	@Override
-	public List<String> getColorByName(String product_name) throws SQLException {
+	public List<HashMap<String, String>> getColorByName(String product_name) throws SQLException {
 		
-		List<String> colorList = new ArrayList<>();
+		List<HashMap<String, String>> colorList = new ArrayList<>();
 		
 		try {
 			conn = ds.getConnection();
 			
-			String sql = " select product_image "
+			String sql = " select product_color, product_image "
 						+ " from tbl_product "
 						+ " where product_name = ? and stock_count != 0 "
-						+ " group by product_image ";
+						+ " group by product_color, product_image ";
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, product_name);
 			
 			rs = pstmt.executeQuery();
 			
-			while(rs.next()) {				
-				colorList.add(rs.getString(1));				
+			while(rs.next()) {
+				
+				HashMap<String, String> paraMap = new HashMap<>();
+				paraMap.put("product_color", rs.getString(1));
+				paraMap.put("product_image", rs.getString(2));
+				
+				colorList.add(paraMap);				
 			}
 		} finally {
 			close();
@@ -256,7 +261,7 @@ public class ProductDAO implements InterProductDAO {
 			
 			String sql = " select product_size "
 					+ " from tbl_product "
-					+ " where product_name = ? and product_color = ? "
+					+ " where product_name = ? and product_color = ? and stock_count != 0 "
 					+ " order by product_size asc ";
 			
 			pstmt = conn.prepareStatement(sql);
