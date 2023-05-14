@@ -42,7 +42,17 @@ public class OrderListAction extends AbstractController {
 				
 				String method = request.getMethod();
 
-				if("POST".equalsIgnoreCase(method)) { // POST 방식 ==> 트랜잭션
+				if(!"POST".equalsIgnoreCase(method)) { // GET 방식일때
+
+					// session 에 저장해놨던 주문정보, 배송정보 삭제
+					session.removeAttribute("prodMap");
+					session.removeAttribute("shipMap");
+
+					super.setRedirect(false);
+					super.setViewPage("/WEB-INF/sukyung/orderList.jsp");
+				}
+
+				else { // POST 방식 ==> 트랜잭션
 					
 				// *** 2. 주문완료 email 발송
 					GoogleMail mail = new GoogleMail();
@@ -117,7 +127,6 @@ public class OrderListAction extends AbstractController {
 					String emailContents = sb.toString();
 					mail.sendmail_OrderFinish(loginuser.getEmail(), loginuser.getName(), emailContents);
 
-	
 					boolean result = false;
 					if(emailContents != null) {
 						result = true;
@@ -133,16 +142,6 @@ public class OrderListAction extends AbstractController {
 					super.setViewPage("/WEB-INF/sukyung/jsonview.jsp");
 					
 				} // end of POST
-
-				else { // GET 방식일때
-
-					// session 에 저장해놨던 주문정보, 배송정보 삭제
-					session.removeAttribute("prodMap");
-					session.removeAttribute("shipMap");
-
-					super.setRedirect(false);
-					super.setViewPage("/WEB-INF/sukyung/orderList.jsp");
-				}
 				
 			} // end of if(loginuser.getUserid().equals(userid))
 

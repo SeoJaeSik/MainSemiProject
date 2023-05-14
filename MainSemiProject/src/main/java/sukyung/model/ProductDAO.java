@@ -593,8 +593,6 @@ public class ProductDAO implements InterProductDAO {
 			
 			n1 = pstmt.executeUpdate();
 			
-		//	System.out.println("확인용 n1 : "+n1);
-			
 		// 2) 주문상세 테이블(tbl_order_detail) - insert 주문상세일련번호(생성), 제품번호(fk), 주문번호(fk), 주문수량, 제품별 주문금액
 			if(n1 == 1) {
 				
@@ -626,23 +624,17 @@ public class ProductDAO implements InterProductDAO {
 						// 즉 한 건의 주문에 속해있는 제품별 주문내역이 전부 insert 성공하였을 때
 						n2 = 1;
 					}
-				//	System.out.println("확인용 n2 : "+n2);
-					
 					
 				// 3) 장바구니 테이블(tbl_cart) - delete 결제된 장바구니 데이터 행 삭제
 					if(n2 == 1) {
 						String join_cart_no = (String) paraMap.get("join_cart_no"); // 장바구니번호(문자열)
 
-						System.out.println(join_cart_no);
-						
 						sql = " delete from tbl_cart "
 							+ " where cart_no in (" + join_cart_no +") ";
 						pstmt = conn.prepareStatement(sql);
 						
 						n3 = pstmt.executeUpdate(); // tbl_cart 에서 delete 된 행의 개수
 					} // end of if(장바구니 테이블에서 delete)
-				//	System.out.println("확인용 n3 : "+n3);
-
 					
 				// 4) 제품 테이블(tbl_product) - update 주문수량 증가, 재고수량 감소
 					if(n3 > 0) { 
@@ -668,7 +660,6 @@ public class ProductDAO implements InterProductDAO {
 							n4 = 1;
 						}
 					} // end of if (제품 테이블에서 update)
-				//	System.out.println("확인용 n4 : "+n4);
 				} // end of if(장바구니에서 결제하는 경우)
 
 				// === 제품상세에서 바로결제하는 경우
@@ -681,11 +672,11 @@ public class ProductDAO implements InterProductDAO {
 						+ " values(?, ?, ?, ?, ?) ";
 					pstmt = conn.prepareStatement(sql);
 					
-					pstmt.setString(1, (String)paraMap.get("order_no")); // 주문번호 202305010001 + 1
-					pstmt.setString(2, product_no);  	   		         // 제품번호
-					pstmt.setString(3, (String)paraMap.get("order_no")); // 주문번호 202305010001
-					pstmt.setString(4, order_count); 	   		  		 // 주문수량
-					pstmt.setString(5, order_price); 			  		 // 제품별 주문금액
+					pstmt.setString(1, (String)paraMap.get("order_no")+1); // 주문번호 202305010001 + 1
+					pstmt.setString(2, product_no);  	   		           // 제품번호
+					pstmt.setString(3, (String)paraMap.get("order_no"));   // 주문번호 202305010001
+					pstmt.setString(4, order_count); 	   		  		   // 주문수량
+					pstmt.setString(5, order_price); 			  		   // 제품별 주문금액
 
 					n2 = pstmt.executeUpdate();
 					
@@ -724,8 +715,6 @@ public class ProductDAO implements InterProductDAO {
 				n5 = pstmt.executeUpdate(); 
 			} // end of if(회원 테이블 update)
 			
-		//	System.out.println("확인용 n5 : "+n5);
-			
 		// 6) 쿠폰 테이블(tbl_user_coupon) - update 회원아이디(fk), 쿠폰번호, 쿠폰사용여부
 			if(n5 == 1 && paraMap.get("coupon_no") != null) {
 				sql = " update tbl_user_coupon set coupon_used = 0 "
@@ -740,8 +729,7 @@ public class ProductDAO implements InterProductDAO {
 			if(paraMap.get("coupon_no") == null) {
 				n6 = 1;
 			}
-		//	System.out.println("확인용 n6 : "+n6);
-			
+
 		// 7) 배송 테이블(tbl_delivery) - insert 주문번호(생성), 배송정보
 			if(n6 == 1) {
 	     		sql = " insert into tbl_delivery(fk_order_no, delivery_name, delivery_mobile, delivery_address, delivery_comment, delivery_invoice) "
@@ -757,8 +745,6 @@ public class ProductDAO implements InterProductDAO {
 
 				n7 = pstmt.executeUpdate(); 
 			} // end of if(배송 테이블 insert)
-		//	System.out.println("확인용 n7 : "+n7);
-
 			
 		// 8) 모든처리가 성공되었을시 commit 
 			if(n1*n2*n3*n4*n5*n6*n7 > 0) { // 모든 sql 문이 성공하였을 때

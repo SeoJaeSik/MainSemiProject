@@ -101,13 +101,13 @@
 
 			$("div#lodaer").show();
 			
-			goPaymentEnd();
-			<%--
 			const payment_name = $("input#product_no").eq(0).val();
 			const total_price = $("input#total_price").val();
 			const url = "<%= ctxPath%>/shop/paymentTry.moc?payment_name="+payment_name+"&total_price="+total_price;
 			window.open(url, payment_name, "left=300px, top=100px, width=830px, height=600px");
-			--%>
+
+			goPaymentEnd();
+
 		}); // end of $("button#btnPay").click(function(){})
 		
 	}); // end of $(document).ready(function(){})
