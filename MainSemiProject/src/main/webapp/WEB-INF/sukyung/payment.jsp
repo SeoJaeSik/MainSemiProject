@@ -86,7 +86,7 @@
 				alert("${sessionScope.loginuser.name}"+"님이 사용가능한 포인트는 최대 "+user_point+"원 입니다.");
 			}
 			calc_totalPrice();
-		});
+		}); // end of $("input#point_redeem").change(function(){})
 
 		
 	// *** 포인트 "전액사용" 버튼을 클릭하면 발생하는 이벤트
@@ -105,8 +105,6 @@
 			const total_price = $("input#total_price").val();
 			const url = "<%= ctxPath%>/shop/paymentTry.moc?payment_name="+payment_name+"&total_price="+total_price;
 			window.open(url, payment_name, "left=300px, top=100px, width=830px, height=600px");
-
-			goPaymentEnd();
 
 		}); // end of $("button#btnPay").click(function(){})
 		

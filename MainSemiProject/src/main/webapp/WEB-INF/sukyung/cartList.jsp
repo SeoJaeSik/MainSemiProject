@@ -323,51 +323,6 @@
 			}
 		}); // end of $("a#btnOrder").click(function(){})
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
-	<%--	
-		// 제품상세에서 장바구니에 추가
-		$.ajax({
-			url:"<%= ctxPath%>/shop/cartListAdd.moc",
-     		data:{"product_name":,  // 제품명
-     			  "product_color":, // 제품색상
-     			  "product_size":, // 제품사이즈
-     			  "cart_product_count":}, // 주문수량
-     		type:"post",
-     		dataType:"json",
-     		success:function(json) {
-				if(json.result == 1){ // insert sql 성공 ==> 장바구니로 이동
-					location.href = "<%= request.getContextPath()%>/shop/cartList.moc"; 
-				}
-     		},
-     		error: function(request, status, error) {
-                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-            }
-     	});
-
-		// 제품상세에서 바로결제
-		$.ajax({
-			url:"<%= ctxPath%>/shop/orderAdd.moc",
-     		data:{"product_name":,  // 제품명
-	   			  "product_color":, // 제품색상
-	   			  "product_size":, // 제품사이즈
-	   			  "cart_product_count":}, // 주문수량
-	  		type:"post",
-	 		dataType:"json",
-	 		async:false,
-	 		success:function(json) {
-		    	if(json.isSuccess == 1) { // 배송정보로 이동
-			    	location.href="<%= ctxPath%>/shop/delivery.moc";
-			    }
-			    else {
-					location.href="javascript:history.go(0);"; // 새로고침
-			    }
-	 		},
-	 		error: function(request, status, error) {
-	            alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-	        }
-	 	});
-	 --%>
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	}); // end of $(document).ready(function(){})
 

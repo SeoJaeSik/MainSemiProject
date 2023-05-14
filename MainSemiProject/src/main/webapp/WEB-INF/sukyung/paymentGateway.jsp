@@ -12,7 +12,6 @@
 <script type="text/javascript">
 
 $(document).ready(function() {
-	//	여기 링크를 꼭 참고하세용 http://www.iamport.kr/getstarted
    var IMP = window.IMP;     // 생략가능
    IMP.init('imp31465425');  // 중요!!  아임포트에 가입시 부여받은 "가맹점 식별코드". 
 
@@ -21,14 +20,14 @@ $(document).ready(function() {
        pg : 'html5_inicis', // 결제방식 PG사 구분
        pay_method : 'card',	// 결제 수단
        merchant_uid : 'merchant_' + new Date().getTime(), // 가맹점에서 생성/관리하는 고유 주문번호
-       name : '${requestScope.payment_name}', // 결제명 (선택항목)원활한 결제정보 확인을 위해 입력 권장(PG사 마다 차이가 있지만) 16자 이내로 작성하기를 권장
-       amount : 100, // 결제금액 number 타입. 필수항목. 
-       buyer_email : '${requestScope.email}',  // 구매자 email
+       name : '${requestScope.payment_name}', // 결제명
+       amount : 100, // 결제금액 number 타입
+       buyer_email : '${requestScope.email}', // 구매자 email
        buyer_name : '${requestScope.name}',	  // 구매자 이름 
-       buyer_tel : '${requestScope.mobile}',    // 구매자 전화번호 (필수항목)
+       buyer_tel : '${requestScope.mobile}',  // 구매자 전화번호
        buyer_addr : '',  
        buyer_postcode : '',
-       m_redirect_url : ''  // 휴대폰 사용시 결제 완료 후 action : 컨트롤러로 보내서 자체 db에 입력시킬것!
+       m_redirect_url : ''  
    }, function(rsp) {
 
 		if ( rsp.success ) { // PC 데스크탑용
@@ -39,7 +38,7 @@ $(document).ready(function() {
 			self.close(); // 자신의 팝업창(결제팝업창)을 닫는다.
 		}
 
-   }); // end of IMP.request_pay()----------------------------
+   }); // end of IMP.request_pay({})
 
 }); // end of $(document).ready()-----------------------------
 
