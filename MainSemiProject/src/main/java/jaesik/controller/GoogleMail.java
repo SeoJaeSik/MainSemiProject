@@ -56,7 +56,7 @@ public class GoogleMail {
         msg.addRecipient(Message.RecipientType.TO, toAddr);
                 
         // 메시지 본문의 내용과 형식, 캐릭터 셋 설정
-        msg.setContent("발송된 할인 쿠폰번호 : <span style='font-size:16pt; font-weight:bold;'>MOSACOYA의 신규회원 가입을 진심으로 축하합니다 !</span><br>"
+        msg.setContent("<span style='font-size:16pt; font-weight:bold;'>MOSACOYA의 신규회원 가입을 진심으로 축하합니다 !</span><br>"
         			 +"<p style='font-size:14pt';>신규회원 첫 구매 쿠폰이 발급되었으며<br>마이페이지 내의 쿠폰함에서 확인 가능합니다. 감사합니다 : )</p>", "text/html;charset=UTF-8");
                 
         // 메일 발송하기

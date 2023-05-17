@@ -11,8 +11,8 @@
 
 	$(document).ready(function() {
 	
-		// $("span#totalAllCount").hide();
-		// $("span#countAll").hide();
+		$("span#totalAllCount").hide();
+		$("span#countAll").hide(); 
 		
 		displayAll(start);
 		
