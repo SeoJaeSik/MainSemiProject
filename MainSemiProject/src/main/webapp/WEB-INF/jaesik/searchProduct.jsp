@@ -188,7 +188,7 @@
 						<h4 style="margin-bottom: 50px; font-weight: bold">"${requestScope.search_word}" 에 대한 ${requestScope.searchResult}개의 검색결과</h4>
 					</c:if>
 					<div class="container">
-						<div id="displayAll" style="padding: 0;"> <%-- 이 안에 Ajax가 들어갈 것이다. --%>
+						<div id="displayAll" style="padding: 0;">
 							<!-- Single Product -->
 							<div style='display:flex; flex-wrap: wrap;'>
 							

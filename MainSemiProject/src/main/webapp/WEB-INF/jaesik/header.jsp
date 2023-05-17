@@ -260,7 +260,7 @@
 			<a id="main_logo" href="<%= ctxPath%>/index.moc">MOSACOYA</a>
 			
 			<li class="nav-item my-auto px-2">
-				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/allproduct.moc" >All</a>
+				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/productList.moc" >All</a>
 				<div id="nav-group_ALL" class="nav-group" data-group="group-collections">
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
@@ -285,7 +285,7 @@
 			</li>
 	
 			<li class="nav-item my-auto px-2">
-				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/allproduct.moc" >Men</a>
+				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/productList.moc" >Men</a>
 				<div id="nav-group_Men" class="nav-group" data-group="group-collections">
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
@@ -308,7 +308,7 @@
 			</li>
 			
 			<li class="nav-item my-auto px-2">
-				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/allproduct.moc">Women</a>
+				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/productList.moc">Women</a>
 				<div id="nav-group_Women" class="nav-group" data-group="group-collections">
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
@@ -331,7 +331,7 @@
 			</li>
 			
 			<li class="nav-item my-auto px-2">
-				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/allproduct.moc">Kids</a>
+				<a class="nav-link header_nav_link" href="<%= ctxPath%>/shop/productList.moc">Kids</a>
 				<div id="nav-group_Kids" class="nav-group" data-group="group-collections">
 					<div id="prod_view" class="container">
 						<ul id="prod_view_ul">
