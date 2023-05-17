@@ -162,7 +162,7 @@ public class MemberDAO implements InterMemberDAO {
 	}//end of 3. email 중복검사 해주는 메소드---------------------------------
 
 
-	// 4. (사용) 입력받은 paraMap 을 갖고 한명의 회원정보를 리턴시켜주는 메소드(로그인처리) 구현하기
+	// 4. 입력받은 paraMap 을 갖고 한명의 회원정보를 리턴시켜주는 메소드(로그인처리) 구현하기
 	@Override
 	public MemberVO selectOneMember(Map<String, String> paraMap) throws SQLException {
 		
@@ -220,16 +220,12 @@ public class MemberDAO implements InterMemberDAO {
 				member.setRegisterday(rs.getString(14));
 				member.setPwdchange_daygap(rs.getString("PWDCHANGE_DAYGAP"));
 				
-				if(rs.getInt("PWDCHANGEGAP") >= 3) { // -> rs.getInt(15) : 순서가 헷갈릴 때는 그냥 변수명으로 넣어줘도 된다
-					// 마지막으로 암호를 변경한 날짜가 현재시각으로부터 3개월이 넘었으면 true, 아니면 false
-					
-					member.setRequirePwdChange(true); /* 로그인시 암호를 바꿔야 한다는 alert 를 띄우도록 할 때 사용한다 */
+				if(rs.getInt("PWDCHANGEGAP") >= 3) {  // 마지막으로 암호를 변경한 날짜가 현재시각으로부터 3개월이 넘었으면 true, 아니면 false
+					member.setRequirePwdChange(true); /* 로그인시 암호를 바꿔야 한다는 alert 를 띄우도록 할 때 사용 */
 				} 
 				
-				if(rs.getInt("LATELOGINGAP") >= 12) { // -> rs.getInt(16) 
-					// 마지막 로그인으로부터 1년이 지나면 true(휴면계정으로 전환), 아니면 false 
-					
-					member.setIdle(1); /* 휴면계정으로 전환 */
+				if(rs.getInt("LATELOGINGAP") >= 12) { // 마지막 로그인으로부터 1년이 지나면 true(휴면계정으로 전환), 아니면 false 
+					member.setIdle(1); 				  /* 휴면계정으로 전환 */
 					
 					// === tbl_member 테이블의 idle 컬럼의 값을 1로 변경하기 ===
 					sql = " update tbl_member set idle = 1 "
@@ -237,14 +233,12 @@ public class MemberDAO implements InterMemberDAO {
 					
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setString(1, paraMap.get("userid"));
-					
 					pstmt.executeUpdate();
 				}
 				
 				
 				// == 관리자 인지 확인하고 admin loginuser 세션에 넣어줌 ==
 				member.setAdmin(rs.getInt("ADMIN"));
-				
 				
 				// == tbl_loginhistory(로그인기록) 테이블에 insert 하기 == //
 				if(member.getIdle() != 1) {
@@ -255,13 +249,10 @@ public class MemberDAO implements InterMemberDAO {
 					pstmt = conn.prepareStatement(sql);
 					pstmt.setString(1, paraMap.get("userid"));
 					pstmt.setString(2, paraMap.get("clientip"));
-					
 					pstmt.executeUpdate();	
 				}
 				
-				
 			}//end of if(rs.next())-----------------------------------
-			
 			
 		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -502,7 +493,6 @@ public class MemberDAO implements InterMemberDAO {
 					   + " where status = 0 and userid = ? and email = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
-			
 			pstmt.setString(1, paraMap.get("userid"));
 			pstmt.setString(2, aes.encrypt(paraMap.get("email"))); // 평문 이메일말고 아에 암호된 이메일을 넣어준다
 			
@@ -511,28 +501,23 @@ public class MemberDAO implements InterMemberDAO {
 			if(rs.next()) { // DB에 존재하는게 있다면 나올 딱 하나의 값을 가져오자
 				
 				member = new MemberVO();
-				
 				member.setUserid(rs.getString(1));
 				member.setName(rs.getString(2));
-			//	member.setEmail(aes.decrypt(rs.getString(3)));
 				member.setEmail(rs.getString(3)); // 암호화된 이메일
 				
-				
 			}//end of if(rs.next())-----------------------------------
-			
 			
 		} catch (GeneralSecurityException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		} finally {
 			close(); /* 무조건 자원반납 */
 		}
-		
 		return member;
 		
 	}//end of == 비밀번호 변경 이메일을 보내기 위해 Map 에 userid 와 Email 을 보내 해당 사용자의 이메일을 알려주는 메소드--------- 
 	
 
-	// 7. (사용) 암호변경하기 : 입력한 paraMap 으로 들어온 아이디와 일치하는 회원의 암호를 변경해주는 메소드 구현하기
+	// 7. 암호변경하기 : 입력한 paraMap 으로 들어온 아이디와 일치하는 회원의 암호를 변경해주는 메소드 구현하기
 	@Override
 	public int pwdUpdate(Map<String, String> paraMap) throws SQLException {
 
@@ -546,19 +531,11 @@ public class MemberDAO implements InterMemberDAO {
 					   + " where userid = ? and email = ? ";
 
 			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, Sha256.encrypt(paraMap.get("pwd"))); /* 암호를 SHA256 알고리즘으로 단방향 암호화 시킨다. */
+			pstmt.setString(1, Sha256.encrypt(paraMap.get("pwd"))); /* 단방향 암호화*/
 			pstmt.setString(2, paraMap.get("userid"));
 			
 			String email = paraMap.get("email").replaceAll(" ", "+");
 			pstmt.setString(3, email);
-			
-		//	System.out.println("~~~ 요기요2 paraMap.get(\"userid\") : " + paraMap.get("userid"));
-			// sudin
-		//	System.out.println("~~~ 요기요2 email : " + email);
-			// EVnIknjwnS439aY+ftrHKgD+d/CWhHfOKJgWRqoznHw=
-			
-			// EVnIknjwnS439aY ftrHKgD d/CWhHfOKJgWRqoznHw=
 			
 			result = pstmt.executeUpdate();
 			// 정상적으로 update 됐다면 1 이 나올 것이다.
@@ -645,58 +622,5 @@ public class MemberDAO implements InterMemberDAO {
 		return n; 
 		
 	}//end of 10. 암호 변경시 현재 사용중인 암호인지 아닌지 알아오는 메소드------------ 
-
-
-	// 14. userid 값을 입력받아 회원 1명에 대한 상세정보를 알아오는 메소드 구현하기
-	@Override
-	public MemberVO memberOneDetail(String userid) throws SQLException {
-		
-		MemberVO mvo = null;
-		
-		try {
-			conn = ds.getConnection();
-			
-			String sql = " select userid, name, email, mobile, postcode, address, detailaddress, extraaddress, gender "
-					   + "	    , substr(birthday,1,4) AS birthyyyy "
-					   + "	    , substr(birthday,6,2) AS birthmm "
-					   + "	    , substr(birthday,9,2) AS birthdd "
-					   + "	    , point, to_char(registerday, 'yyyy-mm-dd') AS registerday "
-					   + " from tbl_member "
-				 	   + " where userid = ? ";
-		
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, userid); 
-			
-			rs = pstmt.executeQuery(); // 돌려라~ 존재한다면 딱 하나의 값이 나올 것이다.
-			
-			if(rs.next()) {
-				mvo = new MemberVO();
-				
-				mvo.setUserid(rs.getString(1));
-				mvo.setName(rs.getString(2));
-				mvo.setEmail(aes.decrypt(rs.getString(3)));
-				mvo.setMobile(aes.decrypt(rs.getString(4)));
-				mvo.setPostcode(rs.getString(5));
-				mvo.setAddress(rs.getString(6));
-				mvo.setDetailaddress(rs.getString(7));
-				mvo.setExtraaddress(rs.getString(8));
-				mvo.setGender(rs.getString(9));
-				mvo.setBirthday(rs.getString(10) + rs.getString(11) + rs.getString(12));
-				mvo.setPoint(rs.getInt(13));
-				mvo.setRegisterday(rs.getString(14));
-				
-			}//end of if(rs.next())-----------------------------------
-			
-		} catch (GeneralSecurityException | UnsupportedEncodingException e) { /* 복호화시 날수있는 에러 잡아줌 */
-			e.printStackTrace();
-		} finally {
-			close(); /* 무조건 자원반납 */
-		}
-		
-		return mvo;
-		
-	}//end of 14. userid 값을 입력받아 회원 1명에 대한 상세정보를 알아오는 메소드---------- 
-
 
 }

@@ -108,8 +108,8 @@
     	</c:if> 
     	
     	<c:if test="${requestScope.isUserExist == true && requestScope.sendMailSuccess == true}">
-    		<span style="font-size: 13pt; font-weight: bold;">인증코드가 ${requestScope.email} 로 전송되었습니다.</span><br>
-    		<span style="font-size: 13pt; font-weight: bold;">이메일을 확인해주세요</span><br>
+    		<span style="font-size: 13pt; font-weight: bold;">비밀번호를 변경할 수 있는 링크가 ${requestScope.email} 로 전송되었습니다.</span><br>
+    		<span style="font-size: 13pt; font-weight: bold;">이메일을 확인해주세요.</span><br>
     		<%-- 메일전송되고는 몇초있다가 바로 꺼지게 하고 싶은데 되려나? --%>
     	</c:if>	
   	</p>

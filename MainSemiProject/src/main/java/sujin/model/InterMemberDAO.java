@@ -57,11 +57,4 @@ public interface InterMemberDAO {
 	// 10. 암호 변경시 현재 사용중인 암호인지 아닌지 알아오는 메소드 
 	int duplicatePwdCheck(Map<String, String> paraMap) throws SQLException;
 
-
-	// 14. userid 값을 입력받아 회원 1명에 대한 상세정보를 알아오는 메소드 
-	MemberVO memberOneDetail(String userid) throws SQLException;
-
-
-
-
 }

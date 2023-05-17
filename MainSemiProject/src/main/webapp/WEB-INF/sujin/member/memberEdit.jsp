@@ -299,7 +299,6 @@
 		}
 		// ---------------------------------------------
 		
-		
 		// 3> "이메일 중복확인" 클릭 x && 이메일이 변경됨
 		if( b_flag_emailDuplicate_click == false && b_flag_email_change == true) {
 			alert("이메일 중복확인 을 클릭해야 합니다.");
@@ -344,12 +343,7 @@
 					$("span#duplicate_pwd").html("현재 사용중인 암호로 변경은 불가합니다.");
 					gogo = false;
 					return;
-				}
-			<%--else {
-					$("span#duplicate_pwd").html("");
-					gogo = true;
-				}
-			--%>		
+				}	
 			},
         	error:function(request, status, error){ // 어딘가 잘못된 부분이 발생하면 alert 를 띄운다
                 alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
