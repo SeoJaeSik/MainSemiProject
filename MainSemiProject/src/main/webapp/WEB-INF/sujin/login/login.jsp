@@ -181,7 +181,7 @@
 	        	<!-- Modal body -->
 	        	<div class="modal-body">
 		          	<div id="idFind" style="padding-top:50px;">
-		             	<iframe id="iframe_idFind" style="border: none; width: 100%; height: 300px;" src="<%= request.getContextPath()%>/login/idFind.moc">
+		             	<iframe id="iframe_idFind" style="border: none; width: 100%; height: 320px;" src="<%= request.getContextPath()%>/login/idFind.moc">
 		             	</iframe>
 		          	</div>
 	        	</div>
@@ -208,7 +208,7 @@
 	        	<!-- Modal body -->
 	        	<div class="modal-body">
 		        	<div id="pwdFind" style="padding-top:25px;">
-		             	<iframe id="iframe_pwdFind" style="border: none; width: 100%; height: 300px;" src="<%= request.getContextPath()%>/login/pwdFind.moc">
+		             	<iframe id="iframe_pwdFind" style="border: none; width: 100%; height: 320px;" src="<%= request.getContextPath()%>/login/pwdFind.moc">
 		             	</iframe>
 		          	</div>
 	        	</div>

@@ -20,7 +20,7 @@
 		
 		
 		$("small.error").hide();  // 처음에 경고문구 다 안 뜨게 숨겨놓고,
-		$("input#name").focus(); // 성명 입력창에 포커스를 놓는다
+		$("input#name").focus();  // 성명 입력창에 포커스를 놓는다
 		
 		
 		// == 1. name 에서 포커스 잃음
@@ -394,7 +394,7 @@
 			return; // 함수종료
 		}
 		else {		// 클릭했다면,
-			const regExp = /^\d{5}$/g; // 숫자 5자리만 들어오도록 검사해주는 정규표현식 객체 생성 (g는 뭐더라)
+			const regExp = /^\d{5}$/g; // 숫자 5자리만 들어오도록 검사해주는 정규표현식 객체 생성
 			const bool = regExp.test($("input:text[id='postcode']").val());
 			
 			if(bool == false) {
@@ -403,7 +403,6 @@
 				b_flag_zipcodeSearch_click == false;    /* 클릭안한거랑 똑같이 false 로 변경 */
 				return; // 함수종료
 			}
-			
 		}
 		
 		// ==========================================================

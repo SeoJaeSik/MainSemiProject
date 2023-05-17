@@ -22,7 +22,6 @@
 		    $('.nav-pills a[href="' + activeTab + '"]').tab('show');
 		}
 		 
-		
 		// 다른 nav 탭 클릭하면 회원정보변경 숨기기
 		$("a.accout_nav").click(function(){ 
 			$("div#memberEdit").hide();		
@@ -71,7 +70,6 @@
 				
 				<!-- 탭누르면 각자 태그에 맞게 나오는 곳 -->
 				<div class="tab-content py-3" >
-				
 					<%-- 나의정보보기 --%>
 					<jsp:include page="myaccount_myInfo.jsp"/>
 				
@@ -83,7 +81,6 @@
 				  	
 				  	<%-- 게시판 --%>
 				  	<jsp:include page="myaccount_board.jsp"/>
-					
 				</div>
 						
 				<br><br><br><br><br><br><br><br>

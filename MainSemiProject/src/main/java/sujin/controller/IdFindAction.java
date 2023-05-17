@@ -29,10 +29,10 @@ public class IdFindAction extends AbstractController {
 			
 			String userid = mdao.findUserid(paraMap); // 매개변수 2개를 Map 으로 묶어 보내는 함수 findUserid() 호출 
 		
-			if(userid != null ) {
+			if(userid != null ) { 	// 아이디가 존재한다면
 				request.setAttribute("userid", userid);
 			}
-			else {
+			else {					// 아이디가 존재하지 않는다면
 				request.setAttribute("userid", "존재하지 않습니다.");
 			}
 			
@@ -41,7 +41,6 @@ public class IdFindAction extends AbstractController {
 			
 		}//end of "POST"방식--------------------------------------
 
-		
 		// GET 이든 POST 이든 나와야 하는 공통부분으로 idFind.jsp 에서 받아 사용한다
 		request.setAttribute("method", method);
 		

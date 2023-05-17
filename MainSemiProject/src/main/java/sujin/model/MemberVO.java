@@ -215,6 +215,8 @@ public class MemberVO {
 	public void setAdmin(int admin) {
 		this.admin = admin;
 	}
+	
+	//////////////////////////////////////////
 
 	public boolean isRequirePwdChange() {
 		return requirePwdChange;

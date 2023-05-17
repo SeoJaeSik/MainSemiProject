@@ -106,8 +106,8 @@
          	</tbody>
         </table> 	
 		
-		<input type="hidden" name="userid" value="${requestScope.userid}"/> <!-- 여기 sudin 말고 메소드로 가져와야함!!! --> 
-		<input type="hidden" name="email" value="${requestScope.email}"/> <!-- 여기 암호화된 이메일 !!! --> 
+		<input type="text" name="userid" value="${requestScope.userid}"/>
+		<input type="text" name="email" value="${requestScope.email}"/> <!-- 여기 암호화된 이메일 !!! --> 
 		
 	</form>
 

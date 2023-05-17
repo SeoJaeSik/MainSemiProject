@@ -112,11 +112,14 @@
 														 			<td class="col-md-3 text-left">
 															 		  	<div class="mt-4 product_Info">
 																    		<div id="product_name">${odlist.pvo.product_name}</div>
-																      		<div id="product_color">${odlist.pvo.product_color}<span>&nbsp;</span><span id="product_size" name="product_size">${odlist.pvo.product_size}</span></div>
+																      		<div id="product_color">${odlist.pvo.product_color}<span>&nbsp;</span>
+																      			<span id="product_size" name="product_size">${odlist.pvo.product_size}</span>
+																      		</div>
 															 		  	</div>
 														 			</td>
 														 			<td class="col-md-2" id="order_count"><div class="mt-4">${odlist.order_count} 개</div></td>
-														 			<td class="col-md-2" id="order_price" style="font-size: 12pt; font-weight: bold;"><div class="mt-4"><fmt:formatNumber value="${odlist.order_price}" pattern="###,###" />원</div></td>
+														 			<td class="col-md-2" id="order_price" style="font-size: 12pt; font-weight: bold;">
+														 				<div class="mt-4"><fmt:formatNumber value="${odlist.order_price}" pattern="###,###" />원</div></td>
 													 	  	  	</tr>
 												 	  	 	</c:if> 	
 											 	  		</c:forEach>
