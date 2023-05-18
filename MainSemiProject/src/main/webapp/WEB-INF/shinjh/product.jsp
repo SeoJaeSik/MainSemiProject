@@ -449,8 +449,8 @@
 			$.ajax({
 				url:"<%= ctxPath%>/shop/orderAdd.moc",
 	     		data:{"product_name":"${requestScope.pvo.product_name}",
-					"product_color":"${requestScope.pvo.product_color}",
-					"product_size":"${requestScope.pvo.product_size}",
+					"product_color":$('input[name="product_color"]').val(),
+					"product_size":$('input[name="product_size"]').val(),
 					"cart_product_count":$("input#spinner").val(),
 	     			}, 
 		  		type:"post",
